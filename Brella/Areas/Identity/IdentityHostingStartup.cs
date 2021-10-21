@@ -15,13 +15,21 @@ namespace Brella.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) => {
+            builder.ConfigureServices((context, services) =>
+            {
                 services.AddDbContext<DBbrella>(options =>
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("DBbrellaConnection")));
 
                 services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<DBbrella>();
+
+
+                services.Configure<IdentityOptions>(x =>
+                {
+                    x.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+                });
             });
         }
     }
