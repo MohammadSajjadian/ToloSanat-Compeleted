@@ -192,7 +192,19 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("aboutUsLongDes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("aboutUsShortDes")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("contactUsDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("contactUsTitle")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("e1Description")
@@ -262,12 +274,36 @@ namespace Data.Migrations
                     b.ToTable("elementProps");
                 });
 
+            modelBuilder.Entity("Data.Entities.Inbox", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("nameFamily")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("phonenumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("inboxes");
+                });
+
             modelBuilder.Entity("Data.Entities.Language", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("faTitle")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("title")
                         .HasColumnType("nvarchar(max)");

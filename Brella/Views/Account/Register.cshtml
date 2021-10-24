@@ -3,5 +3,56 @@
     ViewData["Title"] = "ثبت نام";
 }
 
-<h1>Register</h1>
-
+@model RegisterViewModel
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+                <h1 class="mb-0">ثبت نام</h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
+                    <li class="breadcrumb-item active">ثبت نام</li>
+                </ol>
+            </div><!-- Page Top Wrap -->
+        </div>
+    </div>
+</section>
+<section style="margin-top: 15px">
+    <div class="w-100 pb-100 position-relative">
+        <div class="container">
+            <form asp-action="registerconfirm" class="contact-form text-center w-100">
+                <div class="row">
+                    <div class="col-md-7 col-sm-7 col-lg-7">
+                        <label class="d-block">نام :</label>
+                        <input asp-for="name" class="fname" type="text">
+                    </div>
+                    <div class="col-md-7 col-sm-7 col-lg-7">
+                        <label class="d-block">نام خانوادگی :</label>
+                        <input asp-for="family" class="fname" type="text">
+                    </div>
+                    <div class="col-md-7 col-sm-7 col-lg-7">
+                        <label class="d-block">آدرس ایمیل :</label>
+                        <input asp-for="userName" type="email">
+                        <span asp-validation-for="userName"></span>
+                    </div>
+                    <div class="col-md-7 col-sm-7 col-lg-7">
+                        <label class="d-block">رمز عبور :</label>
+                        <input asp-for="password" type="password">
+                        <span asp-validation-for="password"></span>
+                    </div>
+                    <div class="col-md-7 col-sm-7 col-lg-7">
+                        <label class="d-block">تکرار رمز عبور :</label>
+                        <input asp-for="rePassword" type="password">
+                        <span asp-validation-for="rePassword"></span>
+                    </div>
+                    <div class="col-md-7 col-sm-7 col-lg-7">
+                        <button class="thm-btn thm-bg">
+                            ثبت نام<i class="flaticon-arrow-pointing-to-left"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

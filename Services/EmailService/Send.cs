@@ -10,7 +10,7 @@ namespace Services.EmailService
 {
     public class Send : IEmail
     {
-        void IEmail.Email(string subject, string body, string receiver)
+        void IEmail.Send(string subject, string body, string receiver)
         {
             var mailmessage = new MailMessage("rexongame1@gmail.com", receiver)
             {
@@ -19,10 +19,9 @@ namespace Services.EmailService
                 IsBodyHtml = true,
             };
 
-            var smtpClient = new SmtpClient()
+            var smtpClient = new SmtpClient("smtp.gmail.com", 587)
             {
                 Credentials = new NetworkCredential("rexongame1@gmail.com", "RexonGame_1100"),
-                Port = 587,
                 EnableSsl = true
             };
 

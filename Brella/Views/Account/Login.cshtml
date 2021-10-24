@@ -3,5 +3,43 @@
     ViewData["Title"] = "ورود";
 }
 
-<h1>Login</h1>
-
+@model LoginViewModel
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+                <h1 class="mb-0">ورود</h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
+                    <li class="breadcrumb-item active">ورود</li>
+                </ol>
+            </div><!-- Page Top Wrap -->
+        </div>
+    </div>
+</section>
+<section style="margin-top: 15px">
+    <div class="w-100 pb-100 position-relative">
+        <div class="container">
+            <form asp-action="loginconfirm" class="contact-form text-center w-100">
+                <div class="row">
+                    <div class="col-md-7 col-sm-7 col-lg-7">
+                        <label class="d-block">آدرس ایمیل :</label>
+                        <input asp-for="userName" type="email">
+                        <span asp-validation-for="userName"></span>
+                    </div>
+                    <div class="col-md-7 col-sm-7 col-lg-7">
+                        <label class="d-block">رمز عبور :</label>
+                        <input asp-for="password" type="password">
+                        <span asp-validation-for="password"></span>
+                    </div>
+                    <div class="col-md-7 col-sm-7 col-lg-7">
+                        <button class="thm-btn thm-bg">
+                            ورود<i class="flaticon-arrow-pointing-to-left"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

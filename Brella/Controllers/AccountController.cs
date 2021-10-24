@@ -55,6 +55,7 @@ namespace Brella.Controllers
         {
             var user = new ApplicationUser()
             {
+                UserName = model.userName,
                 Email = model.userName,
                 name = model.name,
                 family = model.family,
@@ -69,9 +70,12 @@ namespace Brella.Controllers
                 var address = Url.Action(nameof(AccountConfirm), "Account", new { userId = user.Id, token = token }, "https");
 
                 if (user.name != null && user.family != null)
-                    mail.Send("تایید ایمیل", $"{user.name} {user.family} عزیز <br/> جهت تایید ایمیل خود و دسترسی به آخرین بروزرسانی های سایت<a href={address}>اینجا</a> کلیک کنید.", user.Email);
+                    mail.Send("تایید ایمیل", $"{user.name} {user.family}" +
+                        $" عزیز <br/> جهت تایید ایمیل خود و دسترسی به آخرین بروزرسانی های سایت " +
+                        $"<a href={address}>اینجا </a> کلیک کنید.", user.Email);
                 else
-                    mail.Send("تایید ایمیل", $"کاربر عزیز <br/> جهت تایید ایمیل خود و دسترسی به آخرین بروزرسانی های سایت<a href={address}>اینجا</a> کلیک کنید.", user.Email);
+                    mail.Send("تایید ایمیل", $"کاربر عزیز <br/> جهت تایید ایمیل خود و" +
+                        $" دسترسی به آخرین بروزرسانی های سایت <a href={address}>اینجا </a> کلیک کنید.", user.Email);
 
                 user.tokenCreationTime = DateTime.Now;
 
@@ -103,7 +107,7 @@ namespace Brella.Controllers
 
                     TempData[success] = "حساب کاربری شما با موفقیت تایید شد.";
 
-                    return RedirectToAction(Home, Account);
+                    return RedirectToAction(Index, Home);
                 }
                 else
                 {
@@ -111,7 +115,7 @@ namespace Brella.Controllers
 
                     TempData[error] = "عملیات با شکست مواجه شد.";
 
-                    return RedirectToAction(Home, Account);
+                    return RedirectToAction(Index, Home);
                 }
             }
             else
@@ -129,7 +133,7 @@ namespace Brella.Controllers
         {
             var user = await userManager.FindByNameAsync(userName);
 
-            if (user != null)
+            if (user == null)
                 return Json(true);
             else
                 return Json(false);
@@ -149,7 +153,7 @@ namespace Brella.Controllers
         public async Task<IActionResult> LoginConfirm(LoginViewModel model)
         {
             var user = await userManager.FindByNameAsync(model.userName);
-            if (user != null)
+            if (user != null && user.EmailConfirmed == true)
             {
                 var status = await signInManager.PasswordSignInAsync(user, model.password, model.rememberMe, true);
                 if (status.IsLockedOut)

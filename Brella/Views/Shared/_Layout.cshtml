@@ -1,48 +1,376 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿
+<!DOCTYPE html>
+<html lang="fa">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Brella</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="icon" href="~/assets/images/favicon.png" sizes="35x35" type="image/png">
+    <title>@ViewData["Title"] | جذاب ترین قالب جهان</title>
+
+    <link rel="stylesheet" href="~/assets/css/all.min.css">
+    <link rel="stylesheet" href="~/assets/css/flaticon.css">
+    <link rel="stylesheet" href="~/assets/css/animate.min.css">
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assets/css/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="~/assets/css/perfect-scrollbar.css">
+    <link rel="stylesheet" href="~/assets/css/slick.css">
+    <link rel="stylesheet" href="~/assets/css/style.css">
+    <link rel="stylesheet" href="~/assets/css/responsive.css">
+    <link rel="stylesheet" href="~/assets/css/color.css">
+    <link rel="stylesheet" href="~/assets/css/rtl.css">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        .field-validation-error {
+            color: red
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <main>
+        <header class="stick style2 w-100">
+            <div class="topbar bg-color5 w-100">
+                <div class="container">
+                    <div class="topbar-inner d-flex flex-wrap justify-content-between align-items-center w-100">
+                        <ul class="topbar-info-list mb-0 list-unstyled d-inline-flex">
+                            <li><i class="thm-clr fas fa-map-marker-alt"></i>ایران ، تهران ، شرکت برلا</li>
+                            <li>
+                                <i class="thm-clr far fa-envelope-open"></i>ایمیل: <a href="javascript:void(0);" title="">netita.help@gmail.com</a>
+                            </li>
+                        </ul>
+                        @if (User.Identity.IsAuthenticated == false)
+                        {
+                            <ul class="topbar-links mb-0 list-unstyled d-inline-flex text-left">
+                                <li><a asp-action="register" asp-controller="account" title="">ثبت نام</a></li>
+                                <li><a asp-action="login" asp-controller="account" title="">ورود</a></li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="topbar-links mb-0 list-unstyled d-inline-flex text-left">
+                                <li><a asp-action="logout" asp-controller="account" title="">خروج</a></li>
+                            </ul>
+                        }
+                    </div>
+                </div>
+            </div><!-- Topbar -->
+            <div class="logo-info-bar-wrap w-100">
+                <div class="container">
+                    <div class="logo-info-bar-inner w-100 d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="logo-social d-inline-flex flex-wrap justify-content-between align-items-center">
+                            <div class="logo">
+                                <h1 class="mb-0">
+                                    <a asp-action="index" asp-controller="home" title="Home">
+                                        <img class="img-fluid"
+                                             src="~/assets/images/logo2.png"
+                                             alt="Logo"
+                                             srcset="~/assets/images/retina-logo2.png">
+                                    </a>
+                                </h1>
+                            </div><!-- Logo -->
+                        </div>
+                        <div class="top-info-wrap d-inline-flex flex-wrap justify-content-between align-items-center">
+                            <div class="call-us">
+                                <i class="thm-clr flaticon-phone-call"></i>
+                                <span>خدمات تلفنی</span>
+                                <strong>32344666</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- Logo Info Bar Wrap -->
+            <div class="menu-wrap">
+                <div class="container">
+                    <nav class="d-inline-flex justify-content-between align-items-center w-100 bg-color1 rspn-hdr">
+                        <div class="header-left">
+                            <ul class="mb-0 list-unstyled d-inline-flex">
+                                <li><a href="projects.html" title="">پروژه ها</a></li>
+                                <li><a href="blog.html" title="">وبلاگ</a></li>
+                                <li><a href="about.html" title="">درباره ما</a></li>
+                                <li><a href="contact.html" title="">تماس با ما</a></li>
+                                <li class="menu-item-has-children">
+                                    <a href="javascript:void(0);" title="">زبان</a>
+                                    <ul class="mb-0 list-unstyled">
+                                        @await Component.InvokeAsync("Language")
+                                    </ul>
+                                </li>
+                                @if (User.IsInRole("admin"))
+                                {
+                                    <li class="menu-item-has-children active">
+                                        <a href="javascript:void(0);" title="">ادمین</a>
+                                        <ul class="mb-0 list-unstyled">
+                                            <li><a href="blog.html" title="">وبلاگ</a></li>
+                                            <li><a href="blog-detail.html" title="">جزئیات وبلاگ</a></li>
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div><!-- Menu Wrap -->
+        </header><!-- Header -->
+        <div class="sticky-menu">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Brella</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+                <div class="sticky-menu-inner d-flex flex-wrap align-items-center justify-content-between w-100">
+                    <div class="logo">
+                        <h1 class="mb-0">
+                            <a href="index.html" title="Home">
+                                <img class="img-fluid"
+                                     src="~/assets/images/logo.png"
+                                     alt="Logo"
+                                     srcset="~/assets/images/retina-logo.png">
+                            </a>
+                        </h1>
+                    </div><!-- Logo -->
+                    <nav class="d-inline-flex justify-content-between align-items-center">
+                        <div class="header-left">
+                            <ul class="mb-0 list-unstyled d-inline-flex">
+                                <li><a href="projects.html" title="">پروژه ها</a></li>
+                                <li><a href="blog.html" title="">وبلاگ</a></li>
+                                <li><a href="about.html" title="">درباره ما</a></li>
+                                <li><a href="contact.html" title="">تماس با ما</a></li>
+                                <li class="menu-item-has-children">
+                                    <a href="javascript:void(0);" title="">زبان</a>
+                                    <ul class="mb-0 list-unstyled">
+                                        @await Component.InvokeAsync("Language")
+                                    </ul>
+                                </li>
+                                @if (User.IsInRole("admin"))
+                                {
+                                    <li class="menu-item-has-children active">
+                                        <a href="javascript:void(0);" title="">ادمین</a>
+                                        <ul class="mb-0 list-unstyled">
+                                            <li><a href="blog.html" title="">وبلاگ</a></li>
+                                            <li><a href="blog-detail.html" title="">جزئیات وبلاگ</a></li>
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </nav>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+        </div><!-- Sticky Menu -->
+        <div class="rspn-hdr">
+            <div class="rspn-mdbr">
+                @if (User.Identity.IsAuthenticated == false)
+                {
+                    <ul class="topbar-links mb-0 list-unstyled d-inline-flex text-left">
+                        <li><a asp-action="register" asp-controller="account" title="">ثبت نام</a></li>
+                        <li><a asp-action="login" asp-controller="account" title="">ورود</a></li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="topbar-links mb-0 list-unstyled d-inline-flex text-left">
+                        <li><a asp-action="logout" asp-controller="account" title="">خروج</a></li>
+                    </ul>
+                }
+            </div>
+            <div class="lg-mn">
+                <div class="logo">
+                    <a href="index.html" title="Home"><img src="~/assets/images/logo.png" alt="Logo"></a>
+                </div>
+                <div class="rspn-cnt">
+                    <span><i class="thm-clr far fa-envelope-open"></i><a href="javascript:void(0);" title="">netita.help@gmail.com</a></span>
+                    <span><i class="thm-clr fas fa-map-marker-alt"></i>ایران ، تهران ، شرکت برلا</span>
+                </div>
+                <span class="rspn-mnu-btn"><i class="fa fa-list-ul"></i></span>
+            </div>
+            <div class="rsnp-mnu">
+                <span class="rspn-mnu-cls"><i class="fa fa-times"></i></span>
+                <ul class="mb-0 list-unstyled w-100">
+                    <li><a href="projects.html" title="">پروژه ها</a></li>
+                    <li><a href="blog.html" title="">وبلاگ</a></li>
+                    <li class="menu-item-has-children">
+                        <a href="javascript:void(0);" title="">زبان</a>
+                        <ul class="mb-0 list-unstyled">
+                            @await Component.InvokeAsync("Language")
+                        </ul>
+                    </li>
+                    <li><a href="about.html" title="">درباره ما</a></li>
+                    <li><a href="contact.html" title="">تماس با ما</a></li>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li class="menu-item-has-children active">
+                            <a href="javascript:void(0);" title="">ادمین</a>
+                            <ul class="mb-0 list-unstyled">
+                                <li><a href="blog.html" title="">وبلاگ</a></li>
+                                <li><a href="blog-detail.html" title="">جزئیات وبلاگ</a></li>
+                            </ul>
+                        </li>
+                    }
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - Brella - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+                </ul>
+            </div><!-- Responsive Menu -->
+        </div><!-- Responsive Header -->
+
+        @RenderBody()
+
+        <footer>
+            <div class="w-100 bg-color5 pt-195 pb-10 position-relative">
+                <div class="particles-js" id="prtcl2"></div>
+                <div class="container">
+                    <div class="footer-data w-100">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-lg-3">
+                                <div class="widget w-100">
+                                    <div class="logo w-100">
+                                        <h1 class="mb-0">
+                                            <a href="index.html" title="Home">
+                                                <img class="img-fluid"
+                                                     src="~/assets/images/logo2.png"
+                                                     alt="Logo"
+                                                     srcset="~/assets/images/retina-logo2.png">
+                                            </a>
+                                        </h1>
+                                    </div><!-- Logo -->
+                                    <p class="mb-0">
+                                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده
+                                        از طراحان گرافیک است
+                                    </p>
+                                    <div class="social-links2 d-inline-block">
+                                        <a href="javascript:void(0);" title="Facebook" target="_blank">
+                                            <i class="flaticon-facebook"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" title="Twitter" target="_blank">
+                                            <i class="flaticon-twitter"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" title="Instagram" target="_blank">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" title="Google Plus" target="_blank">
+                                            <i class="flaticon-google-plus-logo"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-lg-3 order-lg-1">
+                                <div class="widget w-100">
+                                    <div class="visitor-stats w-100">
+                                        <div class="visitor-stat-box w-100">
+                                            <h4 class="mb-0 thm-clr counter">25,329,53253</h4>
+                                            <h5 class="mb-0">همه بازدیدکنندگان ما</h5>
+                                        </div>
+                                        <div class="visitor-stat-box w-100">
+                                            <h4 class="mb-0 text-color4 counter">329,53253825</h4>
+                                            <h5 class="mb-0">بازدید کننده منحصر به فرد ما</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-lg-6">
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-4 col-lg-4">
+                                        <div class="widget w-100">
+                                            <h3>درباره ی ما</h3>
+                                            <ul class="mb-0 list-unstyled w-100">
+                                                <li><a href="shop.html" title="">محصولات ما</a></li>
+                                                <li><a href="about.html" title="">درباره ی ما</a></li>
+                                                <li><a href="services.html" title="">خدمات ما</a></li>
+                                                <li><a href="blog.html" title="">وبلاگ ما</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-lg-4">
+                                        <div class="widget w-100">
+                                            <h3>پشتیبانی</h3>
+                                            <ul class="mb-0 list-unstyled w-100">
+                                                <li><a href="about.html" title="">شروع کنید</a></li>
+                                                <li><a href="contact.html" title="">تماس با ما</a></li>
+                                                <li><a href="testimonials.html" title="">دیدگاه ما</a></li>
+                                                <li><a href="contact.html" title="">به ما بپیوندید</a></li>
+                                                <li><a href="faq.html" title="">سوال بپرسید</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-lg-4">
+                                        <div class="widget w-100">
+                                            <h3>لینک های سریع</h3>
+                                            <ul class="mb-0 list-unstyled w-100">
+                                                <li><a href="projects.html" title="">کار ما</a></li>
+                                                <li><a href="team.html" title="">کارگران ما</a></li>
+                                                <li><a href="shop.html" title="">فروشگاه ما</a></li>
+                                                <li><a href="services.html" title="">خدماتی که ما ارائه می دهیم</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Footer Data -->
+                </div>
+            </div>
+        </footer>
+        <div class="copyright w-100 text-center bg-color6 position-relative">
+            <div class="container">
+                <p class="mb-0">تمامی حقوق برای <a href="index.html" title="">تیم نتیتا</a>. محفوظ است</p>
+            </div>
+        </div><!-- Copyright -->
+    </main><!-- Main Wrapper -->
+
+    <script src="~/assets/js/jquery.min.js"></script>
+    <script src="~/assets/js/popper.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="~/assets/js/wow.min.js"></script>
+    <script src="~/assets/js/counterup.min.js"></script>
+    <script src="~/assets/js/jquery.fancybox.min.js"></script>
+    <script src="~/assets/js/perfect-scrollbar.min.js"></script>
+    <script src="~/assets/js/slick.min.js"></script>
+    <script src="~/assets/js/particles.min.js"></script>
+    <script src="~/assets/js/particle-int.js"></script>
+    <script src="~/assets/js/custom-scripts.js"></script>
 </body>
 </html>
+@if (TempData["error"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'خطا!',
+            text: '@Html.Raw(TempData["error"])',
+            confirmButtonText: 'باشه',
+        })
+    </script>
+}
+
+@if (TempData["success"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            text: '@Html.Raw(TempData["success"])',
+            confirmButtonText: 'باشه',
+        })
+    </script>
+}
+
+@if (TempData["info"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'info',
+            title: 'پیغام',
+            text: '@Html.Raw(TempData["info"])',
+            confirmButtonText: 'باشه',
+        })
+    </script>
+}
+
+@if (TempData["warning"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'warning',
+            title: '!اخطار!',
+            text: '@Html.Raw(TempData["warning"])',
+            confirmButtonText: 'باشه',
+        })
+    </script>
+}

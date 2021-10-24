@@ -61,6 +61,20 @@ namespace Data.Entities
 
         #endregion
 
+        #region About Us
+
+        public string aboutUsShortDes { get; set; }
+        public string aboutUsLongDes { get; set; }
+
+        #endregion
+
+        #region Contact Us
+
+        public string contactUsTitle { get; set; }
+        public string contactUsDescription { get; set; }
+
+        #endregion
+
         #region ForeignKeys
 
         public int languageId { get; set; }

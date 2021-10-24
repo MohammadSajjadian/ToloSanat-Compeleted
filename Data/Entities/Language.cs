@@ -11,6 +11,7 @@ namespace Data.Entities
         public int id { get; set; }
 
         public string title { get; set; }
+        public string faTitle { get; set; }
 
         #region ICollections
 

@@ -1,0 +1,6 @@
+﻿
+@model List<Language>
+@foreach (var item in Model)
+{
+    <li><a asp-action="changelanguage" asp-controller="home" asp-route-lang="@item.title" title="">@item.faTitle</a></li>
+}

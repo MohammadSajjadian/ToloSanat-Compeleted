@@ -1,0 +1,171 @@
+:root {
+  --theme-color: #ff5e15;
+}
+
+/*===== Primary Color =====*/
+
+/*===== Background Color =====*/
+.thm-bg,
+.thm-layer:before,
+.header-right-btns > a.get-quote,
+.feat-caro > button.slick-arrow:hover:before,
+.feat-caro > button.slick-arrow:focus:before,
+.video-btn:hover > span, 
+.video-btn:focus > span,
+.about-image > span,
+.proj-box:hover .proj-info,
+.solutions-list > li:hover > i,
+.sec-title-inner2 > h2 i:before,
+.sec-title-inner2 > h2 i:after,
+.slick-dots > li.slick-active button,
+.black-layer .slick-dots > li.slick-active button,
+.blue-layer .slick-dots > li.slick-active button,
+.dark-layer .slick-dots > li.slick-active button,
+.dark-layer2 .slick-dots > li.slick-active button,
+.dark-layer3 .slick-dots > li.slick-active button,
+.feat-caro .slick-dots > li.slick-active button,
+header.style2 .header-right-btns > a.get-quote,
+.team-social > a,
+.about-image > a:hover,
+.about-image > a:focus,
+.post-detail-gallery-video-box > a:hover,
+.post-detail-gallery-video-box > a:focus,
+.tagclouds > a:before,
+.widget2 ul li > a:after,
+.widget-video-box > a,
+.widget-video-box > a:before,
+.widget-video-box > a:after,
+.tagclouds > a:before,
+.shop-img:before,
+.shop-detail-tabs ul.nav-tabs li.nav-item a.nav-link.active,
+.shop-detail-tabs ul.nav-tabs li.nav-item a.nav-link:hover,
+.shop-detail-tabs ul.nav-tabs li.nav-item a.nav-link:focus,
+.simple-btn.bg-color1:hover,
+.simple-btn.bg-color1:focus,
+.slick-slider:not(.feat-caro) > button.slick-arrow:hover:before,
+.slick-slider:not(.feat-caro) > button.slick-arrow:focus:before,
+.rspn-scil > a:hover,
+.rspn-scil > a:focus,
+.rspn-mnu-btn:hover,
+.rspn-mnu-btn:focus,
+.rspn-mnu-cls:hover,
+.rspn-mnu-cls:focus,
+.social-links > a:hover,
+.social-links > a:focus,
+/* .getin-touch-blob:before,
+.getin-touch-blob:after, */
+.bootstrap-select .dropdown-menu li a.dropdown-item.active, 
+.bootstrap-select .dropdown-menu li a.dropdown-item:active,
+.bootstrap-select .dropdown-menu li a:hover,
+.bootstrap-select .dropdown-menu li a:focus,
+.serv-box2:hover:before,
+header.style2 .social-links > a:hover,
+header.style2 .social-links > a:focus
+{
+	background-color: var(--theme-color);
+}
+
+/*===== Text Color =====*/
+.thm-clr,
+.topbar-info-list > li a:hover,
+.topbar-info-list > li a:focus,
+.topbar-links > li a:hover,
+.topbar-links > li a:focus,
+nav ul li:hover > a,
+nav ul li.active > a,
+nav ul li > a:focus,
+.rsnp-mnu ul > li:hover > a,
+.rsnp-mnu ul > li.active > a,
+.rsnp-mnu ul > li > a:focus,
+.feat-caro > button.slick-arrow:hover,
+.feat-caro > button.slick-arrow:focus,
+.serv-box-inner > h3 a:hover,
+.serv-box-inner > h3 a:focus,
+.testi-img::before,
+.toggle-item.active > h4,
+.toggle-item > h4:hover,
+.post-info > h3 a:hover,
+.post-info > h3 a:focus,
+.post-info-bottom > span a:hover,
+.post-info-bottom > span a:focus,
+.post-meta > li a:hover,
+.post-meta > li a:focus,
+.social-links2 > a:hover,
+.social-links2 > a:focus,
+.widget ul li:hover > a,
+.widget ul li > a:focus,
+.copyright p a:hover,
+.copyright p a:focus,
+.team-info > h3 a:hover,
+.team-info > h3 a:focus,
+.about-image > a,
+ol.breadcrumb li.breadcrumb-item.active,
+ol.breadcrumb li.breadcrumb-item a:hover,
+ol.breadcrumb li.breadcrumb-item a:focus,
+.contact-info-box > a:hover,
+.contact-info-box > a:focus,
+blockquote,
+.detail-share > a:hover,
+.detail-share > a:focus,
+.comment-reply-link:hover,
+.comment-reply-link:focus,
+.widget2 form button:hover,
+.widget2 form button:focus,
+.widget2 ul li:hover > a,
+.widget2 ul li > a:focus,
+.blog-mini-post-info > h4 a:hover,
+.blog-mini-post-info > h4 a:focus,
+.post-detail-gallery-video-box > a,
+.filter-inner > a:hover,
+.filter-inner > a:focus,
+.shop-info > h3 a:hover,
+.shop-info > h3 a:focus,
+.shop-detail-nav-caro > button.slick-arrow:hover,
+.shop-detail-nav-caro > button.slick-arrow:focus,
+.review-link > a:hover,
+.review-link > a:focus,
+.price-stock .price ins,
+.product-cart-btns > a:hover,
+.product-cart-btns > a:focus,
+.product-table td h4 a:hover,
+.product-table td h4 a:focus,
+.qty-wrp .bootstrap-touchspin span.input-group-btn button:hover,
+.qty-wrp .bootstrap-touchspin span.input-group-btn button:focus,
+.rspn-srch > button:hover,
+.rspn-srch > button:focus,
+.rspn-cnt > span a:hover,
+.rspn-cnt > span a:focus,
+.post-info-bottom > span i, 
+.post-meta > li i
+{
+	color: var(--theme-color);
+}
+
+/*===== Border Color =====*/
+.thm-brd-clr,
+.about-image > span:before,
+.shop-detail-tabs ul:not(.nav-tabs) li:before,
+.shop-detail-nav-caro .slick-slide.slick-current img
+{
+	border-color: var(--theme-color);
+}
+
+
+{
+	border-top-color: var(--theme-color);
+}
+
+
+{
+	border-bottom-color: var(--theme-color);
+}
+
+
+{
+	border-left-color: var(--theme-color);
+}
+
+
+{
+	border-right-color: var(--theme-color);
+}

@@ -32,7 +32,7 @@ namespace Data.ViewModels
 
         #region Attributes
 
-        [Compare(nameof(password))]
+        [Compare(nameof(password), ErrorMessage ="رمزعبور و تکرار رمزعبور باید برابر باشد")]
 
         #endregion
         public string rePassword { get; set; }

@@ -15,6 +15,7 @@ namespace Data.Context
         public DbSet<Language> languages { get; set; }
         public DbSet<Post> posts { get; set; }
         public DbSet<Project> projects { get; set; }
+        public DbSet<Inbox> inboxes { get; set; }
         public DbSet<SlideBar> slideBars { get; set; }
         public DbSet<Element1> element1s { get; set; }
         public DbSet<Element2> element2s { get; set; }

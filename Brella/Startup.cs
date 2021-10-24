@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Services.EmailService;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -48,16 +52,30 @@ namespace Brella
                 x.AccessDeniedPath = "/account/login";
             });
 
-            // Inject Repository.
+
+            services
+                .AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, x => x.ResourcesPath = "Resource")
+                .AddDataAnnotationsLocalization(x =>
+                {
+                    x.DataAnnotationLocalizerProvider = (type, factory) =>
+                    factory.Create(typeof(ShareResource));
+                });
+
+
+            // Inject Repository and Services.
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddSingleton<IEmail, Send>();
 
+            services.AddLocalization(x => x.ResourcesPath = "Resources");
             services.AddAuthentication();
             services.AddSession();
+            services.AddCloudscribePagination();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IRepository<Language> repository)
         {
             if (env.IsDevelopment())
             {
@@ -76,6 +94,31 @@ namespace Brella
             app.UseAuthorization();
             app.UseAuthentication();
             app.UseSession();
+            app.UseCookiePolicy();
+
+            #region Locallize Settings
+
+            var supportCulture = new List<CultureInfo>();
+            foreach (var item in repository.Get(null, null, null))
+            {
+                new CultureInfo(item.title);
+            }
+
+            var options = new RequestLocalizationOptions()
+            {
+                DefaultRequestCulture = new RequestCulture("fa-IR"),
+                SupportedCultures = supportCulture,
+                SupportedUICultures = supportCulture,
+                RequestCultureProviders =
+                {
+                    new QueryStringRequestCultureProvider(),
+                    new CookieRequestCultureProvider()
+                }
+            };
+
+            #endregion
+
+            app.UseRequestLocalization(options);
 
             app.UseEndpoints(endpoints =>
             {
@@ -106,7 +149,7 @@ namespace Brella
                     family = "",
                     EmailConfirmed = true
                 };
-                await userManager.CreateAsync(user);
+                await userManager.CreateAsync(user, "pP_0987");
             }
 
             if (await userManager.IsInRoleAsync(user, "admin") == false)

@@ -1,0 +1,711 @@
+/*
+****Theme : karito
+****Author: Netita Team
+****Web: www.netita.ir
+*/
+@font-face{font-family:'IRY';src:url('../fonts/IRY-Light.woff2') format('woff2'), url('../fonts/IRY-Light.woff') format('woff');font-weight:300;font-style:normal}@font-face{font-family:'IRY';src:url('../fonts/IRY-Medium.woff2') format('woff2'), url('../fonts/IRY-Medium.woff') format('woff');font-weight:500;font-style:normal}@font-face{font-family:'IRY';src:url('../fonts/IRY-Thin.woff2') format('woff2'), url('../fonts/IRY-Thin.woff') format('woff');font-weight:100;font-style:normal}@font-face{font-family:'IRY';src:url('../fonts/IRY-Bold.woff2') format('woff2'), url('../fonts/IRY-Bold.woff') format('woff');font-weight:bold;font-style:normal}@font-face{font-family:'IRY';src:url('../fonts/IRY.woff2') format('woff2'), url('../fonts/IRY.woff') format('woff');font-weight:normal;font-style:normal}
+/*General Style*/
+* {
+    letter-spacing: 0 !important;
+}
+
+:root {
+    --font-family-sans-serif: 'IRY';
+    --font-family-monospace: 'IRY';
+}
+
+body {
+    direction: rtl;
+    text-align: right;
+    font-family: 'IRY';
+    font-weight: 400;
+}
+
+.thm-btn, .video-btn {
+    font-weight: 400;
+}
+
+.text-right {
+    text-align: left !important;
+}
+
+.text-left {
+    text-align: right !important;
+}
+
+ul li, ol li,.billing-details table thead th, .billing-details table tfoot th, .detail-share > span, .contact-info-box > strong, blockquote, ol.breadcrumb li.breadcrumb-item, .call-us > strong, .add-cart > a, .add-cart > a span, nav ul li, h1, h2, h3, h4, h5, h6, p, .thm-btn, .about-image > span, .about-image > span i, .serv-box-inner > span, .fact-box > h4 {
+    font-family: 'IRY';
+}
+
+.slick-slider {
+    direction: ltr;
+}
+
+.slick-slide {
+    direction: rtl;
+}
+
+/*Header*/
+.list-unstyled {
+    padding-left: initial;
+    padding-right: 0;
+}
+
+.topbar-info-list > li i {
+    margin-right: initial;
+    margin-left: 10px;
+}
+
+.topbar-info-list > li:not(:first-child) {
+    margin-left: initial;
+    margin-right: 4.0625rem;
+}
+
+.topbar-links > li:not(:first-child) {
+    margin-left: initial;
+    margin-right: 1rem;
+    padding-left: initial;
+    padding-right: 1.0625rem;
+}
+
+.topbar-links > li:not(:first-child):before {
+    left: initial;
+    right: 0;
+}
+
+.logo + .social-links, .call-us + .add-cart {
+    margin-left: initial;
+    margin-right: 9.375rem;
+}
+
+.social-links > a:not(:first-child) {
+    margin-left: initial;
+    margin-right: 5px;
+}
+
+.call-us {
+    padding-left: initial;
+    padding-right: 2.9rem;
+}
+
+.call-us > i {
+    left: initial;
+    right: 0;
+}
+
+.add-cart > a {
+    padding-left: initial;
+    padding-right: 3.125rem;
+}
+
+.add-cart > a i {
+    left: initial;
+    right: 0;
+}
+
+nav > div > ul > li {
+    margin-right: initial;
+    margin-left: 2.8125rem;
+}
+
+nav > div > ul > li.menu-item-has-children > a {
+    padding-right: initial;
+    padding-left: 1.25rem;
+}
+
+nav > div > ul > li.menu-item-has-children > a::before {
+    right: initial;
+    left: 0;
+}
+
+nav > div ul ul {
+    left: initial;
+    right: 0;
+}
+
+nav {
+    padding-left: initial;
+    padding-right: 1.5625rem;
+}
+
+.header-right-btns > a {
+    margin-left: initial;
+    margin-right: .35rem;
+}
+
+.header-right-btns > a.get-quote {
+    -webkit-border-radius: 5px 0 0 5px;
+    border-radius: 5px 0 0 5px;
+}
+
+nav > div ul ul li a:before {
+    content: "\f060";
+    right: 1.25rem;
+    left: auto;
+
+}
+
+nav > div ul ul li:hover > a, nav > div ul ul li a:focus {
+    padding-left: initial;
+    padding-right: 3.125rem;
+}
+
+.rspn-srch > input {
+    padding: 0 5% 0 3.125rem;
+}
+
+.rspn-srch > button {
+    right: initial;
+    left: 10px;
+}
+
+.rspn-scil > a:not(:first-child) {
+    margin-left: initial;
+    margin-right: 1px;
+}
+
+.lg-mn {
+    padding: 1.125rem .9375rem 1.125rem 5rem;
+}
+
+.rspn-mnu-btn {
+    right: initial;
+    left: 1.25rem;
+}
+
+.rsnp-mnu {
+    right: initial;
+    left: -21.875rem;
+}
+
+.rsnp-mnu.slidein {
+    right: initial;
+    left: 0;
+}
+
+.rspn-mnu-cls {
+    right: initial;
+    left: .75rem;
+}
+
+.rsnp-mnu > ul {
+    padding-left: initial;
+    padding-right: 0;
+}
+
+.rsnp-mnu > ul li.menu-item-has-children > a::before {
+    right: initial;
+    left: 0;
+}
+
+.rsnp-mnu > ul ul {
+    padding-left: initial;
+    padding-right: 1.25rem;
+}
+
+nav > div ul ul ul {
+    left: initial;
+    right: 100%;
+}
+
+/*Body*/
+.thm-btn:before {
+    left: initial;
+    right: 0;
+}
+
+.thm-btn > i {
+    margin-left: initial;
+    margin-right: 10px;
+}
+
+.feat-cap-innr > a + a {
+    margin-left: initial;
+    margin-right: 1.25rem;
+}
+
+.video-btn {
+    font-style: normal;
+}
+
+.title-with-shape:before {
+    left: initial;
+    right: -4.6875rem;
+
+}
+
+.serv-box > i + .serv-box-inner {
+    margin-left: initial;
+    margin-right: 1.25rem;
+}
+
+.about-image > span {
+    left: initial;
+    right: -3.75rem;
+}
+
+.proj-info {
+    left: 0;
+    right: 1.875rem;
+    -webkit-border-radius: 5px 5px 5px 0;
+    border-radius: 5px 5px 5px 0;
+    padding: 1.375rem 4.375rem 1.375rem .75rem;
+}
+
+.proj-info > i {
+    left: initial;
+    right: 1.25rem;
+}
+
+.with-shap:before {
+    left: initial;
+    right: 0;
+}
+
+.getin-touch-blob {
+    left: initial;
+    right: 0;
+    -webkit-transform: translateX(45%);
+    -ms-transform: translateX(45%);
+    -o-transform: translateX(45%);
+    transform: translateX(45%);
+}
+
+.getin-touch-title.with-shap {
+    padding-left: initial;
+    padding-right: 4.375rem;
+}
+
+.getin-touch-blob:before, .getin-touch-blob:after {
+    left: initial;
+    right: 0;
+}
+
+.sec-title-inner2 > h2 i {
+    font-family: 'IRY';
+    right: initial;
+    left: -2.975rem;
+}
+
+.solutions-content-wrap {
+    padding-left: initial;
+    padding-right: 6.25rem;
+}
+
+.solutions-list > li {
+    padding: 1.5625rem 2.5rem .75rem 0;
+}
+
+.solutions-list > li > i {
+    left: initial;
+    right: 0;
+}
+
+.testi-img:before {
+    right: initial;
+    left: 0;
+}
+
+.testi-img + .testi-info {
+    padding-left: initial;
+    padding-right: 1.875rem;
+}
+
+.testi-info > span span {
+    margin-left: initial;
+    margin-right: 10px;
+}
+
+.toggle {
+    padding-right: initial;
+    padding-left: 6.25rem;
+}
+
+.toggle-item > h4 {
+    padding: 1.0875rem 2.8125rem 1.0875rem 0;
+}
+
+.toggle-item > h4 span {
+    left: initial;
+    right: 0;
+}
+
+.container .slick-slider:not(.feat-caro):not(.shop-detail-nav-caro) > button.slick-prev {
+    right: initial;
+    left: 0;
+}
+
+.container .slick-slider:not(.feat-caro):not(.shop-detail-nav-caro) > button.slick-next {
+    right: initial;
+    left: 4.0625rem;
+}
+
+.post-info-bottom > span i, .post-meta > li i {
+    margin-right: initial;
+    margin-left: 7px;
+}
+
+.post-meta > li:not(:first-child) {
+    margin-left: initial;
+    margin-right: 2rem;
+}
+
+.social-links2 > a:not(:first-child) {
+    margin-left: initial;
+    margin-right: 1.4375rem;
+}
+
+header.style2 {
+    margin-bottom: -10.5rem;
+}
+
+.about-wrap.style2 .about-image > span {
+    left: initial;
+    right: 50%;
+}
+
+.about-wrap.style2 .about-desc, .about-wrap.style2 .serv-wrap {
+    padding-right: initial;
+    padding-left: 4.375rem;
+}
+
+.slick-slider:not(.feat-caro):not(.shop-detail-nav-caro) > button.slick-prev {
+    right: initial;
+    left: 19.3%;
+}
+
+.slick-slider:not(.feat-caro):not(.shop-detail-nav-caro) > button.slick-next {
+    right: initial;
+    left: 22.75%;
+}
+
+ol.breadcrumb li.breadcrumb-item + li.breadcrumb-item {
+    margin-left: initial;
+    margin-right: .75rem;
+    padding-left: initial;
+    padding-right: 1.5625rem;
+}
+
+ol.breadcrumb li.breadcrumb-item + li.breadcrumb-item:before {
+    content: "\f060";
+    left: initial;
+    right: 0;
+}
+
+.about-widget-img > a {
+    left: initial;
+    right: -10px;
+}
+
+.about-widget > span img {
+    margin-right: initial;
+    margin-left: 1.25rem;
+}
+
+.widget2 > form input {
+    padding: 1rem 1.875rem 1rem 2.5rem;
+}
+
+.widget2 > form button {
+    right: initial;
+    left: 0;
+}
+
+.widget2.category_widget ul li {
+    text-align: left;
+}
+
+.widget2.category_widget ul li a {
+    float: right;
+}
+
+.widget2 ul li a {
+    padding-left: initial;
+    padding-right: 1.5625rem;
+}
+
+.widget2 ul li a::before, .widget2 ul li a::after {
+    left: initial;
+    right: 0;
+}
+
+.comment:before {
+    left: initial;
+    right: 0;
+    transform: scalex(-1);
+}
+
+.comment-img {
+    padding-left: initial;
+    padding-right: 8px;
+}
+
+.comment-detail {
+    padding: 1.75rem 4.0625rem 1.75rem 3.5rem;
+}
+
+.comment-detail > span i, .comment-reply-link > i {
+    margin-right: initial;
+    margin-left: 5px;
+}
+
+.comments-thread ul.children {
+    padding-left: initial;
+    padding-right: 6.875rem;
+}
+
+.serv-detail-info-inner > i {
+    left: initial;
+    right: 0;
+}
+
+.serv-detail-info-inner {
+    padding-left: initial;
+    padding-right: 6.25rem;
+}
+
+blockquote > p::before {
+    left: initial;
+    right: -5px;
+}
+
+blockquote > p::after {
+    right: initial;
+    left: -5px;
+}
+
+.blog-mini-post > a + .blog-mini-post-info {
+    padding-left: initial;
+    padding-right: 1.125rem;
+}
+
+.blog-mini-post-info > span i {
+    margin-right: initial;
+    margin-left: 5px;
+}
+
+blockquote {
+    font-size: 1.55rem;
+    font-style: normal;
+
+}
+
+.detail-share > a {
+    margin-left: initial;
+    margin-right: .9375rem;
+}
+
+.filter-inner > span {
+    margin-right: initial;
+    margin-left: 10px;
+}
+
+.filter-inner + .filter-inner {
+    margin-left: initial;
+    margin-right: 1.875rem;
+}
+
+.slc-wrp .bootstrap-select > button:after {
+    margin-left: initial;
+    margin-right: 5px;
+}
+
+.dropdown-menu {
+    left: initial;
+    right: 0;
+    float: right;
+    text-align: right;
+}
+
+.bootstrap-select .dropdown-menu {
+    left: initial !important;
+    right: 0;
+}
+
+.pagination {
+    padding-left: initial;
+    padding-right: 0;
+}
+
+.shop-img > a i {
+    float: left;
+    margin-left: initial;
+    margin-right: 10px;
+    padding-left: initial;
+    padding-right: 7px;
+    border-left: 0;
+    border-right: 1px solid rgba(255, 255, 255, .15);
+
+}
+.shop-img > a {
+    min-width: 10.5625rem;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.price ins + del {
+    margin-left: initial;
+    margin-right: 6px;
+}
+
+.shop-detail-imgs {
+    padding-right: initial;
+    padding-left: 12.5rem;
+}
+
+.shop-detail-nav-caro {
+    direction: rtl;
+    right: initial;
+    left: 4.375rem;
+}
+
+.review-link > span + a {
+    margin-left: initial;
+    margin-right: .9375rem;
+}
+
+.stock > i {
+    margin-left: initial;
+    margin-right: 7px;
+}
+
+.nav {
+    padding-left: initial;
+    padding-right: 0;
+}
+
+.shop-detail-tabs ul.nav-tabs li.nav-item:not(:first-child) {
+    margin-left: initial;
+    margin-right: 5px;
+}
+
+.shop-detail-tabs ul:not(.nav-tabs):not(.comments-thread):not(.children) li {
+    padding-left: initial;
+    padding-right: 2.5rem;
+}
+
+.shop-detail-tabs ul:not(.nav-tabs) li:before {
+    left: initial;
+    right: 1.25rem;
+}
+
+.comment-detail > span.rate {
+    float: left;
+}
+
+.comment-detail > a + span {
+    margin-left: initial;
+    margin-right: 1.25rem;
+}
+
+.comments > h3, .reply-form > h3 {
+    padding: 0 0 7px 1.25rem;
+}
+.price-stock span.price {
+    font-size: 1rem;
+}
+.product-table tbody td:not(.product-image) {
+    padding: 1.25rem 1.675rem;
+}
+.cart-data-box > span {
+    text-align: left;
+}
+.bootstrap-select .dropdown-toggle .filter-option {
+    left: initial;
+    right: 0;
+    float: right;
+    text-align: right;
+
+}
+.field-btn {
+    text-align: left;
+}
+.cart-data-box > span span.price {
+    margin-left: initial;
+    margin-right: 10px;
+}
+.checkout-form-field label {
+    text-align: right;
+    padding-right: initial;
+    padding-left: 1.125rem;
+}
+.billing-details table thead th:last-child, .billing-details table tfoot th:last-child, .billing-details table tbody td:last-child {
+    text-align: left;
+}
+.billing-details table tbody td span {
+    float: left;
+}
+
+
+
+
+
+/*Mobile*/
+@media (max-width: 1035px) {
+    .solutions-content-wrap {
+        padding-left: initial;
+        padding-right: 5rem;
+    }
+}
+
+@media (max-width: 850px) {
+    .solutions-content-wrap {
+        padding-left: initial;
+        padding-right: 0;
+    }
+}
+
+@media (max-width: 1035px) {
+    .toggle {
+        padding-right: initial;
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .comments-thread ul.children {
+        padding-left: initial;
+        padding-right: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .getin-touch-btn {
+        text-align: center !important;
+    }
+}
+@media (max-width: 1035px) {
+    .shop-detail-imgs {
+        padding-right:initial;
+        padding-left: 6.25rem;
+    }
+}
+@media (max-width: 850px) {
+    .shop-detail-imgs {
+        padding-right: initial;
+        padding-left: 0;
+    }
+}
+@media (max-width: 576px) {
+    .comment::before {
+        bottom: auto;
+        height: 6.875rem;
+        right: 0;
+        left: 0;
+        width: auto;
+        -webkit-clip-path: polygon(0 0, 75% 80%, 100% 50%, 100% 0%);
+        clip-path: polygon(0 0, 75% 80%, 100% 50%, 100% 0%);
+    }
+}
+@media (max-width: 576px) {
+    .comment-detail {
+        padding: 0;
+    }
+}
+@media (max-width: 767px) {
+    .getin-touch-title, .getin-touch-title.with-shap {
+        padding-left: initial;
+        padding-right: 0;
+        text-align: center;
+    }
+}
