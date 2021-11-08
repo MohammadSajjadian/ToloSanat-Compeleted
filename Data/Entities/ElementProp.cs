@@ -35,6 +35,8 @@ namespace Data.Entities
         public string e2Title { get; set; }
         public string e2Description { get; set; }
 
+        public byte[] e2img { get; set; }
+
         #endregion
 
         #region Element 3
@@ -43,12 +45,16 @@ namespace Data.Entities
         public string e3Title { get; set; }
         public string e3Description { get; set; }
 
+        public byte[] e3img { get; set; }
+
         #endregion
 
         #region Element 4
 
         public string e4PreTitle { get; set; }
         public string e4Title { get; set; }
+
+        public byte[] e4img { get; set; }
 
         #endregion
 

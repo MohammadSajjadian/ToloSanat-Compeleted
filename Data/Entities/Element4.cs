@@ -7,23 +7,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public class Element4
+    public class Element4 : CommonAttributes
     {
-        public int id { get; set; }
-
-        #region String Attributes
-
-        public string preTitle { get; set; }
-        public string title { get; set; }
-
-        #endregion
-
-        #region ForeignKeys
-
-        public int languageId { get; set; }
-        [ForeignKey(nameof(languageId))]
-        public Language language { get; set; }
-
-        #endregion
     }
 }

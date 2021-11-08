@@ -4,14 +4,16 @@ using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(DBbrella))]
-    partial class DBbrellaModelSnapshot : ModelSnapshot
+    [Migration("20211030121215_x5")]
+    partial class x5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,11 +171,11 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("languageId")
                         .HasColumnType("int");
+
+                    b.Property<string>("preTitle")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("title")
                         .HasColumnType("nvarchar(max)");
@@ -225,9 +227,6 @@ namespace Data.Migrations
                     b.Property<string>("e2Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("e2img")
-                        .HasColumnType("varbinary(max)");
-
                     b.Property<string>("e3Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -237,17 +236,11 @@ namespace Data.Migrations
                     b.Property<string>("e3Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("e3img")
-                        .HasColumnType("varbinary(max)");
-
                     b.Property<string>("e4PreTitle")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("e4Title")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("e4img")
-                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("e5ButtonLink")
                         .HasColumnType("nvarchar(max)");
@@ -289,9 +282,6 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("IsConfirm")
-                        .HasColumnType("bit");
 
                     b.Property<string>("message")
                         .HasColumnType("nvarchar(max)");

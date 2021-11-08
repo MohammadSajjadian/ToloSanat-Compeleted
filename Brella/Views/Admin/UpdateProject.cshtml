@@ -1,0 +1,125 @@
+﻿
+@{
+    ViewData["Title"] = "ویرایش نمونه کار";
+}
+
+@model Project
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+            </div>
+        </div>
+    </div>
+</section>
+<section style="margin-top: 15px">
+    <div class="w-100 pb-100 position-relative">
+        <div class="container">
+            <form asp-action="updateproject" asp-controller="crud" asp-route-id="@Model.id" method="post" enctype="multipart/form-data"
+                  class="contact-form text-center w-100">
+                <h3>مشخصات نمونه کار</h3>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 20px">
+                        <label class="d-block">عنوان نمونه کار</label>
+                        <input name="title" value="@Model.title" class="fname" type="text" required>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <label class="d-block">توضیحات نمونه کار</label>
+                        <textarea name="description" class="fname" type="text" required>@Model.Description</textarea>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-lg-12 custom-file" style="margin-top: 15px">
+                        <input name="img" id="picture" class="fname custom-file-input" type="file" />
+                        <label class="d-block custom-file-label text-center">عکس نمونه کار</label>
+                    </div>
+                    <img width="250" style="margin-top: 15px; border-radius: 15px" id="projectimg"
+                         src="@($"data:image;base64,{Convert.ToBase64String(Model.thumbNail)}")"/>
+                </div>
+                <button id="mainupdatebtn" hidden></button>
+            </form>
+            <div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 30px">
+                <button id="secondupdatebtn" class="thm-btn thm-bg">
+                    ویرایش<i class="flaticon-arrow-pointing-to-left"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(function () {
+        tinymce.init({
+            selector: 'textarea',
+            setup: function (editor) {
+                editor.on('change', function () {
+                    editor.save();
+                });
+            },
+            plugins: 'advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table contextmenu directionality emoticons template textcolor paste textcolor colorpicker',
+            toolbar: 'a11ycheck numlist bullist tabfocus addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
+            toolbar_mode: 'floating',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            forced_root_block: "",
+            force_br_newlines: true,
+            force_p_newlines: false,
+            image_title: true,
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+
+                input.onchange = function () {
+                    var file = this.files[0];
+
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        var id = 'blobid' + (new Date()).getTime();
+                        var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                        var base64 = reader.result.split(',')[1];
+                        var blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    };
+                    reader.readAsDataURL(file);
+                };
+
+                input.click();
+            },
+        });
+    })
+
+    $(function () {
+        $(secondupdatebtn).click(function () {
+            Swal.fire({
+                title: 'ویرایش نمونه کار',
+                text: "نمونه کار مورد نظر ویرایش شود؟",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'بله',
+                cancelButtonText: 'بازگشت'
+
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(mainupdatebtn).click()
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $(picture).change(function () {
+            var reader = new FileReader
+
+            reader.readAsDataURL(picture.files[0])
+            reader.onloadend = (x) => {
+                projectimg.src = x.target.result
+            }
+        })
+    })
+</script>

@@ -19,6 +19,13 @@ namespace Data.Entities
 
         #endregion
 
+        #region Image Attributes
+
+        public byte[] thumbNail { get; set; } // 370 * 220
+        public byte[] detailImg { get; set; } // 770 * 470
+
+        #endregion
+
         public DateTime createTime { get; set; } = DateTime.Now;
 
         #region ForeignKeys

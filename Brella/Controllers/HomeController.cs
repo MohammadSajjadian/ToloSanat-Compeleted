@@ -20,6 +20,18 @@ namespace Brella.Controllers
         }
 
 
+        public IActionResult Error()
+        {
+            return View();
+        }
+
+
+        public IActionResult ContactUs()
+        {
+            return View();
+        }
+
+
         #region ChangeLanguage
 
         public IActionResult ChangeLanguage(string lang)

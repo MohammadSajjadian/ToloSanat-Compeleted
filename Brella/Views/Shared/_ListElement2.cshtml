@@ -1,0 +1,70 @@
+﻿@model PagedResult<Element2>
+
+@if (ViewBag.Element2Count != 0)
+{
+    <h3 style="margin-top: 30px">فیلد های موجود</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td class="text-center"><b>#</b></td>
+                    <td class="text-center"><b>عنوان</b></td>
+                    <td class="text-center"><b>توضیحات</b></td>
+                    <td class="text-center"><b>زبان</b></td>
+                    <td class="text-center"><b>عملیات</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewData["Element2"] as List<Element2>)
+                {
+                    <tr>
+                        <td class="text-center"><b>@item.id</b></td>
+                        <td class="text-center">@item.title</td>
+                        <td class="text-center">@item.description</td>
+                        <td class="text-center">@item.language.faTitle</td>
+
+                        <td class="text-center"><a id="deleteElement2" element2Id="@item.id" href="#">حذف</a> | <a asp-action="UpdateElement2" asp-controller="admin" asp-route-id="@item.id">ویرایش</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">فیلدی جهت نمایش وجود ندارد!</h3>
+}
+
+<script>
+    $(function () {
+        $(deleteElement2).click(function () {
+            var element2Id = $(this).attr("element2Id");
+
+            Swal.fire({
+                title: 'مطمعن هستید؟',
+                text: "فیلد مورد نظر حذف شود؟",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'بله',
+                confirmButtonColor: '#00A300',
+                cancelButtonText: 'بازگشت',
+                cancelButtonColor: '#d33',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    window.location.href = `/crud/deleteelement2?id=${element2Id}`;
+
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    Swal.fire(
+                        'لغو شد',
+                        'حذف فیلد لغو شد.',
+                        'error',
+                    )
+                }
+            })
+        })
+    })
+</script>

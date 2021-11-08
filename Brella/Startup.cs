@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Services.EmailService;
+using Services.ResizeService;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -67,6 +68,7 @@ namespace Brella
             // Inject Repository and Services.
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddSingleton<IEmail, Send>();
+            services.AddSingleton<IResize, ResizerImage>();
 
             services.AddLocalization(x => x.ResourcesPath = "Resources");
             services.AddAuthentication();
@@ -86,13 +88,26 @@ namespace Brella
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+
+            // 404 Error Handler
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 404)
+                {
+                    context.Request.Path = "/Home/Error";
+                    await next();
+                }
+            });
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseSession();
             app.UseCookiePolicy();
 
@@ -101,7 +116,7 @@ namespace Brella
             var supportCulture = new List<CultureInfo>();
             foreach (var item in repository.Get(null, null, null))
             {
-                new CultureInfo(item.title);
+                supportCulture.Add(new CultureInfo(item.title));
             }
 
             var options = new RequestLocalizationOptions()

@@ -165,26 +165,26 @@ namespace Brella.Controllers
 
                 if (status.Succeeded)
                 {
-                    if (await userManager.IsInRoleAsync(user, "admin"))
-                    {
-                        await signInManager.SignOutAsync();
+                    //if (await userManager.IsInRoleAsync(user, "admin"))
+                    //{
+                    //    await signInManager.SignOutAsync();
 
-                        var address = Url.Action(nameof(AdminConfirm), "Account", new { userId = user.Id }, "https");
+                    //    var address = Url.Action(nameof(AdminConfirm), "Account", new { userId = user.Id }, "https");
 
-                        HttpContext.Session.SetString("password", model.password);
+                    //    HttpContext.Session.SetString("password", model.password);
 
-                        mail.Send("ورود ادمین", $"جهت ورود به حساب کاربری خود <a href={address}>اینجا</a> کلیک کنید.", user.Email);
+                    //    mail.Send("ورود ادمین", $"جهت ورود به حساب کاربری خود <a href={address}>اینجا</a> کلیک کنید.", user.Email);
 
-                        TempData[info] = "کد تایید برای شما ارسال شد.";
+                    //    TempData[info] = "کد تایید برای شما ارسال شد.";
 
-                        return RedirectToAction(Index, Home);
-                    }
-                    else
-                    {
+                    //    return RedirectToAction(Index, Home);
+                    //}
+                    //else
+                    //{
                         TempData[success] = "وارد حساب کاربری خود شدید.";
 
                         return RedirectToAction(Index, Home);
-                    }
+                    //}
                 }
                 else
                 {
