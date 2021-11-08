@@ -24,6 +24,7 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.tiny.cloud/1/rs07w6qzz1wifjj4zi1uc53vuau00y218wdrtoethnvf1alj/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
     <style>
         .field-validation-error {
@@ -73,6 +74,10 @@
                                     </a>
                                 </h1>
                             </div><!-- Logo -->
+                            <div class="social-links">
+                                <a href="" title="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                                <a href="" title="Telegram" target="_blank"><i class="fab fa-telegram"></i></a>
+                            </div>
                         </div>
                         <div class="top-info-wrap d-inline-flex flex-wrap justify-content-between align-items-center">
                             <div class="call-us">
@@ -92,7 +97,7 @@
                                 <li><a href="projects.html" title="">پروژه ها</a></li>
                                 <li><a href="blog.html" title="">وبلاگ</a></li>
                                 <li><a href="about.html" title="">درباره ما</a></li>
-                                <li><a href="contact.html" title="">تماس با ما</a></li>
+                                <li><a asp-action="contactus" asp-controller="home" title="">تماس با ما</a></li>
                                 <li class="menu-item-has-children">
                                     <a href="javascript:void(0);" title="">زبان</a>
                                     <ul class="mb-0 list-unstyled">
@@ -104,8 +109,11 @@
                                     <li class="menu-item-has-children active">
                                         <a href="javascript:void(0);" title="">ادمین</a>
                                         <ul class="mb-0 list-unstyled">
-                                            <li><a href="blog.html" title="">وبلاگ</a></li>
-                                            <li><a href="blog-detail.html" title="">جزئیات وبلاگ</a></li>
+                                            <li><a asp-action="insertproject" asp-controller="admin" title="">ثبت نمونه کار</a></li>
+                                            <li><a asp-action="projectoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش نمونه کار</a></li>
+                                            <li><a asp-action="insertpost" asp-controller="admin" title="">ثبت پست</a></li>
+                                            <li><a asp-action="postoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش پست</a></li>
+                                            @(await Component.InvokeAsync("Inbox"))
                                         </ul>
                                     </li>
                                 }
@@ -134,7 +142,7 @@
                                 <li><a href="projects.html" title="">پروژه ها</a></li>
                                 <li><a href="blog.html" title="">وبلاگ</a></li>
                                 <li><a href="about.html" title="">درباره ما</a></li>
-                                <li><a href="contact.html" title="">تماس با ما</a></li>
+                                <li><a asp-action="contactus" asp-controller="home" title="">تماس با ما</a></li>
                                 <li class="menu-item-has-children">
                                     <a href="javascript:void(0);" title="">زبان</a>
                                     <ul class="mb-0 list-unstyled">
@@ -146,8 +154,11 @@
                                     <li class="menu-item-has-children active">
                                         <a href="javascript:void(0);" title="">ادمین</a>
                                         <ul class="mb-0 list-unstyled">
-                                            <li><a href="blog.html" title="">وبلاگ</a></li>
-                                            <li><a href="blog-detail.html" title="">جزئیات وبلاگ</a></li>
+                                            <li><a asp-action="insertproject" asp-controller="admin" title="">ثبت نمونه کار</a></li>
+                                            <li><a asp-action="projectoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش نمونه کار</a></li>
+                                            <li><a asp-action="insertpost" asp-controller="admin" title="">ثبت پست</a></li>
+                                            <li><a asp-action="postoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش پست</a></li>
+                                            @(await Component.InvokeAsync("Inbox"))
                                         </ul>
                                     </li>
                                 }
@@ -159,6 +170,10 @@
         </div><!-- Sticky Menu -->
         <div class="rspn-hdr">
             <div class="rspn-mdbr">
+                <div class="rspn-scil">
+                    <a href="" title="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="" title="Telegram" target="_blank"><i class="fab fa-telegram"></i></a>
+                </div>
                 @if (User.Identity.IsAuthenticated == false)
                 {
                     <ul class="topbar-links mb-0 list-unstyled d-inline-flex text-left">
@@ -195,14 +210,17 @@
                         </ul>
                     </li>
                     <li><a href="about.html" title="">درباره ما</a></li>
-                    <li><a href="contact.html" title="">تماس با ما</a></li>
+                    <li><a asp-action="contactus" asp-controller="home" title="">تماس با ما</a></li>
                     @if (User.IsInRole("admin"))
                     {
                         <li class="menu-item-has-children active">
                             <a href="javascript:void(0);" title="">ادمین</a>
                             <ul class="mb-0 list-unstyled">
-                                <li><a href="blog.html" title="">وبلاگ</a></li>
-                                <li><a href="blog-detail.html" title="">جزئیات وبلاگ</a></li>
+                                <li><a asp-action="insertproject" asp-controller="admin" title="">ثبت نمونه کار</a></li>
+                                <li><a asp-action="projectoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش نمونه کار</a></li>
+                                <li><a asp-action="insertpost" asp-controller="admin" title="">ثبت پست</a></li>
+                                <li><a asp-action="postoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش پست</a></li>
+                                @(await Component.InvokeAsync("Inbox"))
                             </ul>
                         </li>
                     }

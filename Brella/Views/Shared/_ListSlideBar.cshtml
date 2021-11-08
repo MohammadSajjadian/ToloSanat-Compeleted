@@ -1,0 +1,78 @@
+﻿@model PagedResult<SlideBar>
+
+@if (ViewBag.SlideBarCount != 0)
+{
+    <h3 style="margin-top: 30px">اسلاید های موجود</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td class="text-center"><b>#</b></td>
+                    <td class="text-center"><b>عکس</b></td>
+                    <td class="text-center"><b>عنوان</b></td>
+                    <td class="text-center"><b>توضیحات</b></td>
+                    <td class="text-center"><b>متن دکمه</b></td>
+                    <td class="text-center"><b>لینک دکمه</b></td>
+                    <td class="text-center"><b>زبان</b></td>
+                    <td class="text-center"><b>عملیات</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewData["SlideBar"] as List<SlideBar>)
+                {
+                    <tr>
+                        <td class="text-center"><b>@item.id</b></td>
+                        <td class="text-center">
+                            <img width="150" src="@($"data:image;base64,{Convert.ToBase64String(item.img)}")" />
+                        </td>
+                        <td class="text-center">@item.title</td>
+                        <th class="text-center">@Html.Raw(item.description.Length >= 50 ? $"{item.description.Substring(0, 50)}..." : item.description)</th>
+                        <td class="text-center">@item.buttonTitle</td>
+                        <td class="text-center">@item.buttonLink</td>
+                        <td class="text-center">@item.language.faTitle</td>
+
+                        <td class="text-center"><a id="deleteSlideBar" slideBarId="@item.id" href="#">حذف</a> | <a asp-action="UpdateSlideBar" asp-controller="admin" asp-route-id="@item.id">ویرایش</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">اسلایدی جهت نمایش وجود ندارد!</h3>
+}
+
+<script>
+    $(function () {
+        $(deleteSlideBar).click(function () {
+            var slideBarId = $(this).attr("slideBarId");
+
+            Swal.fire({
+                title: 'مطمعن هستید؟',
+                text: "اسلاید مورد نظر حذف شود؟",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'بله',
+                confirmButtonColor: '#00A300',
+                cancelButtonText: 'بازگشت',
+                cancelButtonColor: '#d33',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    window.location.href = `/crud/deleteslideBar?id=${slideBarId}`;
+
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    Swal.fire(
+                        'لغو شد',
+                        'حذف اسلاید لغو شد.',
+                        'error',
+                    )
+                }
+            })
+        })
+    })
+</script>

@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewData["Title"] = "ویرایش مشخصات";
+}
+
+@model List<ElementProp>
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+            </div>
+        </div>
+    </div>
+</section>
+<section style="margin-top: 15px">
+    <div class="w-100 pb-100 position-relative">
+        <div class="container">
+            <form asp-action="updatecontactusprop" asp-controller="crud" class="contact-form text-center w-100">
+                @foreach (var item in Model)
+                {
+                    <h3 style="margin-top: 30px">ویرایش @item.language.faTitle توضیحات</h3>
+
+                    <div class="row" style="margin-top: 20px">
+                        <div class="col-md-12 col-sm-12 col-lg-12">
+                            <label class="d-block">عنوان</label>
+                            <input name="ContactUsTitles" value="@item.contactUsTitle" class="fname" type="text" required>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-lg-12">
+                            <label class="d-block">توضیحات</label>
+                            <input name="ContactUsDescriptions" value="@item.contactUsDescription" class="fname" type="text" required />
+                        </div>
+                    </div>
+                    <input name="languageIds" value="@item.languageId" hidden />
+                }
+
+                <button id="mainupdatebtn" hidden></button>
+            </form>
+            <div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 30px">
+                <button id="secondupdatebtn" class="thm-btn thm-bg">
+                    ثبت<i class="flaticon-arrow-pointing-to-left"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(function () {
+        $(secondupdatebtn).click(function () {
+            Swal.fire({
+                title: 'ویرایش فیلد',
+                text: "فیلد مورد نظر ویرایش شود؟",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'بله',
+                cancelButtonText: 'بازگشت'
+
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(mainupdatebtn).click()
+                }
+            })
+        })
+    })
+</script>

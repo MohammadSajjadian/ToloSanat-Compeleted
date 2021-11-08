@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewData["Title"] = "حذف و ویرایش پیغام ها";
+}
+
+@model PagedResult<Inbox>
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (Model.Data.Count != 0)
+{
+    <h3 style="margin-top: 30px; margin-right: 40px">حذف و ویرایش پیغام ها</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td class="text-center">#</td>
+                    <td class="text-center">نام و نام خانوادگی</td>
+                    <td class="text-center">شماره تلفن</td>
+                    <td class="text-center">پیغام</td>
+                    <td class="text-center">خوانده شده</td>
+                    <td class="text-center">عملیات</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Data)
+                {
+                    <tr>
+                        @if (!item.IsConfirm)
+                        {
+                            <td class="text-center"><b>@item.id</b></td>
+                            <td class="text-center"><b>@item.nameFamily</b></td>
+                            <td class="text-center"><b>@item.phonenumber</b></td>
+                            <td class="text-center"><b>@item.message</b></td>
+                            <th class="text-center"><input id="IsConfirm" inboxId="@item.id" type="checkbox" /></th>
+                        }
+                        else
+                        {
+                            <td class="text-center">@item.id</td>
+                            <td class="text-center">@item.nameFamily</td>
+                            <td class="text-center">@item.phonenumber</td>
+                            <td class="text-center">@item.message</td>
+                            <th class="text-center"><input id="IsConfirm" inboxId="@item.id" type="checkbox" checked /></th>
+                        }
+
+                        <td class="text-center"><a id="deleteinbox" inboxId="@item.id" href="#">حذف</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">پیغامی جهت نمایش وجود ندارد!</h3>
+}
+
+<cs-pager asp-action="projectoptions" asp-controller="admin"
+          cs-pager-li-current-class="page-item active"
+          cs-pager-li-other-class="page-item"
+          cs-pager-li-non-active-class="page-item disabled"
+          cs-pager-link-current-class="page-link"
+          cs-pager-link-other-class="page-link"
+          cs-pager-ul-class="pagination"
+          cs-show-first-last="true"
+          cs-first-page-title="صفحه اول"
+          cs-last-page-title="صفحه آخر"
+          cs-next-page-title="صفحه بعد"
+          cs-previous-page-title="صفحه قبل"
+          cs-paging-pagenumber="@Model.PageNumber"
+          cs-paging-totalitems="@Model.TotalItems"
+          cs-paging-pagesize="@Model.PageSize"
+          asp-route-listId=""
+          asp-route-sortmode="">
+</cs-pager>
+
+<script>
+    $(function () {
+        $(deleteinbox).click(function () {
+            var inboxId = $(this).attr("inboxId");
+
+            Swal.fire({
+                title: 'مطمعن هستید؟',
+                text: "پیغام حذف شود؟",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'بله',
+                confirmButtonColor: '#00A300',
+                cancelButtonText: 'بازگشت',
+                cancelButtonColor: '#d33',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    window.location.href = `/crud/deleteinbox?id=${inboxId}&pagenumber=${@Model.PageNumber}`;
+
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    Swal.fire(
+                        'لغو شد',
+                        'حذف پیغام لغو شد.',
+                        'error',
+                    )
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $(IsConfirm).click(function () {
+            $.post('/CRUD/ConfirmationToggle', { inboxId: $(this).attr("inboxId")})
+        })
+    })
+</script>

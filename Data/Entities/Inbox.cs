@@ -15,7 +15,9 @@ namespace Data.Entities
         public string nameFamily { get; set; }
         public string phonenumber { get; set; }
         public string message { get; set; }
-        
+
         #endregion
+
+        public bool IsConfirm { get; set; }
     }
 }

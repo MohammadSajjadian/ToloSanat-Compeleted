@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewData["Title"] = "حذف و ویرایش پست ها";
+}
+
+@model PagedResult<Post>
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (Model.Data.Count != 0)
+{
+    <h3 style="margin-top: 30px; margin-right: 40px">حذف و ویرایش پست ها</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td class="text-center"><b>#</b></td>
+                    <td class="text-center"><b>عکس</b></td>
+                    <td class="text-center"><b>عنوان</b></td>
+                    <td class="text-center"><b>توضیحات</b></td>
+                    <td class="text-center"><b>زبان</b></td>
+                    <td class="text-center"><b>عملیات</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Data)
+                {
+                    <tr>
+                        <td class="text-center"><b>@item.id</b></td>
+                        <th class="text-center"><img width="90" height="70" src="@($"data:image;base64,{Convert.ToBase64String(item.thumbNail)}")" /></th>
+                        <th class="text-center">@item.title</th>
+                        <th class="text-center">@Html.Raw(item.shortDecpription.Length >= 50 ? $"{item.shortDecpription.Substring(0, 50)}..." : item.shortDecpription)</th>
+                        <th class="text-center">@item.language.faTitle</th>
+                        <td class="text-center"><a id="deletepost" postId="@item.id" href="#">حذف</a> | <a asp-action="Updatepost" asp-controller="admin" asp-route-id="@item.id">ویرایش</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <cs-pager asp-action="postoptions" asp-controller="admin"
+              cs-pager-li-current-class="page-item active"
+              cs-pager-li-other-class="page-item"
+              cs-pager-li-non-active-class="page-item disabled"
+              cs-pager-link-current-class="page-link"
+              cs-pager-link-other-class="page-link"
+              cs-pager-ul-class="pagination"
+              cs-show-first-last="true"
+              cs-first-page-title="صفحه اول"
+              cs-last-page-title="صفحه آخر"
+              cs-next-page-title="صفحه بعد"
+              cs-previous-page-title="صفحه قبل"
+              cs-paging-pagenumber="@Model.PageNumber"
+              cs-paging-totalitems="@Model.TotalItems"
+              cs-paging-pagesize="@Model.PageSize"
+              asp-route-listId=""
+              asp-route-sortmode="">
+    </cs-pager>
+}
+else
+{
+    <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">پستی جهت نمایش وجود ندارد!</h3>
+}
+
+
+<script>
+    $(function () {
+        $(deletepost).click(function () {
+            var postId = $(this).attr("postId");
+
+            Swal.fire({
+                title: 'مطمعن هستید؟',
+                text: "پست مورد نظر حذف شود؟",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'بله',
+                confirmButtonColor: '#00A300',
+                cancelButtonText: 'بازگشت',
+                cancelButtonColor: '#d33',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    window.location.href = `/crud/deletepost?id=${postId}&pagenumber=${@Model.PageNumber}`;
+
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    Swal.fire(
+                        'لغو شد',
+                        'حذف پست لغو شد.',
+                        'error',
+                    )
+                }
+            })
+        })
+    })
+</script>
