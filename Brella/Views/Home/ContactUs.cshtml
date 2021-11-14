@@ -28,24 +28,22 @@
                             <div class="contact-info-box w-100">
                                 <i class="thm-clr flaticon-headset"></i>
                                 <strong>تلفن ما</strong>
-                                <span class="d-block">32366555</span>
-                                <span class="d-block">32366555</span>
+                                <span href="tel:@ViewBag.PhoneNumber" class="d-block">@ViewBag.PhoneNumber</span>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="contact-info-box w-100">
                                 <i class="thm-clr flaticon-mail"></i>
                                 <strong>صندوق پستی ما</strong>
-                                <a class="d-block" href="javascript:void(0);" title="">netita.help@gmail.com</a>
-                                <a class="d-block" href="javascript:void(0);" title="">netita.help@gmail.com</a>
+                                <a class="d-block" href="mailto:ViewBag.Email" title="">@ViewBag.Email</a>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="contact-info-box w-100">
                                 <i class="thm-clr flaticon-placeholder"></i>
-                                <strong>مکان ما</strong>
+                                <strong>آدرس ما</strong>
                                 <p class="mb-0">
-                                    ایران ، تهران ، شرکت برلا
+                                    @ViewBag.Address
                                 </p>
                             </div>
                         </div>
@@ -61,11 +59,8 @@
             <div class="sec-title v2 text-center w-100">
                 <div class="sec-title-inner d-inline-block">
                     <span class="thm-clr d-block">تماس با ما</span>
-                    <h2 class="mb-0">حال دیگر یک ایده آینده نگرانه نیست ، اکنون در اینجا حضور دارد</h2>
-                    <p class="mb-0">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-                        گرافیک است
-                    </p>
+                    <h2 class="mb-0">@(ViewBag.contactUsTitle != null ? ViewBag.contactUsTitle : "")</h2>
+                    <p class="mb-0">@(ViewBag.contactUsDescription != null ? ViewBag.contactUsDescription : "")</p>
                 </div>
             </div>
             <form asp-action="insertInbox" asp-controller="crud"

@@ -39,10 +39,11 @@
                 <div class="container">
                     <div class="topbar-inner d-flex flex-wrap justify-content-between align-items-center w-100">
                         <ul class="topbar-info-list mb-0 list-unstyled d-inline-flex">
-                            <li><i class="thm-clr fas fa-map-marker-alt"></i>ایران ، تهران ، شرکت برلا</li>
-                            <li>
-                                <i class="thm-clr far fa-envelope-open"></i>ایمیل: <a href="javascript:void(0);" title="">netita.help@gmail.com</a>
-                            </li>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <li style="margin-right: 15px"><a asp-action="UpdateHeaderProp" asp-controller="admin">ویرایش</a><i class="fas fa-edit"></i></li>
+                            }
+                            @await Component.InvokeAsync("PhoneAddress")
                         </ul>
                         @if (User.Identity.IsAuthenticated == false)
                         {
@@ -75,15 +76,14 @@
                                 </h1>
                             </div><!-- Logo -->
                             <div class="social-links">
-                                <a href="" title="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
-                                <a href="" title="Telegram" target="_blank"><i class="fab fa-telegram"></i></a>
+                                @await Component.InvokeAsync("Socials")
                             </div>
                         </div>
                         <div class="top-info-wrap d-inline-flex flex-wrap justify-content-between align-items-center">
                             <div class="call-us">
-                                <i class="thm-clr flaticon-phone-call"></i>
-                                <span>خدمات تلفنی</span>
-                                <strong>32344666</strong>
+                                <i class="thm-clr far fa-envelope-open"></i>
+                                <span>ایمیل</span>
+                                @await Component.InvokeAsync("Email")
                             </div>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                             <ul class="mb-0 list-unstyled d-inline-flex">
                                 <li><a href="projects.html" title="">پروژه ها</a></li>
                                 <li><a href="blog.html" title="">وبلاگ</a></li>
-                                <li><a href="about.html" title="">درباره ما</a></li>
+                                <li><a asp-action="aboutus" asp-controller="home" title="">درباره ما</a></li>
                                 <li><a asp-action="contactus" asp-controller="home" title="">تماس با ما</a></li>
                                 <li class="menu-item-has-children">
                                     <a href="javascript:void(0);" title="">زبان</a>
@@ -128,7 +128,7 @@
                 <div class="sticky-menu-inner d-flex flex-wrap align-items-center justify-content-between w-100">
                     <div class="logo">
                         <h1 class="mb-0">
-                            <a href="index.html" title="Home">
+                            <a asp-action="index" asp-controller="home" title="Home">
                                 <img class="img-fluid"
                                      src="~/assets/images/logo.png"
                                      alt="Logo"
@@ -141,7 +141,7 @@
                             <ul class="mb-0 list-unstyled d-inline-flex">
                                 <li><a href="projects.html" title="">پروژه ها</a></li>
                                 <li><a href="blog.html" title="">وبلاگ</a></li>
-                                <li><a href="about.html" title="">درباره ما</a></li>
+                                <li><a asp-action="aboutus" asp-controller="home" title="">درباره ما</a></li>
                                 <li><a asp-action="contactus" asp-controller="home" title="">تماس با ما</a></li>
                                 <li class="menu-item-has-children">
                                     <a href="javascript:void(0);" title="">زبان</a>
@@ -171,12 +171,13 @@
         <div class="rspn-hdr">
             <div class="rspn-mdbr">
                 <div class="rspn-scil">
-                    <a href="" title="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="" title="Telegram" target="_blank"><i class="fab fa-telegram"></i></a>
+                    @await Component.InvokeAsync("Socials")
                 </div>
                 @if (User.Identity.IsAuthenticated == false)
                 {
                     <ul class="topbar-links mb-0 list-unstyled d-inline-flex text-left">
+                        <li style="margin-right: 15px"><a asp-action="UpdateHeaderProp" asp-controller="admin">ویرایش</a><i class="fas fa-edit"></i></li>
+                        @await Component.InvokeAsync("PhoneAddress")
                         <li><a asp-action="register" asp-controller="account" title="">ثبت نام</a></li>
                         <li><a asp-action="login" asp-controller="account" title="">ورود</a></li>
                     </ul>
@@ -184,17 +185,15 @@
                 else
                 {
                     <ul class="topbar-links mb-0 list-unstyled d-inline-flex text-left">
+                        <li style="margin-right: 15px"><a asp-action="UpdateHeaderProp" asp-controller="admin">ویرایش</a><i class="fas fa-edit"></i></li>
+                        @await Component.InvokeAsync("PhoneAddress")
                         <li><a asp-action="logout" asp-controller="account" title="">خروج</a></li>
                     </ul>
                 }
             </div>
             <div class="lg-mn">
                 <div class="logo">
-                    <a href="index.html" title="Home"><img src="~/assets/images/logo.png" alt="Logo"></a>
-                </div>
-                <div class="rspn-cnt">
-                    <span><i class="thm-clr far fa-envelope-open"></i><a href="javascript:void(0);" title="">netita.help@gmail.com</a></span>
-                    <span><i class="thm-clr fas fa-map-marker-alt"></i>ایران ، تهران ، شرکت برلا</span>
+                    <a asp-action="index" asp-controller="home" title="Home"><img src="~/assets/images/logo.png" alt="Logo"></a>
                 </div>
                 <span class="rspn-mnu-btn"><i class="fa fa-list-ul"></i></span>
             </div>
@@ -209,7 +208,7 @@
                             @await Component.InvokeAsync("Language")
                         </ul>
                     </li>
-                    <li><a href="about.html" title="">درباره ما</a></li>
+                    <li><a asp-action="aboutus" asp-controller="home" title="">درباره ما</a></li>
                     <li><a asp-action="contactus" asp-controller="home" title="">تماس با ما</a></li>
                     @if (User.IsInRole("admin"))
                     {

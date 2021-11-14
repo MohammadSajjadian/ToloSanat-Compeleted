@@ -445,6 +445,7 @@ namespace Brella.Controllers
             try
             {
                 inboxRepo.Remove(id);
+                inboxRepo.SaveChange();
 
                 TempData[success] = "پیغام با موفقیت حذف شد.";
 
@@ -872,14 +873,17 @@ namespace Brella.Controllers
                                 elementProp.e2Title = z.value;
                                 elementProp.e2Description = m.value;
 
-                                if (img != null && System.IO.Path.GetExtension(img.FileName) != ".gif" ||
-                                    System.IO.Path.GetExtension(img.FileName) != ".mp4" ||
-                                    System.IO.Path.GetExtension(img.FileName) != ".mp3")
+                                if (img != null)
                                 {
-                                    byte[] b = new byte[img.Length];
-                                    img.OpenReadStream().Read(b, 0, b.Length);
+                                    if (System.IO.Path.GetExtension(img.FileName) != ".gif" ||
+                                        System.IO.Path.GetExtension(img.FileName) != ".mp4" ||
+                                        System.IO.Path.GetExtension(img.FileName) != ".mp3")
+                                    {
+                                        byte[] b = new byte[img.Length];
+                                        img.OpenReadStream().Read(b, 0, b.Length);
 
-                                    elementProp.e2img = resize.Resizer(b, 470, 530, ImageFormat.Jpeg);
+                                        elementProp.e2img = resize.Resizer(b, 470, 530, ImageFormat.Jpeg);
+                                    }
                                 }
 
                                 elementpropRepo.Update(elementProp);
@@ -1010,14 +1014,17 @@ namespace Brella.Controllers
                                 elementProp.e3Title = z.value;
                                 elementProp.e3Description = m.value;
 
-                                if (img != null && System.IO.Path.GetExtension(img.FileName) != ".gif" ||
-                                    System.IO.Path.GetExtension(img.FileName) != ".mp4" ||
-                                    System.IO.Path.GetExtension(img.FileName) != ".mp3")
+                                if (img != null)
                                 {
-                                    byte[] b = new byte[img.Length];
-                                    img.OpenReadStream().Read(b, 0, b.Length);
+                                    if (System.IO.Path.GetExtension(img.FileName) != ".gif" ||
+                                        System.IO.Path.GetExtension(img.FileName) != ".mp4" ||
+                                        System.IO.Path.GetExtension(img.FileName) != ".mp3")
+                                    {
+                                        byte[] b = new byte[img.Length];
+                                        img.OpenReadStream().Read(b, 0, b.Length);
 
-                                    elementProp.e3img = resize.Resizer(b, 570, 434, ImageFormat.Jpeg);
+                                        elementProp.e3img = resize.Resizer(b, 570, 434, ImageFormat.Jpeg);
+                                    }
                                 }
 
                                 elementpropRepo.Update(elementProp);
@@ -1144,14 +1151,17 @@ namespace Brella.Controllers
                             elementProp.e4PreTitle = y.value;
                             elementProp.e4Title = z.value;
 
-                            if (img != null && System.IO.Path.GetExtension(img.FileName) != ".gif" ||
-                                System.IO.Path.GetExtension(img.FileName) != ".mp4" ||
-                                System.IO.Path.GetExtension(img.FileName) != ".mp3")
+                            if (img != null)
                             {
-                                byte[] b = new byte[img.Length];
-                                img.OpenReadStream().Read(b, 0, b.Length);
+                                if (System.IO.Path.GetExtension(img.FileName) != ".gif" ||
+                                    System.IO.Path.GetExtension(img.FileName) != ".mp4" ||
+                                    System.IO.Path.GetExtension(img.FileName) != ".mp3")
+                                {
+                                    byte[] b = new byte[img.Length];
+                                    img.OpenReadStream().Read(b, 0, b.Length);
 
-                                elementProp.e4img = resize.Resizer(b, 568, 519, ImageFormat.Jpeg);
+                                    elementProp.e4img = resize.Resizer(b, 568, 519, ImageFormat.Jpeg);
+                                }
                             }
 
                             elementpropRepo.Update(elementProp);
