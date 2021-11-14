@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "درباره ما";
+}
+
+@model ElementProp
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+                <h1 class="mb-0">درباره ما</h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
+                    <li class="breadcrumb-item active">درباره ما</li>
+                </ol>
+            </div><!-- Page Top Wrap -->
+        </div>
+    </div>
+</section>
+<section>
+    <div class="w-100 pt-100 pb-100 position-relative">
+        <div class="container">
+            <div class="about-wrap w-100">
+                <div class="row justify-content-center">
+                    <div class="col-md-12 col-sm-12 col-lg-10">
+                        <div class="about-content-wrap w-100">
+                            <div class="row">
+                                @Html.Raw(Model.aboutUsLongDes)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- About Wrap -->
+        </div>
+    </div>
+</section>

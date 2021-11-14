@@ -28,7 +28,7 @@ namespace Data.Entities
 
         public int languageId { get; set; }
         [ForeignKey(nameof(languageId))]
-        public Language Language { get; set; }
+        public Language language { get; set; }
 
         #endregion
     }

@@ -62,7 +62,7 @@ namespace Brella.Controllers
         {
             #region Pagination
 
-            var projects = projectRepo.Get(null, x => x.OrderByDescending(x => x.id), "Language").AsEnumerable();
+            var projects = projectRepo.Get(null, x => x.OrderByDescending(x => x.id), "language").AsEnumerable();
 
             var pagination = PagingList.Create(projects, 20, pagenumber);
 

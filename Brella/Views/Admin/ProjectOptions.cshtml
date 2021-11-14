@@ -37,7 +37,7 @@
                         <th class="text-center"><img width="90" height="70" src="@($"data:image;base64,{Convert.ToBase64String(item.thumbNail)}")" /></th>
                         <th class="text-center">@item.title</th>
                         <th class="text-center">@Html.Raw(item.Description.Length >= 50 ? $"{item.Description.Substring(0, 50)}..." : item.Description)</th>
-                        <th class="text-center">@item.Language.faTitle</th>
+                        <th class="text-center">@item.language.faTitle</th>
                         <td class="text-center"><a id="deleteproject" projectId="@item.id" href="#">حذف</a> | <a asp-action="UpdateProject" asp-controller="admin" asp-route-id="@item.id">ویرایش</a></td>
                     </tr>
                 }
