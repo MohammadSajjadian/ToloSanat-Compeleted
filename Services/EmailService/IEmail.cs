@@ -8,6 +8,6 @@ namespace Services.EmailService
 {
     public interface IEmail
     {
-        void Send(string subject, string body, string receiver);
+        Task Send(string subject, string body, string receiver);
     }
 }

@@ -30,6 +30,7 @@ namespace Brella.Controllers
         private const string Home = "Home";
         private const string Account = "Account";
         private const string Admin = "Admin";
+        private const string ChatManagement = "ChatManagement";
         private const string ProjectOptions = "ProjectOptions";
         private const string PostOptions = "PostOptions";
         private const string ContactUs = "ContactUs";
@@ -54,6 +55,8 @@ namespace Brella.Controllers
         #region Dependency Injections
 
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IRepository<Group> groupRepo;
+        private readonly IRepository<Message> messageRepo;
         private readonly IRepository<Project> projectRepo;
         private readonly IRepository<Post> postRepo;
         private readonly IRepository<Inbox> inboxRepo;
@@ -67,13 +70,15 @@ namespace Brella.Controllers
         private readonly IEmail email;
         private readonly IResize resize;
 
-        public CRUDController(UserManager<ApplicationUser> _userManager, IRepository<Project> _projectRepo,
-            IRepository<Post> _postRepo, IRepository<Inbox> _inboxRepo, IRepository<SlideBar> _slideBarRepo,
+        public CRUDController(UserManager<ApplicationUser> _userManager, IRepository<Group> _groupRepo, IRepository<Message> _messageRepo,
+            IRepository<Project> _projectRepo, IRepository<Post> _postRepo, IRepository<Inbox> _inboxRepo, IRepository<SlideBar> _slideBarRepo,
             IRepository<Element1> _element1Repo, IRepository<Element2> _element2Repo, IRepository<Element3> _element3Repo,
             IRepository<Element4> _element4Repo, IRepository<Language> _languageRepo, IResize _resize, IEmail _email,
             IRepository<ElementProp> _elementpropRepo)
         {
             userManager = _userManager;
+            groupRepo = _groupRepo;
+            messageRepo = _messageRepo;
             projectRepo = _projectRepo;
             postRepo = _postRepo;
             inboxRepo = _inboxRepo;
@@ -86,6 +91,29 @@ namespace Brella.Controllers
             element4Repo = _element4Repo;
             email = _email;
             resize = _resize;
+        }
+
+        #endregion
+
+
+        #region Chat CRUD
+
+        public IActionResult DeleteChat(int id, int pagenumber)
+        {
+            Group group = groupRepo.Find(id);
+            group.IsDeleteForAdmin = true;
+
+            messageRepo.Get(x => x.groupId == id, null, null).ToList().ForEach(x =>
+            {
+                x.IsDeleteForAdmin = true;
+            });
+
+            groupRepo.Update(group);
+            groupRepo.SaveChange();
+
+            TempData[success] = "گفت و گو با موفقیت حذف شد.";
+
+            return RedirectToAction(ChatManagement, Admin, new { pagenumber });
         }
 
         #endregion
@@ -175,7 +203,7 @@ namespace Brella.Controllers
             }
 
             SendEmail sendEmail = new(userManager, email);
-            sendEmail.Send(url, subject, message);
+            await sendEmail.Send(url, subject, message);
 
             #endregion
 
@@ -230,7 +258,6 @@ namespace Brella.Controllers
             try
             {
                 projectRepo.Remove(id);
-
                 projectRepo.SaveChange();
 
                 TempData[success] = "نمونه کار مورد نظر با موفقیت حذف شد.";
@@ -336,7 +363,7 @@ namespace Brella.Controllers
             }
 
             SendEmail sendEmail = new(userManager, email);
-            sendEmail.Send(url, subject, message);
+            await sendEmail.Send(url, subject, message);
 
             #endregion
 
@@ -393,7 +420,6 @@ namespace Brella.Controllers
             try
             {
                 postRepo.Remove(id);
-
                 postRepo.SaveChange();
 
                 TempData[success] = "پست مورد نظر با موفقیت حذف شد.";
@@ -413,6 +439,7 @@ namespace Brella.Controllers
 
         #region Inbox CRUD
 
+        [AllowAnonymous]
         public IActionResult InsertInbox(InboxViewModel model)
         {
             var inbox = new Inbox()
@@ -460,7 +487,7 @@ namespace Brella.Controllers
         }
 
 
-        public void ConfirmationToggle(int inboxId)
+        public int ConfirmationToggle(int inboxId)
         {
             Inbox inbox = inboxRepo.Find(inboxId);
 
@@ -471,6 +498,8 @@ namespace Brella.Controllers
 
             inboxRepo.Update(inbox);
             inboxRepo.SaveChange();
+
+            return inboxRepo.Get(x => x.IsConfirm == false, null, null).Count;
         }
 
         #endregion

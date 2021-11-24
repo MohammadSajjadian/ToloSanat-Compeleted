@@ -1,5 +1,7 @@
 ﻿using Data.Entities;
+using Data.Repository;
 using Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,13 +32,17 @@ namespace Brella.Controllers
 
         private UserManager<ApplicationUser> userManager;
         private SignInManager<ApplicationUser> signInManager;
+        private IRepository<Group> groupRepo;
+        private IRepository<Message> messagesRepo;
         private IEmail mail;
 
         public AccountController(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager,
-            IEmail _mail)
+            IRepository<Group> _groupRepo, IRepository<Message> _messagesRepo, IEmail _mail)
         {
             userManager = _userManager;
             signInManager = _signInManager;
+            groupRepo = _groupRepo;
+            messagesRepo = _messagesRepo;
             mail = _mail;
         }
 
@@ -70,11 +76,11 @@ namespace Brella.Controllers
                 var address = Url.Action(nameof(AccountConfirm), "Account", new { userId = user.Id, token = token }, "https");
 
                 if (user.name != null && user.family != null)
-                    mail.Send("تایید ایمیل", $"{user.name} {user.family}" +
+                    await mail.Send("تایید ایمیل", $"{user.name} {user.family}" +
                         $" عزیز <br/> جهت تایید ایمیل خود و دسترسی به آخرین بروزرسانی های سایت " +
                         $"<a href={address}>اینجا </a> کلیک کنید.", user.Email);
                 else
-                    mail.Send("تایید ایمیل", $"کاربر عزیز <br/> جهت تایید ایمیل خود و" +
+                    await mail.Send("تایید ایمیل", $"کاربر عزیز <br/> جهت تایید ایمیل خود و" +
                         $" دسترسی به آخرین بروزرسانی های سایت <a href={address}>اینجا </a> کلیک کنید.", user.Email);
 
                 user.tokenCreationTime = DateTime.Now;
@@ -181,9 +187,9 @@ namespace Brella.Controllers
                     //}
                     //else
                     //{
-                        TempData[success] = "وارد حساب کاربری خود شدید.";
+                    TempData[success] = "وارد حساب کاربری خود شدید.";
 
-                        return RedirectToAction(Index, Home);
+                    return RedirectToAction(Index, Home);
                     //}
                 }
                 else
@@ -221,6 +227,29 @@ namespace Brella.Controllers
             await signInManager.SignOutAsync();
 
             return RedirectToAction(Index, Home);
+        }
+
+        #endregion
+
+
+        #region Chats
+
+        public async Task<IActionResult> Support()
+        {
+            if (!User.IsInRole("admin"))
+            {
+                ApplicationUser client = await userManager.FindByNameAsync(User.Identity.Name);
+
+                int groupId = groupRepo.Get(x => x.userId == client.Id, null, null).Select(x => x.id).FirstOrDefault();
+
+                List<Message> messages = messagesRepo.Get(x => x.groupId == groupId, null, "applicationUser");
+
+                return View(messages);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         #endregion

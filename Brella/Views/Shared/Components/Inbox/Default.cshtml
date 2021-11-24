@@ -1,2 +1,9 @@
 ﻿@model int
-<li><a asp-action="inboxoptions" asp-controller="admin" asp-route-pagenumber="1" title="">پیغام ها (@Model)</a></li>
+@if (Model != 0)
+{
+    <li><a id="InboxCount" asp-action="inboxoptions" asp-controller="admin" asp-route-pagenumber="1" title="">پیغام ها (@Model پیغام خوانده نشده</a></li>
+}
+else
+{
+    <li><a id="InboxCount" asp-action="inboxoptions" asp-controller="admin" asp-route-pagenumber="1" title="">پیغام ها (@Model)</a></li>
+}

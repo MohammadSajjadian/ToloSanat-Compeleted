@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewData["Title"] = "مدیریت گفت و گو ها";
+}
+
+@model PagedResult<Group>
+@inject UserManager<ApplicationUser> userManager
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (Model.TotalItems != 0)
+{
+    var admin = await userManager.FindByNameAsync(User.Identity.Name);
+
+    <h3 style="margin-top: 30px; margin-right: 40px">گفت و گو های موجود <span style="font-size: medium">(برای ادامه گفت و گو آن را انتخاب کنید.)</span></h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td class="text-center"><b>#</b></td>
+                    <td class="text-center"><b>کاربر</b></td>
+                    <td class="text-center"><b>آخرین پیغام</b></td>
+                    <td class="text-center"><b>زمان</b></td>
+                    <td class="text-center"><b>ایمیل</b></td>
+                    <td class="text-center"><b>حذف گفت و گو</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @{PersianCalendar persian = new();};
+
+                @foreach (var item in Model.Data)
+                {
+                    ApplicationUser user = await userManager.FindByIdAsync(item.userId);
+                    DateTime createTime = item.messages.Where(x => x.IsDeleteForAdmin == false).OrderByDescending(x => x.createTime).Take(1).Select(x => x.createTime).FirstOrDefault();
+
+                    <tr>
+                        <td class="text-center">@item.id</td>
+                        <td class="text-center">
+                            <a asp-action="adminsidechatsbridge" asp-route-clientId="@item.userId">
+                                @($"{user.name} {user.family}")
+                            </a>
+                        </td>
+                        <th class="text-center">@(item.messages.Where(x => x.IsDeleteForAdmin == false).OrderByDescending(x => x.createTime).Take(1).Select(x => x.text).FirstOrDefault())</th>
+                        <th class="text-center">
+                            @($"{persian.GetYear(createTime)}/{persian.GetMonth(createTime)}/{persian.GetDayOfMonth(createTime)}  {persian.GetHour(createTime)}:{persian.GetMinute(createTime)}:{persian.GetSecond(createTime)}")
+                        </th>
+                        <th class="text-center" href="mailto:@user.Email">@user.Email</th>
+                        <td class="text-center"><a id="deletechat" chatId="@item.id" href="#">حذف</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <cs-pager asp-action="chatmanagement" asp-controller="admin"
+              cs-pager-li-current-class="page-item active"
+              cs-pager-li-other-class="page-item"
+              cs-pager-li-non-active-class="page-item disabled"
+              cs-pager-link-current-class="page-link"
+              cs-pager-link-other-class="page-link"
+              cs-pager-ul-class="pagination"
+              cs-show-first-last="true"
+              cs-first-page-title="صفحه اول"
+              cs-last-page-title="صفحه آخر"
+              cs-next-page-title="صفحه بعد"
+              cs-previous-page-title="صفحه قبل"
+              cs-paging-pagenumber="@Model.PageNumber"
+              cs-paging-totalitems="@Model.TotalItems"
+              cs-paging-pagesize="@Model.PageSize"
+              asp-route-listId=""
+              asp-route-sortmode="">
+    </cs-pager>
+}
+else
+{
+    <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">گفت و گویی جهت نمایش وجود ندارد!</h3>
+}
+
+
+<script>
+    $(function () {
+        $(deletechat).click(function (event) {
+            event.preventDefault();
+            var chatId = $(this).attr("chatId");
+
+            Swal.fire({
+                title: 'مطمعن هستید؟',
+                text: "گفت و گو مورد نظر حذف شود؟",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'بله',
+                confirmButtonColor: '#00A300',
+                cancelButtonText: 'بازگشت',
+                cancelButtonColor: '#d33',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    window.location.href = `/crud/deletechat?id=${chatId}&pagenumber=${@Model.PageNumber}`;
+
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    Swal.fire(
+                        'لغو شد',
+                        'حذف گفت و گو لغو شد.',
+                        'error',
+                    )
+                }
+            })
+        })
+    })
+</script>

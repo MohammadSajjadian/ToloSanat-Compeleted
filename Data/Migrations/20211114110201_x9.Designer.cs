@@ -4,14 +4,16 @@ using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(DBbrella))]
-    partial class DBbrellaModelSnapshot : ModelSnapshot
+    [Migration("20211114110201_x9")]
+    partial class x9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -264,9 +266,6 @@ namespace Data.Migrations
                     b.Property<string>("email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("file")
-                        .HasColumnType("varbinary(max)");
-
                     b.Property<string>("instaLink")
                         .HasColumnType("nvarchar(max)");
 
@@ -275,9 +274,6 @@ namespace Data.Migrations
 
                     b.Property<string>("phoneNumber")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("price")
-                        .HasColumnType("int");
 
                     b.Property<string>("telegramLink")
                         .HasColumnType("nvarchar(max)");
@@ -295,9 +291,6 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("IsDeleteForAdmin")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("lastMessageTime")
                         .HasColumnType("datetime2");
@@ -358,9 +351,6 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("IsDeleteForAdmin")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("createTime")
                         .HasColumnType("datetime2");

@@ -12,5 +12,13 @@ namespace Data.Entities
         public string  family { get; set; }
 
         public DateTime tokenCreationTime { get; set; }
+
+        #region ICollections
+
+        public ICollection<Post> posts { get; set; }
+        public ICollection<Project> projects { get; set; }
+        public ICollection<Message> messages { get; set; }
+
+        #endregion
     }
 }

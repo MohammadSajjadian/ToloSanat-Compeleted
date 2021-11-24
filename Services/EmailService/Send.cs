@@ -10,7 +10,7 @@ namespace Services.EmailService
 {
     public class Send : IEmail
     {
-        void IEmail.Send(string subject, string body, string receiver)
+        async Task IEmail.Send(string subject, string body, string receiver)
         {
             var mailmessage = new MailMessage("rexongame1@gmail.com", receiver)
             {
@@ -25,7 +25,7 @@ namespace Services.EmailService
                 EnableSsl = true
             };
 
-            smtpClient.Send(mailmessage);
+            await smtpClient.SendMailAsync(mailmessage);
         }
     }
 }

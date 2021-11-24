@@ -81,6 +81,14 @@ namespace Data.Entities
 
         #endregion
 
+        #region File
+
+        public byte[] file { get; set; }
+
+        public int price { get; set; }
+
+        #endregion
+
         #region ForeignKeys
 
         public int languageId { get; set; }
