@@ -2,6 +2,8 @@
 using Data.Entities;
 using Data.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReflectionIT.Mvc.Paging;
 using System;
@@ -16,8 +18,11 @@ namespace Brella.Controllers
     {
         #region Depency Injections
 
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly IRepository<Project> projectRepo;
         private readonly IRepository<Post> postRepo;
+        private readonly IRepository<Group> groupRepo;
+        private readonly IRepository<Message> messageRepo;
         private readonly IRepository<Language> languageRepo;
         private readonly IRepository<Inbox> inboxRepo;
         private readonly IRepository<ElementProp> elementPropRepo;
@@ -27,13 +32,16 @@ namespace Brella.Controllers
         private readonly IRepository<Element3> element3Repo;
         private readonly IRepository<Element4> element4Repo;
 
-        public AdminController(IRepository<Project> _projectRepo, IRepository<Post> _postRepo,
-            IRepository<Language> _languageRepo, IRepository<Inbox> _inboxRepo, IRepository<ElementProp> _elementPropRepo,
+        public AdminController(UserManager<ApplicationUser> _userManager, IRepository<Project> _projectRepo, IRepository<Post> _postRepo, IRepository<Group> _groupRepo,
+            IRepository<Message> _messageRepo, IRepository<Language> _languageRepo, IRepository<Inbox> _inboxRepo, IRepository<ElementProp> _elementPropRepo,
             IRepository<SlideBar> _slideBarRepo, IRepository<Element1> _element1Repo, IRepository<Element2> _element2Repo,
             IRepository<Element3> _element3Repo, IRepository<Element4> _element4Repo)
         {
+            userManager = _userManager;
             projectRepo = _projectRepo;
             postRepo = _postRepo;
+            groupRepo = _groupRepo;
+            messageRepo = _messageRepo;
             languageRepo = _languageRepo;
             inboxRepo = _inboxRepo;
             elementPropRepo = _elementPropRepo;
@@ -42,6 +50,61 @@ namespace Brella.Controllers
             element2Repo = _element2Repo;
             element3Repo = _element3Repo;
             element4Repo = _element4Repo;
+        }
+
+        #endregion
+
+
+        #region Chat
+
+        [Route("/admin/ChatManagement/{pagenumber}")]
+        public IActionResult ChatManagement(int pagenumber)
+        {
+            #region Pagination
+
+            IEnumerable<Group> groups = groupRepo.Get(x => x.IsDeleteForAdmin == false,
+                x => x.OrderBy(x => x.lastMessageTime), "messages").AsEnumerable();
+
+            PagingList<Group> paging = PagingList.Create(groups, 2, pagenumber);
+
+            PagedResult<Group> result = new()
+            {
+                Data = paging.ToList(),
+                PageSize = 2,
+                PageNumber = pagenumber,
+                TotalItems = groups.Count()
+            };
+
+            #endregion
+
+            return View(result);
+        }
+
+
+        public IActionResult AdminSideChatsBridge(string clientId)
+        {
+            HttpContext.Session.SetString("clientId", clientId);
+
+            return RedirectToAction(nameof(AdminSideChats));
+        }
+
+
+        public async Task<IActionResult> AdminSideChats()
+        {
+            string clientId = HttpContext.Session.GetString("clientId");
+
+            Group group = groupRepo.Get(x => x.userId == clientId, null, null).FirstOrDefault();
+
+            List<Message> messages = messageRepo.Get(x => x.groupId == group.id, null, "applicationUser");
+
+            ApplicationUser client = await userManager.FindByIdAsync(clientId);
+
+            ViewBag.clientId = client.Id;
+            ViewBag.clientNameFamily = $"{client.name} {client.family}";
+            ViewBag.clientId = client.Id;
+            ViewBag.groupId = group.id;
+
+            return View(messages);
         }
 
         #endregion
@@ -64,13 +127,13 @@ namespace Brella.Controllers
 
             var projects = projectRepo.Get(null, x => x.OrderByDescending(x => x.id), "language").AsEnumerable();
 
-            var pagination = PagingList.Create(projects, 20, pagenumber);
+            var pagination = PagingList.Create(projects, 4, pagenumber);
 
             var result = new PagedResult<Project>
             {
                 Data = pagination.ToList(),
                 PageNumber = pagenumber,
-                PageSize = 20,
+                PageSize = 4,
                 TotalItems = projects.Count()
             };
 

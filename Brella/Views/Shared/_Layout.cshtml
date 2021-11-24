@@ -114,6 +114,7 @@
                                             <li><a asp-action="insertpost" asp-controller="admin" title="">ثبت پست</a></li>
                                             <li><a asp-action="postoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش پست</a></li>
                                             @(await Component.InvokeAsync("Inbox"))
+                                            <li><a asp-action="chatmanagement" asp-controller="admin" asp-route-pagenumber="1" title="">گفت و گو ها</a></li>
                                         </ul>
                                     </li>
                                 }
@@ -159,6 +160,7 @@
                                             <li><a asp-action="insertpost" asp-controller="admin" title="">ثبت پست</a></li>
                                             <li><a asp-action="postoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش پست</a></li>
                                             @(await Component.InvokeAsync("Inbox"))
+                                            <li><a asp-action="chatmanagement" asp-controller="admin" asp-route-pagenumber="1" title="">گفت و گو ها</a></li>
                                         </ul>
                                     </li>
                                 }
@@ -176,7 +178,10 @@
                 @if (User.Identity.IsAuthenticated == false)
                 {
                     <ul class="topbar-links mb-0 list-unstyled d-inline-flex text-left">
-                        <li style="margin-right: 15px"><a asp-action="UpdateHeaderProp" asp-controller="admin">ویرایش</a><i class="fas fa-edit"></i></li>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <li style="margin-right: 15px"><a asp-action="UpdateHeaderProp" asp-controller="admin">ویرایش</a><i class="fas fa-edit"></i></li>
+                        }
                         @await Component.InvokeAsync("PhoneAddress")
                         <li><a asp-action="register" asp-controller="account" title="">ثبت نام</a></li>
                         <li><a asp-action="login" asp-controller="account" title="">ورود</a></li>
@@ -185,7 +190,10 @@
                 else
                 {
                     <ul class="topbar-links mb-0 list-unstyled d-inline-flex text-left">
-                        <li style="margin-right: 15px"><a asp-action="UpdateHeaderProp" asp-controller="admin">ویرایش</a><i class="fas fa-edit"></i></li>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <li style="margin-right: 15px"><a asp-action="UpdateHeaderProp" asp-controller="admin">ویرایش</a><i class="fas fa-edit"></i></li>
+                        }
                         @await Component.InvokeAsync("PhoneAddress")
                         <li><a asp-action="logout" asp-controller="account" title="">خروج</a></li>
                     </ul>
@@ -220,6 +228,7 @@
                                 <li><a asp-action="insertpost" asp-controller="admin" title="">ثبت پست</a></li>
                                 <li><a asp-action="postoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش پست</a></li>
                                 @(await Component.InvokeAsync("Inbox"))
+                                <li><a asp-action="chatmanagement" asp-controller="admin" asp-route-pagenumber="1" title="">گفت و گو ها</a></li>
                             </ul>
                         </li>
                     }

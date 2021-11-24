@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewData["Title"] = $"گفت و گو با {ViewBag.clientNameFamily}";
+}
+
+@model List<Message>
+@inject UserManager<ApplicationUser> userManager
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+                <h1 class="mb-0">گفت و گو با @ViewBag.clientNameFamily</h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
+                    <li class="breadcrumb-item"><a asp-action="chatmanagement" asp-controller="admin" asp-route-pagenumber="1" title="">گفت و گو ها</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.clientNameFamily</li>
+                </ol>
+            </div><!-- Page Top Wrap -->
+        </div>
+    </div>
+</section>
+
+<div class="comments w-100">
+    <h3 class="mb-0">گفت و گو ها (@Model.Count)</h3>
+    <ul class="comments-thread mb-0 list-unstyled">
+        <li>
+            @{PersianCalendar persian = new();}
+            @foreach (var item in Model)
+            {
+                if (item.IsDeleteForAdmin == false)
+                {
+                    if (await userManager.IsInRoleAsync(item.applicationUser, "admin"))
+                    {
+                        <div class="comment w-100 left">
+                            <div class="comment-img"><span class="rounded-circle"><img class="img-fluid rounded-circle" src="~/assets/images/resources/download.png" alt="Comment Image 1"></span></div>
+                            <div class="comment-detail">
+                                <h4 class="mb-0">مدیریت</h4>
+                                <p class="mb-0" style="white-space: pre-wrap">@item.text</p>
+                                @if (item.file != null)
+                                {
+                                    <br />
+                                    <p>جهت دانلود فایل <a asp-action="downloadpdf" asp-controller="chat" asp-route-messageId="@item.id"><u>اینجا</u></a> کلیک کنید.</p>
+                                }
+                                <span class="d-inline-block">
+                                    <i class="far fa-clock"></i>
+                                    @($"{persian.GetYear(item.createTime)}/{persian.GetMonth(item.createTime)}/{persian.GetDayOfMonth(item.createTime)}  {persian.GetHour(item.createTime)}:{persian.GetMinute(item.createTime)}:{persian.GetSecond(item.createTime)}")
+                                </span>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="comment w-100 left">
+                            <div class="comment-img"><span class="rounded-circle"><img class="img-fluid rounded-circle" src="~/assets/images/resources/comment-img2.png" alt="Comment Image 1"></span></div>
+                            <div class="comment-detail">
+                                <h4 class="mb-0">@($"{item.applicationUser.name} {item.applicationUser.family}")</h4>
+                                <p class="mb-0" style="white-space: pre-wrap">@item.text</p>
+                                @if (item.file != null)
+                                {
+                                    <br />
+                                    <p>جهت دانلود فایل <a asp-action="downloadpdf" asp-controller="chat" asp-route-messageId="@item.id">اینجا</a> کلیک کنید.</p>
+                                }
+                                <span class="d-inline-block">
+                                    <i class="far fa-clock"></i>
+                                    @($"{persian.GetYear(item.createTime)}/{persian.GetMonth(item.createTime)}/{persian.GetDayOfMonth(item.createTime)}  {persian.GetHour(item.createTime)}:{persian.GetMinute(item.createTime)}:{persian.GetSecond(item.createTime)}")
+                                </span>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </li>
+    </ul>
+</div>
+
+@{ var admin = await userManager.FindByNameAsync(User.Identity.Name);}
+
+<div class="reply-form w-100">
+    <h3 class="mb-0">پیغام دهید</h3>
+    <form asp-action="insertadminmessage" asp-controller="chat" asp-route-adminId="@admin.Id" asp-route-clientId="@ViewBag.clientId" asp-route-groupId="@ViewBag.groupId"
+          enctype="multipart/form-data" method="post" class="w-100">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-lg-12">
+                <div class="field-wrap w-100">
+                    <label>پیغام:</label>
+                    <textarea name="text" required></textarea>
+                </div>
+                <div class="w-100">
+                    <label>پیوست ها:</label>
+                    <br />
+                    <input name="file" type="file" accept="application/pdf" />
+                </div>
+                <button class="thm-btn thm-bg" type="submit" style="margin-top: 15px; margin-bottom: 15px">ارسال<i class="flaticon-arrow-pointing-to-left"></i></button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(function () {
+        $('html, body').scrollTop($(document).height() - $(window).height() - 560);
+    });
+</script>

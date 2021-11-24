@@ -37,7 +37,18 @@ namespace Data.ViewModels
         #endregion
         public string rePassword { get; set; }
 
+        #region Attributes
+
+        [Required(ErrorMessage = "نام خود را وارد کنید")]
+
+        #endregion
         public string name { get; set; }
+
+        #region Attributes
+
+        [Required(ErrorMessage = "نام خانوادگی خود را وارد کنید")]
+
+        #endregion
         public string family { get; set; }
     }
 }

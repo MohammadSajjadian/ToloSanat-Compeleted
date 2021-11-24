@@ -14,7 +14,7 @@
     </div>
 </section>
 
-@if (Model.Data.Count != 0)
+@if (Model.TotalItems != 0)
 {
     <h3 style="margin-top: 30px; margin-right: 40px">حذف و ویرایش پیغام ها</h3>
     <div class="table-responsive">
@@ -116,7 +116,13 @@ else
 
     $(function () {
         $(IsConfirm).click(function () {
-            $.post('/CRUD/ConfirmationToggle', { inboxId: $(this).attr("inboxId")})
+            $.post('/CRUD/ConfirmationToggle', { inboxId: $(this).attr("inboxId") }, function (value) {
+                if (value != 0) {
+                    $(InboxCount).html(`پیغام ها (${value} پیغام خوانده نشده)`)
+                } else {
+                    $(InboxCount).html(`پیغام ها (${value})`)
+                }
+            })
         })
     })
 </script>

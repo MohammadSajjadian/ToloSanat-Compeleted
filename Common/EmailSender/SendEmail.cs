@@ -20,11 +20,11 @@ namespace Common.EmailSender
             email = _email;
         }
 
-        public void Send(string url, string subject, string message)
+        public async Task Send(string url, string subject, string message)
         {
             foreach (var item in userManager.Users)
             {
-                email.Send(subject, $"{message} <br/> {url}", item.Email);
+                await email.Send(subject, $"{message} <br/> {url}", item.Email);
             }
         }
     }
