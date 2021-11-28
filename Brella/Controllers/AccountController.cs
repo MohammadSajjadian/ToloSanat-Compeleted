@@ -30,19 +30,24 @@ namespace Brella.Controllers
 
         #region Deopendency Injections
 
-        private UserManager<ApplicationUser> userManager;
-        private SignInManager<ApplicationUser> signInManager;
-        private IRepository<Group> groupRepo;
-        private IRepository<Message> messagesRepo;
-        private IEmail mail;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IRepository<Group> groupRepo;
+        private readonly IRepository<Message> messagesRepo;
+        private readonly IRepository<ContractPayers> contractPayersRepo;
+        private readonly IRepository<TransportationPayers> transportationPayersRepo;
+        private readonly IEmail mail;
 
         public AccountController(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager,
-            IRepository<Group> _groupRepo, IRepository<Message> _messagesRepo, IEmail _mail)
+            IRepository<Group> _groupRepo, IRepository<Message> _messagesRepo, IRepository<ContractPayers> _contractPayersRepo,
+            IRepository<TransportationPayers> _transportationPayersRepo, IEmail _mail)
         {
             userManager = _userManager;
             signInManager = _signInManager;
             groupRepo = _groupRepo;
             messagesRepo = _messagesRepo;
+            contractPayersRepo = _contractPayersRepo;
+            transportationPayersRepo = _transportationPayersRepo;
             mail = _mail;
         }
 
@@ -250,6 +255,24 @@ namespace Brella.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        #endregion
+
+
+        #region Purchases
+
+        public async Task<IActionResult> Purchases()
+        {
+            ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);
+
+            List<TransportationPayers> transportationPayers = transportationPayersRepo.Get(x => x.userId == user.Id,
+                x => x.OrderByDescending(x => x.id), "province");
+
+            ViewData["TransportationPayers"] = transportationPayers;
+            ViewBag.TransportationPayersCount = transportationPayers.Count;
+
+            return View(contractPayersRepo.Get(x => x.userId == user.Id, null, null).FirstOrDefault());
         }
 
         #endregion

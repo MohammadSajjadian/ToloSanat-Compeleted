@@ -1,21 +1,21 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class x11 : Migration
+    public partial class x15 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<byte[]>(
-                name: "file",
-                table: "elementProps",
-                type: "varbinary(max)",
-                nullable: true);
+            migrationBuilder.AddColumn<int>(
+                name: "price",
+                table: "transportationPayers",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "price",
-                table: "elementProps",
+                table: "contractPayers",
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
@@ -24,12 +24,12 @@ namespace Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "file",
-                table: "elementProps");
+                name: "price",
+                table: "transportationPayers");
 
             migrationBuilder.DropColumn(
                 name: "price",
-                table: "elementProps");
+                table: "contractPayers");
         }
     }
 }

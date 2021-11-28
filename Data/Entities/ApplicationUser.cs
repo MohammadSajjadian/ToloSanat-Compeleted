@@ -18,6 +18,7 @@ namespace Data.Entities
         public ICollection<Post> posts { get; set; }
         public ICollection<Project> projects { get; set; }
         public ICollection<Message> messages { get; set; }
+        public ICollection<TransportationPayers> transportationPayers { get; set; }
 
         #endregion
     }

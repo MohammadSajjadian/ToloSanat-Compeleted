@@ -23,6 +23,7 @@ namespace Brella.Controllers
         private readonly IRepository<Post> postRepo;
         private readonly IRepository<Group> groupRepo;
         private readonly IRepository<Message> messageRepo;
+        private readonly IRepository<Province> provinceRepo;
         private readonly IRepository<Language> languageRepo;
         private readonly IRepository<Inbox> inboxRepo;
         private readonly IRepository<ElementProp> elementPropRepo;
@@ -33,15 +34,16 @@ namespace Brella.Controllers
         private readonly IRepository<Element4> element4Repo;
 
         public AdminController(UserManager<ApplicationUser> _userManager, IRepository<Project> _projectRepo, IRepository<Post> _postRepo, IRepository<Group> _groupRepo,
-            IRepository<Message> _messageRepo, IRepository<Language> _languageRepo, IRepository<Inbox> _inboxRepo, IRepository<ElementProp> _elementPropRepo,
-            IRepository<SlideBar> _slideBarRepo, IRepository<Element1> _element1Repo, IRepository<Element2> _element2Repo,
-            IRepository<Element3> _element3Repo, IRepository<Element4> _element4Repo)
+            IRepository<Message> _messageRepo, IRepository<Province> _provinceRepo, IRepository<Language> _languageRepo,
+            IRepository<Inbox> _inboxRepo, IRepository<ElementProp> _elementPropRepo, IRepository<SlideBar> _slideBarRepo,
+            IRepository<Element1> _element1Repo, IRepository<Element2> _element2Repo, IRepository<Element3> _element3Repo, IRepository<Element4> _element4Repo)
         {
             userManager = _userManager;
             projectRepo = _projectRepo;
             postRepo = _postRepo;
             groupRepo = _groupRepo;
             messageRepo = _messageRepo;
+            provinceRepo = _provinceRepo;
             languageRepo = _languageRepo;
             inboxRepo = _inboxRepo;
             elementPropRepo = _elementPropRepo;
@@ -261,6 +263,52 @@ namespace Brella.Controllers
         #region Contact Us
 
         public IActionResult ContactUsProp()
+        {
+            return View(elementPropRepo.Get(null, null, "language"));
+        }
+
+        #endregion
+
+
+        #region Contract
+
+        public IActionResult ContractFileProp()
+        {
+            return View(elementPropRepo.Get(x => x.language.faTitle == "فارسی", null, "language").FirstOrDefault());
+        }
+
+
+        public IActionResult ContractProp()
+        {
+            return View(elementPropRepo.Get(null, null, "language"));
+        }
+
+        #endregion
+
+
+        #region Province
+
+        public IActionResult ProvinceOptions()
+        {
+            List<Province> provinces = provinceRepo.Get(null, x => x.OrderByDescending(x => x.id), null);
+            ViewData["Provinces"] = provinces;
+            ViewBag.ProvincesCount = provinces.Count;
+
+            return View();
+        }
+
+
+        public IActionResult UpdateProvince(int id)
+        {
+            return View(provinceRepo.Find(id));
+        }
+
+        #endregion
+
+
+        #region Transportation
+
+        public IActionResult TransportationProp()
         {
             return View(elementPropRepo.Get(null, null, "language"));
         }

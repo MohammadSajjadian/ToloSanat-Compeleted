@@ -81,6 +81,18 @@ namespace Data.Entities
 
         #endregion
 
+        #region Contract
+
+        public string contractDescription { get; set; }
+
+        #endregion
+
+        #region Transportation
+
+        public string transportationDescription { get; set; }
+
+        #endregion
+
         #region File
 
         public byte[] file { get; set; }

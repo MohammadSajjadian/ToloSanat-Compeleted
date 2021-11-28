@@ -4,14 +4,16 @@ using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(DBbrella))]
-    partial class DBbrellaModelSnapshot : ModelSnapshot
+    [Migration("20211126193426_x13")]
+    partial class x13
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,9 +107,6 @@ namespace Data.Migrations
 
                     b.Property<DateTime>("payTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("price")
-                        .HasColumnType("int");
 
                     b.Property<int>("trackingCode")
                         .HasColumnType("int");
@@ -556,23 +555,18 @@ namespace Data.Migrations
                     b.Property<DateTime>("payTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("price")
-                        .HasColumnType("int");
-
                     b.Property<int>("provinceId")
                         .HasColumnType("int");
 
-                    b.Property<int>("trackingCode")
-                        .HasColumnType("int");
+                    b.Property<string>("trackingCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("userId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
                     b.HasIndex("provinceId");
-
-                    b.HasIndex("userId");
 
                     b.ToTable("transportationPayers");
                 });
@@ -837,12 +831,6 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data.Entities.ApplicationUser", "applicationUser")
-                        .WithMany("transportationPayers")
-                        .HasForeignKey("userId");
-
-                    b.Navigation("applicationUser");
-
                     b.Navigation("province");
                 });
 
@@ -904,8 +892,6 @@ namespace Data.Migrations
                     b.Navigation("posts");
 
                     b.Navigation("projects");
-
-                    b.Navigation("transportationPayers");
                 });
 
             modelBuilder.Entity("Data.Entities.Group", b =>
