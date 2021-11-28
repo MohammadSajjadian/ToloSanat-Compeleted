@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewData["Title"] = "حمل و نقل";
+}
+
+@model ElementProp
+
+
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+                <h1 class="mb-0">حمل و نقل</h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
+                    <li class="breadcrumb-item active"><a asp-action="transportation" asp-controller="payment" asp-route-pagenumber="1" title="">حمل و نقل</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="w-100 pt-100 pb-100 position-relative">
+        <div class="container">
+            <div class="about-wrap w-100">
+                <div class="row justify-content-center">
+                    <div class="col-md-12 col-sm-12 col-lg-10">
+                        <div class="about-content-wrap w-100">
+                            <div class="row" style="margin-bottom: 30px">
+                                @Html.Raw(Model.transportationDescription)
+                            </div>
+                            <form asp-action="transportationPayment">
+                                <select id="province" name="provinceId" class="form-control col-6">
+                                    <option value="-1">-- شهر خود را انتخاب کنید --</option>
+                                    @foreach (var item in ViewData["Provinces"] as List<Province>)
+                                    {
+                                        <option value="@item.id">@item.name</option>
+                                    }
+                                </select>
+
+                                <br />
+
+                                <label style="font-size: 25px; margin-top: 20px" id="price"></label>
+
+                                <div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 30px">
+                                    <button class="thm-btn thm-bg">
+                                        پرداخت<i class="flaticon-arrow-pointing-to-left"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- About Wrap -->
+        </div>
+    </div>
+</section>
+
+<script>
+    $(function () {
+        $(province).change(function () {
+            $.post('/Payment/FindProvincePrice', { provinceId: $(province).val() }, function (value) {
+                $(price).html(value);
+            })
+        })
+    })
+</script>

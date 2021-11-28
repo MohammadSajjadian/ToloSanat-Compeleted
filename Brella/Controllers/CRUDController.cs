@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,7 +35,9 @@ namespace Brella.Controllers
         private const string ProjectOptions = "ProjectOptions";
         private const string PostOptions = "PostOptions";
         private const string ContactUs = "ContactUs";
+        private const string ContractFileProp = "ContractFileProp";
         private const string InboxOptions = "InboxOptions";
+        private const string ProvinceOptions = "ProvinceOptions";
         private const string SlideBarOptions = "SlideBarOptions";
         private const string Element1Options = "Element1Options";
         private const string Element2Options = "Element2Options";
@@ -60,6 +63,7 @@ namespace Brella.Controllers
         private readonly IRepository<Project> projectRepo;
         private readonly IRepository<Post> postRepo;
         private readonly IRepository<Inbox> inboxRepo;
+        private readonly IRepository<Province> provinceRepo;
         private readonly IRepository<Language> languageRepo;
         private readonly IRepository<ElementProp> elementpropRepo;
         private readonly IRepository<SlideBar> slideBarRepo;
@@ -71,7 +75,7 @@ namespace Brella.Controllers
         private readonly IResize resize;
 
         public CRUDController(UserManager<ApplicationUser> _userManager, IRepository<Group> _groupRepo, IRepository<Message> _messageRepo,
-            IRepository<Project> _projectRepo, IRepository<Post> _postRepo, IRepository<Inbox> _inboxRepo, IRepository<SlideBar> _slideBarRepo,
+            IRepository<Project> _projectRepo, IRepository<Post> _postRepo, IRepository<Inbox> _inboxRepo, IRepository<Province> _provinceRepo, IRepository<SlideBar> _slideBarRepo,
             IRepository<Element1> _element1Repo, IRepository<Element2> _element2Repo, IRepository<Element3> _element3Repo,
             IRepository<Element4> _element4Repo, IRepository<Language> _languageRepo, IResize _resize, IEmail _email,
             IRepository<ElementProp> _elementpropRepo)
@@ -82,6 +86,7 @@ namespace Brella.Controllers
             projectRepo = _projectRepo;
             postRepo = _postRepo;
             inboxRepo = _inboxRepo;
+            provinceRepo = _provinceRepo;
             languageRepo = _languageRepo;
             elementpropRepo = _elementpropRepo;
             slideBarRepo = _slideBarRepo;
@@ -744,6 +749,174 @@ namespace Brella.Controllers
             TempData[success] = ElementUpdate;
 
             return RedirectToAction(Index, Home);
+        }
+
+        #endregion
+
+
+        #region Contract CRUD
+
+        public IActionResult UpdateContractProp(List<int> languageIds, List<string> ContractDescription)
+        {
+            int langId = 1;
+            languageIds.Select(x => new { id = langId++, value = x }).ToList().ForEach(x =>
+            {
+                ElementProp elementProp = elementpropRepo.Get(y => y.languageId == x.value, null, null).FirstOrDefault();
+
+                int contractDescription = 1;
+                ContractDescription.Select(y => new { id = contractDescription++, value = y }).ToList().ForEach(y =>
+                {
+                    if (x.id == y.id)
+                    {
+                        elementProp.contractDescription = y.value;
+
+                        elementpropRepo.Update(elementProp);
+                        elementpropRepo.SaveChange();
+                    }
+                });
+            });
+
+            TempData[success] = ElementUpdate;
+
+            return RedirectToAction(Index, Home);
+        }
+
+
+        public IActionResult UpdateContractFileProp(int elementPropId, IFormFile file, int price)
+        {
+            try
+            {
+                ElementProp elementProp = elementpropRepo.Find(elementPropId);
+
+                if (file != null)
+                {
+                    if (Path.GetExtension(file.FileName) == ".pdf")
+                    {
+                        byte[] b = new byte[file.Length];
+                        file.OpenReadStream().Read(b, 0, b.Length);
+
+                        elementProp.file = b;
+                    }
+                }
+                elementProp.price = price;
+
+                elementpropRepo.Update(elementProp);
+                elementpropRepo.SaveChange();
+
+                TempData[success] = ElementUpdate;
+
+                return RedirectToAction(ContractFileProp, Admin);
+            }
+            catch
+            {
+                TempData[error] = ElementError;
+
+                return RedirectToAction(ContractFileProp, Admin);
+            }
+        }
+
+        #endregion
+
+
+        #region Transportation CRUD
+
+        public IActionResult UpdateTransportationProp(List<int> languageIds, List<string> TransportationDescription)
+        {
+            int langId = 1;
+            languageIds.Select(x => new { id = langId++, value = x }).ToList().ForEach(x =>
+            {
+                ElementProp elementProp = elementpropRepo.Get(y => y.languageId == x.value, null, null).FirstOrDefault();
+
+                int transportationDescription = 1;
+                TransportationDescription.Select(y => new { id = transportationDescription++, value = y }).ToList().ForEach(y =>
+                {
+                    if (x.id == y.id)
+                    {
+                        elementProp.transportationDescription = y.value;
+
+                        elementpropRepo.Update(elementProp);
+                        elementpropRepo.SaveChange();
+                    }
+                });
+            });
+
+            TempData[success] = ElementUpdate;
+
+            return RedirectToAction(Index, Home);
+        }
+
+        #endregion
+
+
+        #region Province
+
+        public IActionResult InsertProvince(ProvinceViewModel model)
+        {
+            try
+            {
+                provinceRepo.Add(new Province
+                {
+                    name = model.name,
+                    price = model.price
+                });
+
+                provinceRepo.SaveChange();
+
+                TempData[success] = ElementSuccess;
+
+                return RedirectToAction(nameof(ProvinceOptions), Admin);
+            }
+            catch
+            {
+                TempData[error] = ElementError;
+
+                return RedirectToAction(nameof(ProvinceOptions), Admin);
+            }
+        }
+
+
+        public IActionResult DeleteProvince(int id)
+        {
+            try
+            {
+                provinceRepo.Remove(id);
+                provinceRepo.SaveChange();
+
+                TempData[success] = ElementRemove;
+
+                return RedirectToAction(ProvinceOptions, Admin);
+            }
+            catch
+            {
+                TempData[error] = ElementError;
+
+                return RedirectToAction(ProvinceOptions, Admin);
+            }
+        }
+
+
+        public IActionResult UpdateProvince(int id, string name, int price)
+        {
+            var province = provinceRepo.Find(id);
+
+            province.name = name;
+            province.price = price;
+
+            try
+            {
+                provinceRepo.Update(province);
+                provinceRepo.SaveChange();
+
+                TempData[success] = ElementUpdate;
+
+                return RedirectToAction(ProvinceOptions, Admin);
+            }
+            catch
+            {
+                TempData[error] = ElementError;
+
+                return RedirectToAction(ProvinceOptions, Admin);
+            }
         }
 
         #endregion

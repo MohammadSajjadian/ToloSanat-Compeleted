@@ -32,6 +32,7 @@
         }
     </style>
 </head>
+@inject UserManager<ApplicationUser> userManager
 <body>
     <main>
         <header class="stick style2 w-100">
@@ -104,15 +105,56 @@
                                         @await Component.InvokeAsync("Language")
                                     </ul>
                                 </li>
+
+                                @if (User.Identity.IsAuthenticated && !User.IsInRole("admin"))
+                                {
+                                    ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);
+                                    <li class="menu-item-has-children active">
+                                        <a href="javascript:void(0);" title="">@($"{user.name} {user.family}")</a>
+                                        <ul class="mb-0 list-unstyled">
+                                            <li><a asp-action="contract" asp-controller="payment" title="">خرید قرارداد</a></li>
+                                            <li><a asp-action="transportation" asp-controller="payment" title="">پرداخت هزینه حمل و نقل</a></li>
+                                            <li><a asp-action="purchases" asp-controller="account" title="">خرید ها</a></li>
+                                            <li><a asp-action="support" asp-controller="account" title="">پشتیبانی</a></li>
+                                        </ul>
+                                    </li>
+                                }
+
                                 @if (User.IsInRole("admin"))
                                 {
                                     <li class="menu-item-has-children active">
                                         <a href="javascript:void(0);" title="">ادمین</a>
-                                        <ul class="mb-0 list-unstyled">
-                                            <li><a asp-action="insertproject" asp-controller="admin" title="">ثبت نمونه کار</a></li>
-                                            <li><a asp-action="projectoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش نمونه کار</a></li>
-                                            <li><a asp-action="insertpost" asp-controller="admin" title="">ثبت پست</a></li>
-                                            <li><a asp-action="postoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش پست</a></li>
+                                        <ul class="mb-0 list-unstyled" style="display: block;">
+                                            <li class="menu-item-has-children">
+                                                <a href="javascript:void(0);" title="">نمونه کار</a>
+                                                <ul class="mb-0 list-unstyled" style="display: block;">
+                                                    <li><a asp-action="insertproject" asp-controller="admin" title="">ثبت نمونه کار</a></li>
+                                                    <li><a asp-action="projectoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش نمونه کار</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="menu-item-has-children">
+                                                <a href="javascript:void(0);" title="">پست</a>
+                                                <ul class="mb-0 list-unstyled" style="display: block;">
+                                                    <li><a asp-action="insertpost" asp-controller="admin" title="">ثبت پست</a></li>
+                                                    <li><a asp-action="postoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش پست</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="menu-item-has-children">
+                                                <a href="javascript:void(0);" title="">قرارداد</a>
+                                                <ul class="mb-0 list-unstyled" style="display: block;">
+                                                    <li><a asp-action="contractfileprop" asp-controller="admin" title="">ویرایش فایل قرارداد</a></li>
+                                                    <li><a asp-action="contractprop" asp-controller="admin" title="">ویرایش توضیحات قرارداد</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="menu-item-has-children">
+                                                <a href="javascript:void(0);" title="">حمل و نقل</a>
+                                                <ul class="mb-0 list-unstyled" style="display: block;">
+                                                    <li><a asp-action="transportationprop" asp-controller="admin" title="">ویرایش توضیحات حمل و نقل</a></li>
+                                                    <li><a asp-action="provinceoptions" asp-controller="admin" title="">ویرایش شهر ها</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a asp-action="aboutusprop" asp-controller="admin" title="">ویرایش درباره ما</a></li>
+                                            <li><a asp-action="contactusprop" asp-controller="admin" title="">ویرایش تماس با ما</a></li>
                                             @(await Component.InvokeAsync("Inbox"))
                                             <li><a asp-action="chatmanagement" asp-controller="admin" asp-route-pagenumber="1" title="">گفت و گو ها</a></li>
                                         </ul>
@@ -150,15 +192,56 @@
                                         @await Component.InvokeAsync("Language")
                                     </ul>
                                 </li>
+
+                                @if (User.Identity.IsAuthenticated && !User.IsInRole("admin"))
+                                {
+                                    ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);
+                                    <li class="menu-item-has-children active">
+                                        <a href="javascript:void(0);" title="">@($"{user.name} {user.family}")</a>
+                                        <ul class="mb-0 list-unstyled">
+                                            <li><a asp-action="contract" asp-controller="payment" title="">خرید قرارداد</a></li>
+                                            <li><a asp-action="transportation" asp-controller="payment" title="">پرداخت هزینه حمل و نقل</a></li>
+                                            <li><a asp-action="purchases" asp-controller="account" title="">خرید ها</a></li>
+                                            <li><a asp-action="support" asp-controller="account" title="">پشتیبانی</a></li>
+                                        </ul>
+                                    </li>
+                                }
+
                                 @if (User.IsInRole("admin"))
                                 {
                                     <li class="menu-item-has-children active">
                                         <a href="javascript:void(0);" title="">ادمین</a>
-                                        <ul class="mb-0 list-unstyled">
-                                            <li><a asp-action="insertproject" asp-controller="admin" title="">ثبت نمونه کار</a></li>
-                                            <li><a asp-action="projectoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش نمونه کار</a></li>
-                                            <li><a asp-action="insertpost" asp-controller="admin" title="">ثبت پست</a></li>
-                                            <li><a asp-action="postoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش پست</a></li>
+                                        <ul class="mb-0 list-unstyled" style="display: block;">
+                                            <li class="menu-item-has-children">
+                                                <a href="javascript:void(0);" title="">نمونه کار</a>
+                                                <ul class="mb-0 list-unstyled" style="display: block;">
+                                                    <li><a asp-action="insertproject" asp-controller="admin" title="">ثبت نمونه کار</a></li>
+                                                    <li><a asp-action="projectoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش نمونه کار</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="menu-item-has-children">
+                                                <a href="javascript:void(0);" title="">پست</a>
+                                                <ul class="mb-0 list-unstyled" style="display: block;">
+                                                    <li><a asp-action="insertpost" asp-controller="admin" title="">ثبت پست</a></li>
+                                                    <li><a asp-action="postoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش پست</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="menu-item-has-children">
+                                                <a href="javascript:void(0);" title="">قرارداد</a>
+                                                <ul class="mb-0 list-unstyled" style="display: block;">
+                                                    <li><a asp-action="contractfileprop" asp-controller="admin" title="">ویرایش فایل قرارداد</a></li>
+                                                    <li><a asp-action="contractprop" asp-controller="admin" title="">ویرایش توضیحات قرارداد</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="menu-item-has-children">
+                                                <a href="javascript:void(0);" title="">حمل و نقل</a>
+                                                <ul class="mb-0 list-unstyled" style="display: block;">
+                                                    <li><a asp-action="transportationprop" asp-controller="admin" title="">ویرایش توضیحات حمل و نقل</a></li>
+                                                    <li><a asp-action="provinceoptions" asp-controller="admin" title="">ویرایش شهر ها</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a asp-action="aboutusprop" asp-controller="admin" title="">ویرایش درباره ما</a></li>
+                                            <li><a asp-action="contactusprop" asp-controller="admin" title="">ویرایش تماس با ما</a></li>
                                             @(await Component.InvokeAsync("Inbox"))
                                             <li><a asp-action="chatmanagement" asp-controller="admin" asp-route-pagenumber="1" title="">گفت و گو ها</a></li>
                                         </ul>
@@ -210,23 +293,64 @@
                 <ul class="mb-0 list-unstyled w-100">
                     <li><a href="projects.html" title="">پروژه ها</a></li>
                     <li><a href="blog.html" title="">وبلاگ</a></li>
+                    <li><a asp-action="aboutus" asp-controller="home" title="">درباره ما</a></li>
+                    <li><a asp-action="contactus" asp-controller="home" title="">تماس با ما</a></li>
                     <li class="menu-item-has-children">
                         <a href="javascript:void(0);" title="">زبان</a>
                         <ul class="mb-0 list-unstyled">
                             @await Component.InvokeAsync("Language")
                         </ul>
                     </li>
-                    <li><a asp-action="aboutus" asp-controller="home" title="">درباره ما</a></li>
-                    <li><a asp-action="contactus" asp-controller="home" title="">تماس با ما</a></li>
+
+                    @if (User.Identity.IsAuthenticated && !User.IsInRole("admin"))
+                    {
+                        ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);
+                        <li class="menu-item-has-children active">
+                            <a href="javascript:void(0);" title="">@($"{user.name} {user.family}")</a>
+                            <ul class="mb-0 list-unstyled">
+                                <li><a asp-action="contract" asp-controller="payment" title="">خرید قرارداد</a></li>
+                                <li><a asp-action="transportation" asp-controller="payment" title="">پرداخت هزینه حمل و نقل</a></li>
+                                <li><a asp-action="purchases" asp-controller="account" title="">خرید ها</a></li>
+                                <li><a asp-action="support" asp-controller="account" title="">پشتیبانی</a></li>
+                            </ul>
+                        </li>
+                    }
+
                     @if (User.IsInRole("admin"))
                     {
                         <li class="menu-item-has-children active">
                             <a href="javascript:void(0);" title="">ادمین</a>
-                            <ul class="mb-0 list-unstyled">
-                                <li><a asp-action="insertproject" asp-controller="admin" title="">ثبت نمونه کار</a></li>
-                                <li><a asp-action="projectoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش نمونه کار</a></li>
-                                <li><a asp-action="insertpost" asp-controller="admin" title="">ثبت پست</a></li>
-                                <li><a asp-action="postoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش پست</a></li>
+                            <ul class="mb-0 list-unstyled" style="display: block;">
+                                <li class="menu-item-has-children">
+                                    <a href="javascript:void(0);" title="">نمونه کار</a>
+                                    <ul class="mb-0 list-unstyled" style="display: block;">
+                                        <li><a asp-action="insertproject" asp-controller="admin" title="">ثبت نمونه کار</a></li>
+                                        <li><a asp-action="projectoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش نمونه کار</a></li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="javascript:void(0);" title="">پست</a>
+                                    <ul class="mb-0 list-unstyled" style="display: block;">
+                                        <li><a asp-action="insertpost" asp-controller="admin" title="">ثبت پست</a></li>
+                                        <li><a asp-action="postoptions" asp-controller="admin" asp-route-pagenumber="1" title="">حذف و ویرایش پست</a></li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="javascript:void(0);" title="">قرارداد</a>
+                                    <ul class="mb-0 list-unstyled" style="display: block;">
+                                        <li><a asp-action="contractfileprop" asp-controller="admin" title="">ویرایش فایل قرارداد</a></li>
+                                        <li><a asp-action="contractprop" asp-controller="admin" title="">ویرایش توضیحات قرارداد</a></li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="javascript:void(0);" title="">حمل و نقل</a>
+                                    <ul class="mb-0 list-unstyled" style="display: block;">
+                                        <li><a asp-action="transportationprop" asp-controller="admin" title="">ویرایش توضیحات حمل و نقل</a></li>
+                                        <li><a asp-action="provinceoptions" asp-controller="admin" title="">ویرایش شهر ها</a></li>
+                                    </ul>
+                                </li>
+                                <li><a asp-action="aboutusprop" asp-controller="admin" title="">ویرایش درباره ما</a></li>
+                                <li><a asp-action="contactusprop" asp-controller="admin" title="">ویرایش تماس با ما</a></li>
                                 @(await Component.InvokeAsync("Inbox"))
                                 <li><a asp-action="chatmanagement" asp-controller="admin" asp-route-pagenumber="1" title="">گفت و گو ها</a></li>
                             </ul>
@@ -354,6 +478,7 @@
     <script src="~/assets/js/custom-scripts.js"></script>
 </body>
 </html>
+
 @if (TempData["error"] != null)
 {
     <script>

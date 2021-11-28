@@ -25,6 +25,8 @@ namespace Brella.Controllers
         private const string Support = "Support";
         private const string Admin = "Admin";
         private const string Account = "Account";
+        private const string Payment = "Payment";
+        private const string Contract = "Contract";
         private const string siteName = "www.xyz.com";
 
         #endregion
@@ -34,15 +36,20 @@ namespace Brella.Controllers
 
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IRepository<Group> groupRepo;
+        private readonly IRepository<ElementProp> elementPropRepo;
         private readonly IRepository<Message> messageRepo;
+        private readonly IRepository<ContractPayers> contractPayersRepo;
         private readonly IEmail email;
 
-        public ChatController(UserManager<ApplicationUser> _userManager, IRepository<Group> _groupRepo, IRepository<Message> _messageRepo,
+        public ChatController(UserManager<ApplicationUser> _userManager, IRepository<Group> _groupRepo, IRepository<ElementProp> _elementPropRepo,
+            IRepository<Message> _messageRepo, IRepository<ContractPayers> _contractPayersRepo,
             IEmail _email)
         {
             userManager = _userManager;
             groupRepo = _groupRepo;
+            elementPropRepo = _elementPropRepo;
             messageRepo = _messageRepo;
+            contractPayersRepo = _contractPayersRepo;
             email = _email;
         }
 
@@ -235,7 +242,26 @@ namespace Brella.Controllers
         {
             Message message = messageRepo.Find(messageId);
 
-            return File(message.file, "application/pdf", "file");
+            return File(message.file, "application/pdf", "file.pdf");
+        }
+
+
+        public async Task<IActionResult> DownloadContract()
+        {
+            ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);
+
+            if (contractPayersRepo.Get(null, null, null).Any(x => x.userId == user.Id) == true || User.IsInRole("admin"))
+            {
+                ElementProp elementProp = elementPropRepo.Get(x => x.language.faTitle == "فارسی", null, null).FirstOrDefault();
+
+                return File(elementProp.file, "application/pdf", "gharardad.pdf");
+            }
+            else
+            {
+                TempData[error] = "هزینه قرارداد باید پرداخت شود.";
+
+                return RedirectToAction(Contract, Payment);
+            }
         }
 
         #endregion

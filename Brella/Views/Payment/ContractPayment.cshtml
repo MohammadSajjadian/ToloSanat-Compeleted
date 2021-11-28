@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewData["Title"] = "خرید انجام شده";
+}
+
+@model ContractPayers
+@inject UserManager<ApplicationUser> userManager
+@{ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);
+    PersianCalendar persian = new();}
+
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+            </div>
+        </div>
+    </div>
+</section>
+
+<h3 style="margin-top: 30px; margin-right: 40px">@($"{user.name} {user.family} عزیز شما قبلا این محصول را خریداری کرده اید!")</h3>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <td class="text-center"><b>#</b></td>
+                <td class="text-center"><b>خریدار</b></td>
+                <td class="text-center"><b>زمان</b></td>
+                <td class="text-center"><b>کد رهگیری</b></td>
+                <td class="text-center"><b>فایل</b></td>
+                <td class="text-center"><b>قیمت</b></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-center"><b>-</b></td>
+                <td class="text-center"><b>@($"{user.name} {user.family}")</b></td>
+                <td class="text-center"><b>@($"{persian.GetYear(Model.payTime)}/{persian.GetMonth(Model.payTime)}/{persian.GetDayOfMonth(Model.payTime)}  {persian.GetHour(Model.payTime)}:{persian.GetMinute(Model.payTime)}:{persian.GetSecond(Model.payTime)}")</b></td>
+                <th class="text-center">@Model.trackingCode</th>
+                <th class="text-center">
+                    برای دانلود فایل
+                    <a asp-action="downloadcontract" asp-controller="chat">اینجا</a> کلیک کنید
+                </th>
+                <th class="text-center">@($"{Model.price:0,0} تومان")</th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<p style="color: red"><b>نکته: فایل مورد نظر را با نرم افزار های مدیریت دانلود مانند IDM دانلود کنید.</b></p>

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(DBbrella))]
-    [Migration("20211124112257_x11")]
-    partial class x11
+    [Migration("20211125212816_x12")]
+    partial class x12
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -93,6 +93,30 @@ namespace Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Data.Entities.ContractPayers", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsAdminConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("payTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("trackingCode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("userId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("contractPayers");
                 });
 
             modelBuilder.Entity("Data.Entities.Element1", b =>
@@ -209,6 +233,9 @@ namespace Data.Migrations
                     b.Property<string>("contactUsTitle")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("contractDescription")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("e1Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -282,6 +309,9 @@ namespace Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("telegramLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("transportationDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
@@ -492,6 +522,30 @@ namespace Data.Migrations
                     b.HasIndex("languageId");
 
                     b.ToTable("slideBars");
+                });
+
+            modelBuilder.Entity("Data.Entities.TransportationPayers", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsAdminConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("payTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("trackingCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("userId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("transportationPayers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -4,14 +4,16 @@ using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(DBbrella))]
-    partial class DBbrellaModelSnapshot : ModelSnapshot
+    [Migration("20211124123519_x11")]
+    partial class x11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,11 +108,8 @@ namespace Data.Migrations
                     b.Property<DateTime>("payTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("price")
-                        .HasColumnType("int");
-
-                    b.Property<int>("trackingCode")
-                        .HasColumnType("int");
+                    b.Property<string>("trackingCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("userId")
                         .HasColumnType("nvarchar(max)");
@@ -493,24 +492,6 @@ namespace Data.Migrations
                     b.ToTable("projects");
                 });
 
-            modelBuilder.Entity("Data.Entities.Province", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("price")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.ToTable("provinces");
-                });
-
             modelBuilder.Entity("Data.Entities.SlideBar", b =>
                 {
                     b.Property<int>("id")
@@ -556,23 +537,13 @@ namespace Data.Migrations
                     b.Property<DateTime>("payTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("price")
-                        .HasColumnType("int");
-
-                    b.Property<int>("provinceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("trackingCode")
-                        .HasColumnType("int");
+                    b.Property<string>("trackingCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("userId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
-
-                    b.HasIndex("provinceId");
-
-                    b.HasIndex("userId");
 
                     b.ToTable("transportationPayers");
                 });
@@ -829,23 +800,6 @@ namespace Data.Migrations
                     b.Navigation("language");
                 });
 
-            modelBuilder.Entity("Data.Entities.TransportationPayers", b =>
-                {
-                    b.HasOne("Data.Entities.Province", "province")
-                        .WithMany("transportationPayers")
-                        .HasForeignKey("provinceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Data.Entities.ApplicationUser", "applicationUser")
-                        .WithMany("transportationPayers")
-                        .HasForeignKey("userId");
-
-                    b.Navigation("applicationUser");
-
-                    b.Navigation("province");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -904,8 +858,6 @@ namespace Data.Migrations
                     b.Navigation("posts");
 
                     b.Navigation("projects");
-
-                    b.Navigation("transportationPayers");
                 });
 
             modelBuilder.Entity("Data.Entities.Group", b =>
@@ -930,11 +882,6 @@ namespace Data.Migrations
                     b.Navigation("projects");
 
                     b.Navigation("slideBars");
-                });
-
-            modelBuilder.Entity("Data.Entities.Province", b =>
-                {
-                    b.Navigation("transportationPayers");
                 });
 #pragma warning restore 612, 618
         }

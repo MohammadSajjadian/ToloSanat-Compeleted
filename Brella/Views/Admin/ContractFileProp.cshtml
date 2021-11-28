@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewData["Title"] = "ویرایش فایل قرارداد";
+}
+
+@model ElementProp
+
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+            </div>
+        </div>
+    </div>
+</section>
+<section style="margin-top: 15px">
+    <div class="w-100 pb-100 position-relative">
+        <div class="container">
+            <form asp-action="updatecontractfileprop" asp-controller="crud" asp-route-elementPropId="@Model.id" enctype="multipart/form-data" method="post"                  class="contact-form text-center w-100">
+                <h3 style="margin-top: 30px">ویرایش فایل قرارداد</h3>
+
+                <div class="row" style="margin-top: 20px">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <label>فایل</label>
+                        <br />
+                        <input name="file" type="file" accept="application/pdf" />
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <label class="d-block">قیمت</label>
+                        <input name="price" value="@Model.price" class="fname" type="text" required>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <a asp-action="DownloadContract" asp-controller="chat" asp-route-elementId="@Model.id">دانلود</a>
+                    </div>
+                </div>
+                <button id="mainupdatebtn" hidden></button>
+            </form>
+            <div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 30px">
+                <button id="secondupdatebtn" class="thm-btn thm-bg">
+                    ویرایش<i class="flaticon-arrow-pointing-to-left"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(function () {
+        $(secondupdatebtn).click(function () {
+            Swal.fire({
+                title: 'ویرایش فایل',
+                text: "فایل مورد نظر ویرایش شود؟",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'بله',
+                cancelButtonText: 'بازگشت'
+
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(mainupdatebtn).click()
+                }
+            })
+        })
+    })
+</script>

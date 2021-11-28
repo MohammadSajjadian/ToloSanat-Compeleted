@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewData["Title"] = "پرداخت ها";
+}
+
+@model ContractPayers
+@inject UserManager<ApplicationUser> userManager
+@{ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);
+    PersianCalendar persian = new();}
+
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+                <h1 class="mb-0">پرداخت ها</h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
+                    <li class="breadcrumb-item active"><a asp-action="purchases" asp-controller="account" title="">پرداخت ها</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+@if (Model != null)
+{
+    <h3 style="margin-top: 30px; margin-right: 40px">فایل خریداری شده</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td class="text-center"><b>#</b></td>
+                    <td class="text-center"><b>خریدار</b></td>
+                    <td class="text-center"><b>زمان</b></td>
+                    <td class="text-center"><b>کد رهگیری</b></td>
+                    <td class="text-center"><b>فایل</b></td>
+                    <td class="text-center"><b>قیمت</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-center"><b>-</b></td>
+                    <td class="text-center"><b>@($"{user.name} {user.family}")</b></td>
+                    <td class="text-center"><b>@($"{persian.GetYear(Model.payTime)}/{persian.GetMonth(Model.payTime)}/{persian.GetDayOfMonth(Model.payTime)}  {persian.GetHour(Model.payTime)}:{persian.GetMinute(Model.payTime)}:{persian.GetSecond(Model.payTime)}")</b></td>
+                    <th class="text-center">@Model.trackingCode</th>
+                    <th class="text-center">
+                        برای دانلود فایل
+                        <a asp-action="downloadcontract" asp-controller="chat">اینجا</a> کلیک کنید
+                    </th>
+                    <th class="text-center">@($"{Model.price:0,0} تومان")</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
+@if (ViewBag.TransportationPayersCount != 0)
+{
+    <h3 style="margin-top: 30px; margin-right: 40px">هزینه های حمل و نقل پرداخت شده</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td class="text-center"><b>#</b></td>
+                    <td class="text-center"><b>خریدار</b></td>
+                    <td class="text-center"><b>زمان</b></td>
+                    <td class="text-center"><b>کد رهگیری</b></td>
+                    <td class="text-center"><b>استان</b></td>
+                    <td class="text-center"><b>قیمت</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @{ int i = 1;}
+                @foreach (var item in ViewData["TransportationPayers"] as List<TransportationPayers>)
+                {
+                    <tr>
+                        <td class="text-center"><b>@(i++)</b></td>
+                        <td class="text-center"><b>@($"{item.applicationUser.name} {item.applicationUser.family}")</b></td>
+                        <td class="text-center"><b>@($"{persian.GetYear(item.payTime)}/{persian.GetMonth(item.payTime)}/{persian.GetDayOfMonth(item.payTime)}  {persian.GetHour(item.payTime)}:{persian.GetMinute(item.payTime)}:{persian.GetSecond(item.payTime)}")</b></td>
+                        <th class="text-center">@item.trackingCode</th>
+                        <th class="text-center">@item.province.name</th>
+                        <th class="text-center">@($"{item.price:0,0} تومان")</th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@if (Model == null && ViewBag.TransportationPayersCount == 0)
+{
+    <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">خریدی انجام نشده است!</h3>
+}

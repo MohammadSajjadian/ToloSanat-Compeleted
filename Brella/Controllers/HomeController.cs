@@ -25,6 +25,7 @@ namespace Brella.Controllers
         private readonly IRepository<Element2> element2Repo;
         private readonly IRepository<Element3> element3Repo;
         private readonly IRepository<Element4> element4Repo;
+        private readonly string lang = CultureInfo.CurrentCulture.Name;
 
         public HomeController(IRepository<Project> _projectRepo,
             IRepository<Post> _postRepo, IRepository<Inbox> _inboxRepo, IRepository<SlideBar> _slideBarRepo,
@@ -46,8 +47,6 @@ namespace Brella.Controllers
 
         public IActionResult Index()
         {
-            string lang = CultureInfo.CurrentCulture.Name;
-
             ElementProp elementProp = elementpropRepo.Get(x => x.language.title == lang, null, null).FirstOrDefault();
 
             #region Slide Bar
@@ -117,8 +116,6 @@ namespace Brella.Controllers
 
         public IActionResult ContactUs()
         {
-            string lang = CultureInfo.CurrentCulture.Name;
-
             ElementProp elementProp = elementpropRepo.Get(x => x.language.title == lang, null, null).FirstOrDefault();
 
             #region ViewBags
@@ -137,8 +134,6 @@ namespace Brella.Controllers
 
         public IActionResult AboutUs()
         {
-            string lang = CultureInfo.CurrentCulture.Name;
-
             ElementProp elementProp = elementpropRepo.Get(x => x.language.title == lang, null, null).FirstOrDefault();
 
             return View(elementProp);

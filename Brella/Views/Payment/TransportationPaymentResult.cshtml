@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "نتیجه خرید";
+}
+
+@model TransportationPayers
+
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+            </div>
+        </div>
+    </div>
+</section>
+
+<h3 style="margin-top: 30px; margin-right: 40px">@($"{Model.applicationUser.name} {Model.applicationUser.family} عزیز پرداخت با موفقیت انجام شد!")</h3>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <td class="text-center"><b>#</b></td>
+                <td class="text-center"><b>خریدار</b></td>
+                <td class="text-center"><b>زمان</b></td>
+                <td class="text-center"><b>کد رهگیری</b></td>
+                <td class="text-center"><b>استان</b></td>
+                <td class="text-center"><b>قیمت</b></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-center"><b>@Model.id</b></td>
+                <td class="text-center"><b>@($"{Model.applicationUser.name} {Model.applicationUser.family}")</b></td>
+                <td class="text-center"><b>@Model.payTime</b></td>
+                <th class="text-center">@Model.trackingCode</th>
+                <th class="text-center">@Model.province.name</th>
+                <th class="text-center">@($"{Model.price:0,0} تومان")</th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<p style="color: red"><b>نکته: جهت کسب اطلاعات بیشتر با واحد پشتیبانی در تماس باشید.</b></p>

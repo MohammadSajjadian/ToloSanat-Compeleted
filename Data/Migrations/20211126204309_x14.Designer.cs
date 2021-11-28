@@ -4,14 +4,16 @@ using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(DBbrella))]
-    partial class DBbrellaModelSnapshot : ModelSnapshot
+    [Migration("20211126204309_x14")]
+    partial class x14
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,9 +107,6 @@ namespace Data.Migrations
 
                     b.Property<DateTime>("payTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("price")
-                        .HasColumnType("int");
 
                     b.Property<int>("trackingCode")
                         .HasColumnType("int");
@@ -555,9 +554,6 @@ namespace Data.Migrations
 
                     b.Property<DateTime>("payTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("price")
-                        .HasColumnType("int");
 
                     b.Property<int>("provinceId")
                         .HasColumnType("int");
