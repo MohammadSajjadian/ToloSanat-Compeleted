@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.EmailService;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,6 +38,7 @@ namespace Brella.Controllers
         private readonly IRepository<ContractPayers> contractPayersRepo;
         private readonly IRepository<TransportationPayers> transportationPayersRepo;
         private readonly IEmail mail;
+        private readonly string lang = CultureInfo.CurrentCulture.Name;
 
         public AccountController(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager,
             IRepository<Group> _groupRepo, IRepository<Message> _messagesRepo, IRepository<ContractPayers> _contractPayersRepo,
@@ -224,6 +226,107 @@ namespace Brella.Controllers
             TempData[success] = "وارد حساب کاربری خود شدید.";
 
             return RedirectToAction(Index, Home);
+        }
+
+
+        public async Task<IActionResult> ForgotPasslvlOne(string email)
+        {
+            var user = await userManager.FindByNameAsync(email);
+
+            if (user != null)
+            {
+                var token = await userManager.GeneratePasswordResetTokenAsync(user);
+
+                var address = Url.Action(nameof(ForgotPasslvlTwoBridge), "account", new { userName = user.UserName, token = token }, "https");
+
+                #region Send email by region
+
+                switch (lang)
+                {
+                    case "fa-IR":
+                        await mail.Send("تغییر رمز عبور", $"برای تغییر رمز عبور <a href={address}>اینجا</a> کلیک کنید.", user.Email);
+                        break;
+
+                    case "en-US":
+                        await mail.Send("Change Password", $"Click <a href={address}>here</a> To change the password.", user.Email);
+                        break;
+
+                    case "ar-AE":
+                        await mail.Send("غير كلمة السر", $"انقر <a href={address}>هنا</a> لتغيير كلمة مرورك.", user.Email);
+                        break;
+
+                    case "it-IT":
+                        await mail.Send("cambia la password", $"Fare clic <a href={address}>qui</a> per modificare la password.", user.Email);
+                        break;
+                }
+
+                #endregion
+
+                user.forgotPassTimeSpan = DateTime.Now;
+
+                await userManager.UpdateAsync(user);
+
+                TempData[info] = "پیامک تغییر رمز عبور برای شما ارسال شد.";
+            }
+            else
+            {
+                TempData[error] = "حساب کاربری با این ایمیل تلفن موجود نمی باشد.";
+
+            }
+            return RedirectToAction(nameof(Login));
+        }
+
+
+        public IActionResult ForgotPasslvlTwoBridge(string userName, string token)
+        {
+            TempData["userName"] = userName;
+            TempData["token"] = token;
+
+            return RedirectToAction(nameof(ForgotPasslvlTwo));
+        }
+
+
+        public async Task<IActionResult> ForgotPasslvlTwo()
+        {
+            var userName = TempData["userName"].ToString();
+            var token = TempData["token"].ToString();
+
+            var user = await userManager.FindByNameAsync(userName);
+            if (DateTime.Now.Subtract(user.forgotPassTimeSpan) > TimeSpan.FromMinutes(3))
+            {
+                TempData[error] = "کاربر گرامی، اعتبار این لینک 3 دقیقه است. لطفا دوباره تلاش کنید.";
+
+                return RedirectToAction(nameof(Index), Home);
+            }
+
+            HttpContext.Session.SetString("userName", userName);
+            HttpContext.Session.SetString("token", token);
+
+            return View();
+        }
+
+
+        public async Task<IActionResult> ForgotPasslvlThree(string newPassword)
+        {
+            var userName = HttpContext.Session.GetString("userName");
+            var token = HttpContext.Session.GetString("token");
+
+            var user = await userManager.FindByNameAsync(userName);
+
+            var result = await userManager.ResetPasswordAsync(user, token, newPassword);
+            if (result.Succeeded)
+            {
+                TempData[success] = "رمز عبور شما با موفقیت تغییر یافت.";
+
+                return RedirectToAction(nameof(Index), Home);
+            }
+            else
+            {
+                TempData[error] = "تغییر رمز عبور با شکست مواجه شد.";
+
+                return RedirectToAction(nameof(Index), Home);
+            }
+
         }
 
 

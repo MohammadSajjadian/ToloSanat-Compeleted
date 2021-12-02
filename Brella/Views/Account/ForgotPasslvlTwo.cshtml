@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewData["Title"] = "فراموشی رمز عبور";
+}
+
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+                <h1 class="mb-0">تغییر رمز عبور</h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
+                    <li class="breadcrumb-item active">تغییر رمز عبور</li>
+                </ol>
+            </div><!-- Page Top Wrap -->
+        </div>
+    </div>
+</section>
+<section style="margin-top: 15px">
+    <div class="w-100 pb-100 position-relative">
+        <div class="container">
+            <form asp-action="ForgotPasslvlThree" class="contact-form text-center w-100">
+                <div class="row">
+                    <div class="col-md-7 col-sm-7 col-lg-7">
+                        <label class="d-block">رمز عبور جدید :</label>
+                        <input name="newPassword" type="password" required>
+                    </div>
+                    <div class="col-md-7 col-sm-7 col-lg-7">
+                        <button class="thm-btn thm-bg">
+                            تغییر<i class="flaticon-arrow-pointing-to-left"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

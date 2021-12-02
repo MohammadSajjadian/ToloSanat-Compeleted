@@ -34,10 +34,13 @@
                         <span asp-validation-for="password"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
-                        <label style="display: inline">
-                            <input asp-for="rememberMe" type="checkbox">
+                        <label>
+                            <input asp-for="rememberMe" type="checkbox" />
                             مرا به خاطر بسپار
                         </label>
+                    </div>
+                    <div class="col-md-7 col-sm-7 col-lg-7">
+                        <a href="#" id="forgotpassword">رمز عبور خود را فراموش کرده اید؟</a>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
                         <button class="thm-btn thm-bg">
@@ -49,3 +52,30 @@
         </div>
     </div>
 </section>
+
+<script>
+    $(function () {
+        $(forgotpassword).click(function (event) {
+            event.preventDefault();
+
+            Swal.fire({
+                title: "ایمیل",
+                text: "ایمیل خود را وارد کنید:",
+                input: "text",
+                showCancelButton: true,
+                confirmButtonText: 'تایید',
+                cancelButtonText: 'بازگشت',
+                cancelButtonColor: '#d33',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'ایمیل خود را وارد کنید!'
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/account/forgotpasslvlone?email=${result.value}`;
+                }
+            });
+        })
+    })
+</script>

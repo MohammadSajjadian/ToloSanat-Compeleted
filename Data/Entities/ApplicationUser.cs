@@ -12,6 +12,7 @@ namespace Data.Entities
         public string  family { get; set; }
 
         public DateTime tokenCreationTime { get; set; }
+        public DateTime forgotPassTimeSpan { get; set; }
 
         #region ICollections
 
