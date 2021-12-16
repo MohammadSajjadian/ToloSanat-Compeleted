@@ -3,7 +3,7 @@
     ViewData["Title"] = "پرداخت ها";
 }
 
-@model ContractPayers
+@model List<Order>
 @inject UserManager<ApplicationUser> userManager
 @{ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);
     PersianCalendar persian = new();}
@@ -22,9 +22,9 @@
         </div>
     </div>
 </section>
-@if (Model != null)
+@if (Model.Count != 0)
 {
-    <h3 style="margin-top: 30px; margin-right: 40px">فایل خریداری شده</h3>
+    <h3 style="margin-top: 30px; margin-right: 40px">هزینه های پرداخت شده</h3>
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
             <thead>
@@ -33,52 +33,22 @@
                     <td class="text-center"><b>خریدار</b></td>
                     <td class="text-center"><b>زمان</b></td>
                     <td class="text-center"><b>کد رهگیری</b></td>
-                    <td class="text-center"><b>فایل</b></td>
-                    <td class="text-center"><b>قیمت</b></td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="text-center"><b>-</b></td>
-                    <td class="text-center"><b>@($"{user.name} {user.family}")</b></td>
-                    <td class="text-center"><b>@($"{persian.GetYear(Model.payTime)}/{persian.GetMonth(Model.payTime)}/{persian.GetDayOfMonth(Model.payTime)}  {persian.GetHour(Model.payTime)}:{persian.GetMinute(Model.payTime)}:{persian.GetSecond(Model.payTime)}")</b></td>
-                    <th class="text-center">@Model.trackingCode</th>
-                    <th class="text-center">
-                        برای دانلود فایل
-                        <a asp-action="downloadcontract" asp-controller="chat">اینجا</a> کلیک کنید
-                    </th>
-                    <th class="text-center">@($"{Model.price:0,0} تومان")</th>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-}
-
-@if (ViewBag.TransportationPayersCount != 0)
-{
-    <h3 style="margin-top: 30px; margin-right: 40px">هزینه های حمل و نقل پرداخت شده</h3>
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <td class="text-center"><b>#</b></td>
-                    <td class="text-center"><b>خریدار</b></td>
-                    <td class="text-center"><b>زمان</b></td>
-                    <td class="text-center"><b>کد رهگیری</b></td>
-                    <td class="text-center"><b>استان</b></td>
+                    <td class="text-center"><b>ایمیل</b></td>
+                    <td class="text-center"><b>شماره تلفن</b></td>
                     <td class="text-center"><b>قیمت</b></td>
                 </tr>
             </thead>
             <tbody>
                 @{ int i = 1;}
-                @foreach (var item in ViewData["TransportationPayers"] as List<TransportationPayers>)
+                @foreach (var item in Model)
                 {
                     <tr>
                         <td class="text-center"><b>@(i++)</b></td>
                         <td class="text-center"><b>@($"{item.applicationUser.name} {item.applicationUser.family}")</b></td>
                         <td class="text-center"><b>@($"{persian.GetYear(item.payTime)}/{persian.GetMonth(item.payTime)}/{persian.GetDayOfMonth(item.payTime)}  {persian.GetHour(item.payTime)}:{persian.GetMinute(item.payTime)}:{persian.GetSecond(item.payTime)}")</b></td>
                         <th class="text-center">@item.trackingCode</th>
-                        <th class="text-center">@item.province.name</th>
+                        <th class="text-center">@item.applicationUser.Email</th>
+                        <th class="text-center">@item.applicationUser.PhoneNumber</th>
                         <th class="text-center">@($"{item.price:0,0} تومان")</th>
                     </tr>
                 }
@@ -86,8 +56,7 @@
         </table>
     </div>
 }
-
-@if (Model == null && ViewBag.TransportationPayersCount == 0)
+else
 {
     <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">خریدی انجام نشده است!</h3>
 }

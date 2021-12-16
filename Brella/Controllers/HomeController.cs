@@ -108,12 +108,6 @@ namespace Brella.Controllers
         }
 
 
-        public IActionResult Error()
-        {
-            return View();
-        }
-
-
         public IActionResult ContactUs()
         {
             ElementProp elementProp = elementpropRepo.Get(x => x.language.title == lang, null, null).FirstOrDefault();
@@ -137,6 +131,12 @@ namespace Brella.Controllers
             ElementProp elementProp = elementpropRepo.Get(x => x.language.title == lang, null, null).FirstOrDefault();
 
             return View(elementProp);
+        }
+
+
+        public IActionResult Error()
+        {
+            return View();
         }
 
 

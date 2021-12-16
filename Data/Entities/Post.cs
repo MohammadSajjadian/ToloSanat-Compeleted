@@ -26,6 +26,13 @@ namespace Data.Entities
 
         #endregion
 
+        #region Bool Attributes
+
+        public bool IsSms { get; set; }
+        public bool IsEmail { get; set; }
+
+        #endregion
+
         public DateTime createTime { get; set; } = DateTime.Now;
 
         #region ForeignKeys

@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewData["Title"] = "جست و جوی سفارش";
+}
+
+@model Order
+@inject UserManager<ApplicationUser> userManager
+
+@{PersianCalendar persian = new();}
+
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (Model != null)
+{
+    <h3 style="margin-top: 30px; margin-right: 40px">سفارش مورد نظر یافت شد.</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td class="text-center">#</td>
+                    <td class="text-center">نام و نام خانوادگی</td>
+                    <td class="text-center">ایمیل</td>
+                    <td class="text-center">شماره تلفن</td>
+                    <td class="text-center">زمان</td>
+                    <td class="text-center">کد رهگیری</td>
+                    <td class="text-center">قیمت</td>
+                    <td class="text-center">خوانده شده</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @if (!Model.IsAdminConfirmed)
+                    {
+                        <td class="text-center"><b>-</b></td>
+                        <td class="text-center">
+                            <b>
+                                <a asp-action="adminsidechatsbridge" asp-route-clientId="@Model.applicationUser.Id">
+                                    @($"{Model.applicationUser.name} {Model.applicationUser.family}")
+                                </a>
+                            </b>
+                        </td>
+                        <td class="text-center"><b>@Model.applicationUser.Email</b></td>
+                        <td class="text-center"><b>@Model.applicationUser.PhoneNumber</b></td>
+                        <td class="text-center"><b>@($"{persian.GetYear(Model.payTime)}/{persian.GetMonth(Model.payTime)}/{persian.GetDayOfMonth(Model.payTime)}  {persian.GetHour(Model.payTime)}:{persian.GetMinute(Model.payTime)}:{persian.GetSecond(Model.payTime)}")</b></td>
+                        <td class="text-center"><b>@Model.trackingCode</b></td>
+                        <td class="text-center"><b>@($"{Model.price:0,0}")</b></td>
+                        <th class="text-center"><input id="IsAdminConfirmed" OrderId="@Model.id" type="checkbox" /></th>
+                    }
+                    else
+                    {
+                        <td class="text-center">-</td>
+                        <td class="text-center">
+                            <a asp-action="adminsidechatsbridge" asp-route-clientId="@Model.userId">
+                                @($"{Model.applicationUser.name} {Model.applicationUser.family}")
+                            </a>
+                        </td>
+                        <td class="text-center">@Model.applicationUser.Email</td>
+                        <td class="text-center">@Model.applicationUser.PhoneNumber</td>
+                        <td class="text-center">@($"{persian.GetYear(Model.payTime)}/{persian.GetMonth(Model.payTime)}/{persian.GetDayOfMonth(Model.payTime)}  {persian.GetHour(Model.payTime)}:{persian.GetMinute(Model.payTime)}:{persian.GetSecond(Model.payTime)}")</td>
+                        <td class="text-center">@Model.trackingCode</td>
+                        <td class="text-center">@($"{Model.price:0,0}")</td>
+                        <th class="text-center"><input id="IsAdminConfirmed" OrderId="@Model.id" type="checkbox" checked /></th>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">سفارش مورد نظر یافت نشد!</h3>
+}
+
+<script>
+    $(function () {
+        $(IsAdminConfirmed).click(function () {
+            $.post('/CRUD/OrderConfirmationToggle', { OrderId: $(this).attr("OrderId") }, function (value) {
+                if (value != 0) {
+                    $(TransportationCount).html(`سفارش های بررسی نشده (${value})`)
+                } else {
+                    $(TransportationCount).html(`سفارش های جدید (${value})`)
+                }
+            })
+        })
+    })
+</script>

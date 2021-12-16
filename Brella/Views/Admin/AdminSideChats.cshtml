@@ -22,56 +22,72 @@
 </section>
 
 <div class="comments w-100">
-    <h3 class="mb-0">گفت و گو ها (@Model.Count)</h3>
-    <ul class="comments-thread mb-0 list-unstyled">
-        <li>
-            @{PersianCalendar persian = new();}
-            @foreach (var item in Model)
-            {
-                if (item.IsDeleteForAdmin == false)
+    @if (Model.Count != 0)
+    {
+        <form asp-action="usercost" asp-route-userId="@ViewBag.clientId" asp-controller="crud">
+            <div style="margin-bottom: 15px" class="col-md-7 col-sm-7 col-lg-7">
+                <label class="d-block">تعیین هزینه :</label>
+                <input class="form-control" value="@(ViewBag.clientPrice != 0 ? ViewBag.clientPrice : "")" name="price" type="text" required>
+            </div>
+
+            <button class="thm-btn thm-bg" type="submit" style="margin-top: 15px; margin-bottom: 15px">ثبت<i class="flaticon-arrow-pointing-to-left"></i></button>
+        </form>
+
+        <h3 class="mb-0">گفت و گو ها (@Model.Count)</h3>
+        <ul class="comments-thread mb-0 list-unstyled">
+            <li>
+                @{PersianCalendar persian = new();}
+                @foreach (var item in Model)
                 {
-                    if (await userManager.IsInRoleAsync(item.applicationUser, "admin"))
+                    if (item.IsDeleteForAdmin == false)
                     {
-                        <div class="comment w-100 left">
-                            <div class="comment-img"><span class="rounded-circle"><img class="img-fluid rounded-circle" src="~/assets/images/resources/download.png" alt="Comment Image 1"></span></div>
-                            <div class="comment-detail">
-                                <h4 class="mb-0">مدیریت</h4>
-                                <p class="mb-0" style="white-space: pre-wrap">@item.text</p>
-                                @if (item.file != null)
-                                {
-                                    <br />
-                                    <p>جهت دانلود فایل <a asp-action="downloadpdf" asp-controller="chat" asp-route-messageId="@item.id"><u>اینجا</u></a> کلیک کنید.</p>
-                                }
-                                <span class="d-inline-block">
-                                    <i class="far fa-clock"></i>
-                                    @($"{persian.GetYear(item.createTime)}/{persian.GetMonth(item.createTime)}/{persian.GetDayOfMonth(item.createTime)}  {persian.GetHour(item.createTime)}:{persian.GetMinute(item.createTime)}:{persian.GetSecond(item.createTime)}")
-                                </span>
+                        if (await userManager.IsInRoleAsync(item.applicationUser, "admin"))
+                        {
+                            <div class="comment w-100 left">
+                                <div class="comment-img"><span class="rounded-circle"><img class="img-fluid rounded-circle" src="~/assets/images/resources/download.png" alt="Comment Image 1"></span></div>
+                                <div class="comment-detail">
+                                    <h4 class="mb-0">مدیریت</h4>
+                                    <p class="mb-0" style="white-space: pre-wrap">@item.text</p>
+                                    @if (item.file != null)
+                                    {
+                                        <br />
+                                        <p>جهت دانلود فایل <a asp-action="downloadpdf" asp-controller="chat" asp-route-messageId="@item.id"><u>اینجا</u></a> کلیک کنید.</p>
+                                    }
+                                    <span class="d-inline-block">
+                                        <i class="far fa-clock"></i>
+                                        @($"{persian.GetYear(item.createTime)}/{persian.GetMonth(item.createTime)}/{persian.GetDayOfMonth(item.createTime)}  {persian.GetHour(item.createTime)}:{persian.GetMinute(item.createTime)}:{persian.GetSecond(item.createTime)}")
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="comment w-100 left">
-                            <div class="comment-img"><span class="rounded-circle"><img class="img-fluid rounded-circle" src="~/assets/images/resources/comment-img2.png" alt="Comment Image 1"></span></div>
-                            <div class="comment-detail">
-                                <h4 class="mb-0">@($"{item.applicationUser.name} {item.applicationUser.family}")</h4>
-                                <p class="mb-0" style="white-space: pre-wrap">@item.text</p>
-                                @if (item.file != null)
-                                {
-                                    <br />
-                                    <p>جهت دانلود فایل <a asp-action="downloadpdf" asp-controller="chat" asp-route-messageId="@item.id">اینجا</a> کلیک کنید.</p>
-                                }
-                                <span class="d-inline-block">
-                                    <i class="far fa-clock"></i>
-                                    @($"{persian.GetYear(item.createTime)}/{persian.GetMonth(item.createTime)}/{persian.GetDayOfMonth(item.createTime)}  {persian.GetHour(item.createTime)}:{persian.GetMinute(item.createTime)}:{persian.GetSecond(item.createTime)}")
-                                </span>
+                        }
+                        else
+                        {
+                            <div class="comment w-100 left">
+                                <div class="comment-img"><span class="rounded-circle"><img class="img-fluid rounded-circle" src="~/assets/images/resources/comment-img2.png" alt="Comment Image 1"></span></div>
+                                <div class="comment-detail">
+                                    <h4 class="mb-0">@($"{item.applicationUser.name} {item.applicationUser.family}")</h4>
+                                    <p class="mb-0" style="white-space: pre-wrap">@item.text</p>
+                                    @if (item.file != null)
+                                    {
+                                        <br />
+                                        <p>جهت دانلود فایل <a asp-action="downloadpdf" asp-controller="chat" asp-route-messageId="@item.id">اینجا</a> کلیک کنید.</p>
+                                    }
+                                    <span class="d-inline-block">
+                                        <i class="far fa-clock"></i>
+                                        @($"{persian.GetYear(item.createTime)}/{persian.GetMonth(item.createTime)}/{persian.GetDayOfMonth(item.createTime)}  {persian.GetHour(item.createTime)}:{persian.GetMinute(item.createTime)}:{persian.GetSecond(item.createTime)}")
+                                    </span>
+                                </div>
                             </div>
-                        </div>
+                        }
                     }
                 }
-            }
-        </li>
-    </ul>
+            </li>
+        </ul>
+    }
+    else
+    {
+        <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">گفت و گویی جهت نمایش وجود ندارد!</h3>
+    }
 </div>
 
 @{ var admin = await userManager.FindByNameAsync(User.Identity.Name);}

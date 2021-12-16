@@ -1,9 +1,13 @@
 ﻿
 @{
-    ViewData["Title"] = "ثبت نام";
+    ViewData["Title"] = "ویرایش حساب کاربری";
 }
 
-@model RegisterViewModel
+@model EditProfileViewModel
+@inject UserManager<ApplicationUser> userManager
+
+@{ ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);}
+
 <section>
     <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
         <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
@@ -21,41 +25,32 @@
 <section style="margin-top: 15px">
     <div class="w-100 pb-100 position-relative">
         <div class="container">
-            <form asp-action="registerconfirm" class="contact-form text-center w-100">
+            <form asp-action="editprofileconfirm" class="contact-form text-center w-100">
                 <div class="row">
                     <div class="col-md-7 col-sm-7 col-lg-7">
                         <label class="d-block">نام :</label>
-                        <input asp-for="name" class="fname" type="text">
+                        <input asp-for="name" value="@user.name" class="fname" type="text">
                         <span asp-validation-for="name"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
                         <label class="d-block">نام خانوادگی :</label>
-                        <input asp-for="family" class="fname" type="text">
+                        <input asp-for="family" value="@user.family" class="fname" type="text">
                         <span asp-validation-for="family"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
                         <label class="d-block">آدرس ایمیل :</label>
-                        <input asp-for="userName" type="email">
+                        <label style="font-size: 12px">ایمیل فعلی: @user.Email</label>
+                        <input asp-for="userName" placeholder="ایمیل جدید" type="email">
                         <span asp-validation-for="userName"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
                         <label class="d-block">شماره تلفن :</label>
-                        <input asp-for="phoneNumber" type="tel">
+                        <input asp-for="phoneNumber" value="@user.PhoneNumber" type="tel">
                         <span asp-validation-for="phoneNumber"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
-                        <label class="d-block">رمز عبور :</label>
-                        <input asp-for="password" type="password">
-                        <span asp-validation-for="password"></span>
-                    </div>
-                    <div class="col-md-7 col-sm-7 col-lg-7">
-                        <label class="d-block">تکرار رمز عبور :</label>
-                        <input asp-for="rePassword" type="password">
-                        <span asp-validation-for="rePassword"></span>
-                    </div>
-                    <div class="col-md-7 col-sm-7 col-lg-7">
                         <button class="thm-btn thm-bg">
-                            ثبت نام<i class="flaticon-arrow-pointing-to-left"></i>
+                            ویرایش<i class="flaticon-arrow-pointing-to-left"></i>
                         </button>
                     </div>
                 </div>

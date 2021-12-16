@@ -21,12 +21,6 @@ namespace Brella.Controllers
 
         private const string success = "success";
         private const string error = "error";
-        private const string AdminSideChatsBridge = "AdminSideChatsBridge";
-        private const string Support = "Support";
-        private const string Admin = "Admin";
-        private const string Account = "Account";
-        private const string Payment = "Payment";
-        private const string Contract = "Contract";
         private const string siteName = "www.xyz.com";
 
         #endregion
@@ -36,20 +30,16 @@ namespace Brella.Controllers
 
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IRepository<Group> groupRepo;
-        private readonly IRepository<ElementProp> elementPropRepo;
         private readonly IRepository<Message> messageRepo;
-        private readonly IRepository<ContractPayers> contractPayersRepo;
         private readonly IEmail email;
+        private readonly string lang = CultureInfo.CurrentCulture.Name;
 
-        public ChatController(UserManager<ApplicationUser> _userManager, IRepository<Group> _groupRepo, IRepository<ElementProp> _elementPropRepo,
-            IRepository<Message> _messageRepo, IRepository<ContractPayers> _contractPayersRepo,
-            IEmail _email)
+        public ChatController(UserManager<ApplicationUser> _userManager, IRepository<Group> _groupRepo,
+            IRepository<Message> _messageRepo, IEmail _email)
         {
             userManager = _userManager;
             groupRepo = _groupRepo;
-            elementPropRepo = _elementPropRepo;
             messageRepo = _messageRepo;
-            contractPayersRepo = _contractPayersRepo;
             email = _email;
         }
 
@@ -65,8 +55,6 @@ namespace Brella.Controllers
             {
                 ApplicationUser admin = await userManager.FindByIdAsync(adminId);
                 ApplicationUser client = await userManager.FindByIdAsync(clientId);
-
-                string lang = CultureInfo.CurrentCulture.Name;
 
                 Message message = new()
                 {
@@ -129,13 +117,34 @@ namespace Brella.Controllers
 
                 #endregion
 
-                return RedirectToAction(AdminSideChatsBridge, Admin, new { clientId });
+                return RedirectToAction("AdminSideChatsBridge", "Admin", new { clientId });
             }
             catch
             {
-                TempData[error] = "ثبت پیغام با خطا مواجه شد.";
+                #region Multi language TempData
 
-                return RedirectToAction(AdminSideChatsBridge, Admin, new { clientId });
+                switch (lang)
+                {
+                    case "fa-IR":
+                        TempData[error] = "ارسال پیغام با خطا مواجه شد.";
+                        break;
+
+                    case "en-US":
+                        TempData[error] = "Error sending message.";
+                        break;
+
+                    case "ar-AE":
+                        TempData[error] = "خطأ في إرسال الرسالة.";
+                        break;
+
+                    case "it-IT":
+                        TempData[error] = "Errore nell'invio del messaggio.";
+                        break;
+                }
+
+                #endregion
+
+                return RedirectToAction("AdminSideChatsBridge", "Admin", new { clientId });
             }
         }
 
@@ -170,7 +179,7 @@ namespace Brella.Controllers
                 messageRepo.Add(message);
                 messageRepo.SaveChange();
 
-                #region Answer Email by Region
+                #region Answer Email by SMS
 
                 foreach (var item in userManager.Users.ToList())
                 {
@@ -184,7 +193,7 @@ namespace Brella.Controllers
 
                 #endregion
 
-                return RedirectToAction(Support, Account);
+                return RedirectToAction("Support", "Account");
             }
             else
             {
@@ -229,7 +238,7 @@ namespace Brella.Controllers
 
                 #endregion
 
-                return RedirectToAction(Support, Account);
+                return RedirectToAction("Support", "Account");
             }
         }
 
@@ -243,25 +252,6 @@ namespace Brella.Controllers
             Message message = messageRepo.Find(messageId);
 
             return File(message.file, "application/pdf", "file.pdf");
-        }
-
-
-        public async Task<IActionResult> DownloadContract()
-        {
-            ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);
-
-            if (contractPayersRepo.Get(null, null, null).Any(x => x.userId == user.Id) == true || User.IsInRole("admin"))
-            {
-                ElementProp elementProp = elementPropRepo.Get(x => x.language.faTitle == "فارسی", null, null).FirstOrDefault();
-
-                return File(elementProp.file, "application/pdf", "gharardad.pdf");
-            }
-            else
-            {
-                TempData[error] = "هزینه قرارداد باید پرداخت شود.";
-
-                return RedirectToAction(Contract, Payment);
-            }
         }
 
         #endregion

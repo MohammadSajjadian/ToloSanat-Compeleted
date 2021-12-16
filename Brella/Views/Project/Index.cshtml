@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewData["Title"] = "نمونه کار ها";
+}
+
+@model PagedResult<Project>
+
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+                <h1 class="mb-0">نمونه کار ها</h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
+                    <li class="breadcrumb-item"><a title="">نمونه کارها</a></li>
+                </ol>
+            </div><!-- Page Top Wrap -->
+        </div>
+    </div>
+</section>
+<section>
+    <div class="w-100 pt-100 pb-50 position-relative">
+        <div class="container">
+            <div class="blog-wrap w-100">
+                <div class="row justify-content-center">
+                    @if (Model.TotalItems != 0)
+                    {
+                        @foreach (var item in Model.Data)
+                        {
+                            PersianCalendar persian = new();
+                            <div class="col-md-6 col-sm-6 col-lg-4">
+                                <div class="post-box w-100 text-center">
+                                    <div class="post-img overflow-hidden w-100">
+                                        <a asp-action="projectdetailbridge" asp-route-id="@item.id"><img class="img-fluid w-100" src="@($"data:image/jpeg;base64,{Convert.ToBase64String(item.thumbNail)}")" alt="Post Image 1" /></a>
+                                    </div>
+                                    <div class="post-info w-100">
+                                        <h3 class="mb-0"><a asp-action="projectdetailbridge" asp-route-id="@item.id" title="">@item.title</a></h3>
+                                        <p class="mb-0">@Html.Raw(item.Description)</p>
+                                        <div class="post-info-bottom d-flex flex-wrap w-100">
+                                            <span class="d-inline-block"><i class="far fa-user"></i><a href="javascript:void(0);" title="">@($"{item.ApplicationUser.name} {item.ApplicationUser.family}")</a></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">نمونه کاری جهت نمایش وجود ندارد!</h3>
+                    }
+                </div>
+                @if (Model.TotalItems != 0)
+                {
+                    <cs-pager asp-action="project" asp-controller="project"
+                              cs-pager-li-current-class="page-item active"
+                              cs-pager-li-other-class="page-item"
+                              cs-pager-li-non-active-class="page-item disabled"
+                              cs-pager-link-current-class="page-link"
+                              cs-pager-link-other-class="page-link"
+                              cs-pager-ul-class="pagination"
+                              cs-show-first-last="true"
+                              cs-first-page-title="صفحه اول"
+                              cs-last-page-title="صفحه آخر"
+                              cs-next-page-title="صفحه بعد"
+                              cs-previous-page-title="صفحه قبل"
+                              cs-paging-pagenumber="Model.PageNumber"
+                              cs-paging-totalitems="@Model.TotalItems"
+                              cs-paging-pagesize="Model.PageSize"
+                              asp-route-listId=""
+                              asp-route-sortmode="">
+                    </cs-pager>
+                }
+            </div><!-- Blog Wrap -->
+        </div>
+    </div>
+</section>

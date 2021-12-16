@@ -50,6 +50,20 @@
                     <input asp-for="languageIds" value="@item.id" hidden />
                 }
 
+                <div class="col-md-7 col-sm-7 col-lg-7">
+                    <label>
+                        <input asp-for="IsEmail" type="checkbox" />
+                        ارسال با ایمیل
+                    </label>
+                </div>
+
+                <div class="col-md-7 col-sm-7 col-lg-7">
+                    <label>
+                        <input asp-for="IsSms" type="checkbox" />
+                        ارسال با اس ام اس
+                    </label>
+                </div>
+
                 <button id="maininsertbtn" hidden></button>
             </form>
             <div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 30px">

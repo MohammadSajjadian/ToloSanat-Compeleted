@@ -18,9 +18,7 @@ namespace Data.Context
         public DbSet<Inbox> inboxes { get; set; }
         public DbSet<Group> groups { get; set; }
         public DbSet<Message> messages { get; set; }
-        public DbSet<Province> provinces { get; set; }
-        public DbSet<ContractPayers> contractPayers { get; set; }
-        public DbSet<TransportationPayers> transportationPayers { get; set; }
+        public DbSet<Order> orders { get; set; }
         public DbSet<SlideBar> slideBars { get; set; }
         public DbSet<Element1> element1s { get; set; }
         public DbSet<Element2> element2s { get; set; }

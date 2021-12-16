@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public class ContractPayers
+    public class Order
     {
         public int id { get; set; }
-
-        public string userId { get; set; }
 
         public int trackingCode { get; set; }
 
@@ -19,5 +18,13 @@ namespace Data.Entities
         public int price { get; set; }
 
         public bool IsAdminConfirmed { get; set; }
+
+        #region ForeignKey
+
+        public string userId { get; set; }
+        [ForeignKey(nameof(userId))]
+        public ApplicationUser applicationUser { get; set; }
+
+        #endregion
     }
 }

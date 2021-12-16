@@ -8,11 +8,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Services.EmailService;
 using Services.ResizeService;
-using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,30 +25,10 @@ namespace Brella.Controllers
         private const string error = "error";
         private const string warning = "warning";
         private const string info = "info";
-        private const string Index = "Index";
-        private const string Home = "Home";
-        private const string Account = "Account";
-        private const string Admin = "Admin";
-        private const string ChatManagement = "ChatManagement";
-        private const string ProjectOptions = "ProjectOptions";
-        private const string PostOptions = "PostOptions";
-        private const string ContactUs = "ContactUs";
-        private const string ContractFileProp = "ContractFileProp";
-        private const string InboxOptions = "InboxOptions";
-        private const string ProvinceOptions = "ProvinceOptions";
-        private const string SlideBarOptions = "SlideBarOptions";
-        private const string Element1Options = "Element1Options";
-        private const string Element2Options = "Element2Options";
-        private const string Element3Options = "Element3Options";
-        private const string Element4Options = "Element4Options";
         private const string ElementSuccess = "فیلد مورد نظر با موفقیت ثبت شد.";
         private const string ElementError = "عملیات با شکست مواجه شد.";
         private const string ElementUpdate = "فیلد مورد نظر ویرایش شد.";
         private const string ElementRemove = "فیلد مورد حذف شد.";
-        private const string ShowPostBridge = "ShowPostBridge";
-        private const string ShowProjectBridge = "ShowProjectBridge";
-        private const string Post = "Post";
-        private const string Project = "Project";
 
         #endregion
 
@@ -62,8 +40,8 @@ namespace Brella.Controllers
         private readonly IRepository<Message> messageRepo;
         private readonly IRepository<Project> projectRepo;
         private readonly IRepository<Post> postRepo;
+        private readonly IRepository<Order> orderRepo;
         private readonly IRepository<Inbox> inboxRepo;
-        private readonly IRepository<Province> provinceRepo;
         private readonly IRepository<Language> languageRepo;
         private readonly IRepository<ElementProp> elementpropRepo;
         private readonly IRepository<SlideBar> slideBarRepo;
@@ -73,10 +51,11 @@ namespace Brella.Controllers
         private readonly IRepository<Element4> element4Repo;
         private readonly IEmail email;
         private readonly IResize resize;
+        private readonly string lang = CultureInfo.CurrentCulture.Name;
 
         public CRUDController(UserManager<ApplicationUser> _userManager, IRepository<Group> _groupRepo, IRepository<Message> _messageRepo,
-            IRepository<Project> _projectRepo, IRepository<Post> _postRepo, IRepository<Inbox> _inboxRepo, IRepository<Province> _provinceRepo, IRepository<SlideBar> _slideBarRepo,
-            IRepository<Element1> _element1Repo, IRepository<Element2> _element2Repo, IRepository<Element3> _element3Repo,
+            IRepository<Project> _projectRepo, IRepository<Post> _postRepo, IRepository<Order> _orderRepo, IRepository<Inbox> _inboxRepo,
+            IRepository<SlideBar> _slideBarRepo, IRepository<Element1> _element1Repo, IRepository<Element2> _element2Repo, IRepository<Element3> _element3Repo,
             IRepository<Element4> _element4Repo, IRepository<Language> _languageRepo, IResize _resize, IEmail _email,
             IRepository<ElementProp> _elementpropRepo)
         {
@@ -85,8 +64,8 @@ namespace Brella.Controllers
             messageRepo = _messageRepo;
             projectRepo = _projectRepo;
             postRepo = _postRepo;
+            orderRepo = _orderRepo;
             inboxRepo = _inboxRepo;
-            provinceRepo = _provinceRepo;
             languageRepo = _languageRepo;
             elementpropRepo = _elementpropRepo;
             slideBarRepo = _slideBarRepo;
@@ -118,7 +97,7 @@ namespace Brella.Controllers
 
             TempData[success] = "گفت و گو با موفقیت حذف شد.";
 
-            return RedirectToAction(ChatManagement, Admin, new { pagenumber });
+            return RedirectToAction("ChatManagement", "Admin", new { pagenumber });
         }
 
         #endregion
@@ -164,7 +143,8 @@ namespace Brella.Controllers
                             projectRepo.Add(project);
                             projectRepo.SaveChange();
 
-                            // Check for languageId Equalution.
+                            #region Check for languageId Equalution.
+
                             foreach (var item in languageRepo.Get(null, null, null))
                             {
                                 if (item.title == language && x.id == item.id)
@@ -173,48 +153,90 @@ namespace Brella.Controllers
                                     break;
                                 }
                             }
+
+                            #endregion
                         }
                     });
                 });
             });
 
-            #region Send Project Email
-
-            string subject = "";
-            string message = "";
-            string url = Url.Action(ShowProjectBridge, Post, new { id = projectId }, "https");
-
-            switch (language)
+            if (model.IsEmail == true)
             {
-                case "fa-IR":
-                    subject = "بازدید از نمونه کار جدید";
-                    message = "کاربر گرامی، از جدید ترین نمونه کار ما از لینک زیر دیدن کنید:";
-                    break;
+                #region Send Project Email
 
-                case "en-US":
-                    subject = "Visit the new work sample";
-                    message = "Dear user, see the latest example of our work from the link below:";
-                    break;
+                string subject = "";
+                string message = "";
+                string url = Url.Action("ShowProjectBridge", "Post", new { id = projectId }, "https");
 
-                case "ar-AE":
-                    subject = "قم بزيارة نموذج العمل الجديد";
-                    message = "عزيزي المستخدم، شاهد أحدث مثال على عملنا من الرابط أدناه:";
-                    break;
+                switch (language)
+                {
+                    case "fa-IR":
+                        subject = "بازدید از نمونه کار جدید";
+                        message = "کاربر گرامی، از جدید ترین نمونه کار ما از لینک زیر دیدن کنید:";
+                        break;
 
-                case "it-IT":
-                    subject = "Visita il nuovo campione di lavoro";
-                    message = "Gentile utente, guarda l'ultimo esempio del nostro lavoro dal link sottostante:";
-                    break;
+                    case "en-US":
+                        subject = "Visit the new work sample";
+                        message = "Dear user, see the latest example of our work from the link below:";
+                        break;
+
+                    case "ar-AE":
+                        subject = "قم بزيارة نموذج العمل الجديد";
+                        message = "عزيزي المستخدم، شاهد أحدث مثال على عملنا من الرابط أدناه:";
+                        break;
+
+                    case "it-IT":
+                        subject = "Visita il nuovo campione di lavoro";
+                        message = "Gentile utente, guarda l'ultimo esempio del nostro lavoro dal link sottostante:";
+                        break;
+                }
+
+                SendEmail sendEmail = new(userManager, email);
+                await sendEmail.Send(url, subject, message);
+
+                #endregion
             }
 
-            SendEmail sendEmail = new(userManager, email);
-            await sendEmail.Send(url, subject, message);
+            //if (model.IsSms)
+            //{
+            //    #region Send Project SMS
 
-            #endregion
+            //    string subject = "";
+            //    string message = "";
+            //    string url = Url.Action("ShowProjectBridge", "Post", new { id = projectId }, "https");
+
+            //    switch (language)
+            //    {
+            //        case "fa-IR":
+            //            subject = "بازدید از نمونه کار جدید";
+            //            message = "کاربر گرامی، از جدید ترین نمونه کار ما از لینک زیر دیدن کنید:";
+            //            break;
+
+            //        case "en-US":
+            //            subject = "Visit the new work sample";
+            //            message = "Dear user, see the latest example of our work from the link below:";
+            //            break;
+
+            //        case "ar-AE":
+            //            subject = "قم بزيارة نموذج العمل الجديد";
+            //            message = "عزيزي المستخدم، شاهد أحدث مثال على عملنا من الرابط أدناه:";
+            //            break;
+
+            //        case "it-IT":
+            //            subject = "Visita il nuovo campione di lavoro";
+            //            message = "Gentile utente, guarda l'ultimo esempio del nostro lavoro dal link sottostante:";
+            //            break;
+            //    }
+
+            //    SendEmail sendEmail = new(userManager, email);
+            //    await sendEmail.Send(url, subject, message);
+
+            //    #endregion
+            //}
 
             TempData[success] = "نمونه کار مورد نظر با موفقیت ثبت شد.";
 
-            return RedirectToAction(nameof(InsertProject), Admin);
+            return RedirectToAction(nameof(InsertProject), "Admin");
         }
 
 
@@ -247,13 +269,13 @@ namespace Brella.Controllers
 
                 TempData[success] = "نمونه کار با موفقیت ویرایش شد.";
 
-                return RedirectToAction(ProjectOptions, Admin, new { pagenumber = 1 });
+                return RedirectToAction("ProjectOptions", "Admin", new { pagenumber = 1 });
             }
             catch
             {
                 TempData[error] = "ویرایش نمونه کار با شکست مواجه شد.";
 
-                return RedirectToAction(ProjectOptions, Admin, new { pagenumber = 1 });
+                return RedirectToAction("ProjectOptions", "Admin", new { pagenumber = 1 });
             }
         }
 
@@ -267,13 +289,13 @@ namespace Brella.Controllers
 
                 TempData[success] = "نمونه کار مورد نظر با موفقیت حذف شد.";
 
-                return RedirectToAction(ProjectOptions, Admin, new { pagenumber });
+                return RedirectToAction("ProjectOptions", "Admin", new { pagenumber });
             }
             catch
             {
                 TempData[success] = "حذف نمونه کار با شکست مواجه شد.";
 
-                return RedirectToAction(ProjectOptions, Admin, new { pagenumber });
+                return RedirectToAction("ProjectOptions", "Admin", new { pagenumber });
             }
         }
 
@@ -323,7 +345,8 @@ namespace Brella.Controllers
                                   postRepo.Add(post);
                                   postRepo.SaveChange();
 
-                                  // Check for languageId Equalution.
+                                  #region Check for languageId Equalution.
+
                                   foreach (var item in languageRepo.Get(null, null, null))
                                   {
                                       if (item.title == language && x.id == item.id)
@@ -332,50 +355,91 @@ namespace Brella.Controllers
                                           break;
                                       }
                                   }
+
+                                  #endregion
                               }
                           });
                      });
                  });
             });
 
-            #region Send Project Email
-
-            string subject = "";
-            string message = "";
-            string url = Url.Action(ShowProjectBridge, Post, new { id = postId }, "https");
-
-            switch (language)
+            if (model.IsEmail == true)
             {
-                case "fa-IR":
-                    subject = "بازدید از پست جدید";
-                    message = "کاربر گرامی، از جدید پست ما از لینک زیر دیدن کنید:";
-                    break;
+                #region Send Project Email
 
-                case "en-US":
-                    subject = "Visit the new post";
-                    message = "Dear user, visit our new post from the link below:";
-                    break;
+                string subject = "";
+                string message = "";
+                string url = Url.Action("ShowProjectBridge", "Post", new { id = postId }, "https");
 
-                case "ar-AE":
-                    subject = "قم بزيارة المنشور الجديد";
-                    message = "عزيزي المستخدم ، قم بزيارة منشورنا الجديد من الرابط أدناه:";
-                    break;
+                switch (language)
+                {
+                    case "fa-IR":
+                        subject = "بازدید از نمونه کار جدید";
+                        message = "کاربر گرامی، از جدید ترین نمونه کار ما از لینک زیر دیدن کنید:";
+                        break;
 
-                case "it-IT":
-                    subject = "Visita il nuovo post";
-                    message = "Gentile utente, visita il nostro nuovo post dal link sottostante:";
-                    break;
+                    case "en-US":
+                        subject = "Visit the new work sample";
+                        message = "Dear user, see the latest example of our work from the link below:";
+                        break;
+
+                    case "ar-AE":
+                        subject = "قم بزيارة نموذج العمل الجديد";
+                        message = "عزيزي المستخدم، شاهد أحدث مثال على عملنا من الرابط أدناه:";
+                        break;
+
+                    case "it-IT":
+                        subject = "Visita il nuovo campione di lavoro";
+                        message = "Gentile utente, guarda l'ultimo esempio del nostro lavoro dal link sottostante:";
+                        break;
+                }
+
+                SendEmail sendEmail = new(userManager, email);
+                await sendEmail.Send(url, subject, message);
+
+                #endregion
             }
 
-            SendEmail sendEmail = new(userManager, email);
-            await sendEmail.Send(url, subject, message);
+            //if (model.IsSms)
+            //{
+            //    #region Send Project SMS
 
-            #endregion
+            //    string subject = "";
+            //    string message = "";
+            //    string url = Url.Action("ShowProjectBridge", "Post", new { id = projectId }, "https");
 
+            //    switch (language)
+            //    {
+            //        case "fa-IR":
+            //            subject = "بازدید از نمونه کار جدید";
+            //            message = "کاربر گرامی، از جدید ترین نمونه کار ما از لینک زیر دیدن کنید:";
+            //            break;
+
+            //        case "en-US":
+            //            subject = "Visit the new work sample";
+            //            message = "Dear user, see the latest example of our work from the link below:";
+            //            break;
+
+            //        case "ar-AE":
+            //            subject = "قم بزيارة نموذج العمل الجديد";
+            //            message = "عزيزي المستخدم، شاهد أحدث مثال على عملنا من الرابط أدناه:";
+            //            break;
+
+            //        case "it-IT":
+            //            subject = "Visita il nuovo campione di lavoro";
+            //            message = "Gentile utente, guarda l'ultimo esempio del nostro lavoro dal link sottostante:";
+            //            break;
+            //    }
+
+            //    SendEmail sendEmail = new(userManager, email);
+            //    await sendEmail.Send(url, subject, message);
+
+            //    #endregion
+            //}
 
             TempData[success] = "پست مورد نظر با موفقیت ثبت شد.";
 
-            return RedirectToAction(nameof(InsertProject), Admin);
+            return RedirectToAction(nameof(InsertProject), "Admin");
         }
 
 
@@ -409,13 +473,13 @@ namespace Brella.Controllers
 
                 TempData[success] = "پست با موفقیت ویرایش شد.";
 
-                return RedirectToAction(PostOptions, Admin, new { pagenumber = 1 });
+                return RedirectToAction("PostOptions", "Admin", new { pagenumber = 1 });
             }
             catch
             {
                 TempData[error] = "ویرایش پست با شکست مواجه شد.";
 
-                return RedirectToAction(PostOptions, Admin, new { pagenumber = 1 });
+                return RedirectToAction("PostOptions", "Admin", new { pagenumber = 1 });
             }
         }
 
@@ -429,13 +493,13 @@ namespace Brella.Controllers
 
                 TempData[success] = "پست مورد نظر با موفقیت حذف شد.";
 
-                return RedirectToAction(PostOptions, Admin, new { pagenumber });
+                return RedirectToAction("PostOptions", "Admin", new { pagenumber });
             }
             catch
             {
                 TempData[success] = "حذف پست با شکست مواجه شد.";
 
-                return RedirectToAction(PostOptions, Admin, new { pagenumber });
+                return RedirectToAction("PostOptions", "Admin", new { pagenumber });
             }
         }
 
@@ -459,15 +523,36 @@ namespace Brella.Controllers
                 inboxRepo.Add(inbox);
                 inboxRepo.SaveChange();
 
-                TempData[success] = "پیغام شما با موفقیت ثبت شد.";
+                #region Multi language TempData
 
-                return RedirectToAction(ContactUs, Home);
+                switch (lang)
+                {
+                    case "fa-IR":
+                        TempData[success] = "پیغام شما با موفقیت ثبت شد.";
+                        break;
+
+                    case "en-US":
+                        TempData[success] = "Your message was successfully registered.";
+                        break;
+
+                    case "ar-AE":
+                        TempData[success] = "تم تسجيل رسالتك بنجاح.";
+                        break;
+
+                    case "it-IT":
+                        TempData[success] = "Il tuo messaggio è stato registrato con successo.";
+                        break;
+                }
+
+                #endregion
+
+                return RedirectToAction("ContactUs", "Home");
             }
             catch
             {
                 TempData[error] = "ثبت پیغام با شکست مواجه شد.";
 
-                return RedirectToAction(ContactUs, Home);
+                return RedirectToAction("ContactUs", "Home");
             }
         }
 
@@ -481,13 +566,13 @@ namespace Brella.Controllers
 
                 TempData[success] = "پیغام با موفقیت حذف شد.";
 
-                return RedirectToAction(InboxOptions, Admin, new { pagenumber });
+                return RedirectToAction("InboxOptions", "Admin", new { pagenumber });
             }
             catch
             {
                 TempData[success] = "پیغام با موفقیت حذف شد.";
 
-                return RedirectToAction(InboxOptions, Admin, new { pagenumber });
+                return RedirectToAction("InboxOptions", "Admin", new { pagenumber });
             }
         }
 
@@ -510,9 +595,147 @@ namespace Brella.Controllers
         #endregion
 
 
+        #region About Us CRUD
+
+        public IActionResult UpdateAboutUsProp(List<int> languageIds, List<string> AboutUsShortDeses, List<string> AboutUsLongDeses)
+        {
+            int langId = 1;
+            languageIds.Select(x => new { id = langId++, value = x }).ToList().ForEach(x =>
+            {
+                ElementProp elementProp = elementpropRepo.Get(y => y.languageId == x.value, null, null).FirstOrDefault();
+
+                int aboutUsShortDeses = 1;
+                AboutUsShortDeses.Select(y => new { id = aboutUsShortDeses++, value = y }).ToList().ForEach(y =>
+                {
+                    int aboutUsLongDeses = 1;
+                    AboutUsLongDeses.Select(z => new { id = aboutUsLongDeses++, value = z }).ToList().ForEach(z =>
+                    {
+                        if (x.id == y.id && y.id == z.id)
+                        {
+                            elementProp.aboutUsShortDes = y.value;
+                            elementProp.aboutUsLongDes = z.value;
+
+                            elementpropRepo.Update(elementProp);
+                            elementpropRepo.SaveChange();
+                        }
+                    });
+                });
+            });
+
+            TempData[success] = ElementUpdate;
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        #endregion
+
+
+        #region Contact Us CRUD
+
+        public IActionResult UpdateContactUsProp(List<int> languageIds, List<string> ContactUsTitles, List<string> ContactUsDescriptions)
+        {
+            int langId = 1;
+            languageIds.Select(x => new { id = langId++, value = x }).ToList().ForEach(x =>
+            {
+                ElementProp elementProp = elementpropRepo.Get(y => y.languageId == x.value, null, null).FirstOrDefault();
+
+                int contactUsTitles = 1;
+                ContactUsTitles.Select(y => new { id = contactUsTitles++, value = y }).ToList().ForEach(y =>
+                {
+                    int contactUsDescriptions = 1;
+                    ContactUsDescriptions.Select(z => new { id = contactUsDescriptions++, value = z }).ToList().ForEach(z =>
+                    {
+                        if (x.id == y.id && y.id == z.id)
+                        {
+                            elementProp.contactUsTitle = y.value;
+                            elementProp.contactUsDescription = z.value;
+
+                            elementpropRepo.Update(elementProp);
+                            elementpropRepo.SaveChange();
+                        }
+                    });
+                });
+            });
+
+            TempData[success] = ElementUpdate;
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        #endregion
+
+
+        #region Order CRUD
+
+        public IActionResult UpdateOrderProp(List<int> languageIds, List<string> OrderDescription)
+        {
+            int langId = 1;
+            languageIds.Select(x => new { id = langId++, value = x }).ToList().ForEach(x =>
+            {
+                ElementProp elementProp = elementpropRepo.Get(y => y.languageId == x.value, null, null).FirstOrDefault();
+
+                int orderDescription = 1;
+                OrderDescription.Select(y => new { id = orderDescription++, value = y }).ToList().ForEach(y =>
+                {
+                    if (x.id == y.id)
+                    {
+                        elementProp.OrderDescription = y.value;
+
+                        elementpropRepo.Update(elementProp);
+                        elementpropRepo.SaveChange();
+                    }
+                });
+            });
+
+            TempData[success] = ElementUpdate;
+
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        public async Task<IActionResult> UserCostAsync(string userId, int price)
+        {
+            try
+            {
+                ApplicationUser user = await userManager.FindByIdAsync(userId);
+
+                user.price = price;
+                await userManager.UpdateAsync(user);
+
+                TempData[success] = "هزینه مورد نظر اعمال شد";
+
+                return RedirectToAction("AdminSideChatsBridge", "Admin", new { clientId = userId });
+            }
+            catch
+            {
+                TempData[error] = "ویرایش اطلاعات با شکست موواجه شد";
+
+                return RedirectToAction("AdminSideChatsBridge", "Admin", new { clientId = userId });
+            }
+        }
+
+
+        public int OrderConfirmationToggle(int OrderId)
+        {
+            Order order = orderRepo.Find(OrderId);
+
+            if (!order.IsAdminConfirmed)
+                order.IsAdminConfirmed = true;
+            else
+                order.IsAdminConfirmed = false;
+
+            orderRepo.Update(order);
+            orderRepo.SaveChange();
+
+            return orderRepo.Get(x => x.IsAdminConfirmed == false, null, null).Count;
+        }
+
+        #endregion
+
+
         #region Header
 
-        public IActionResult UpdateHeaderProp(List<int> languageIds, List<string> Address, List<string> Email,
+        public IActionResult UpdateHeaderProp(List<int> languageIds, IFormFile logo, List<string> Address, List<string> Email,
             List<string> PhoneNumber, List<string> InstaLink, List<string> TelegramLink)
         {
             int langId = 1;
@@ -537,6 +760,15 @@ namespace Brella.Controllers
                                 {
                                     if (x.id == y.id && y.id == z.id && z.id == m.id && m.id == n.id && n.id == k.id)
                                     {
+                                        if (System.IO.Path.GetExtension(logo.FileName) != ".jpg" ||
+                                            System.IO.Path.GetExtension(logo.FileName) != ".jpeg" ||
+                                            System.IO.Path.GetExtension(logo.FileName) != ".png")
+                                        {
+                                            byte[] b = new byte[logo.Length];
+                                            logo.OpenReadStream().Read(b, 0, b.Length);
+
+                                            elementProp.logo = resize.Resizer(b, 148, 50, ImageFormat.Jpeg);
+                                        }
                                         elementProp.address = y.value;
                                         elementProp.email = z.value;
                                         elementProp.phoneNumber = m.value;
@@ -555,7 +787,7 @@ namespace Brella.Controllers
 
             TempData[success] = ElementUpdate;
 
-            return RedirectToAction(Index, Home);
+            return RedirectToAction("Index", "Home");
         }
 
         #endregion
@@ -610,13 +842,13 @@ namespace Brella.Controllers
 
                 TempData[success] = ElementSuccess;
 
-                return RedirectToAction(SlideBarOptions, Admin);
+                return RedirectToAction("SlideBarOptions", "Admin");
             }
             catch
             {
                 TempData[error] = ElementError;
 
-                return RedirectToAction(SlideBarOptions, Admin);
+                return RedirectToAction("SlideBarOptions", "Admin");
             }
         }
 
@@ -630,13 +862,13 @@ namespace Brella.Controllers
 
                 TempData[success] = ElementRemove;
 
-                return RedirectToAction(SlideBarOptions, Admin);
+                return RedirectToAction("SlideBarOptions", "Admin");
             }
             catch
             {
                 TempData[error] = ElementError;
 
-                return RedirectToAction(SlideBarOptions, Admin);
+                return RedirectToAction("SlideBarOptions", "Admin");
             }
         }
 
@@ -671,251 +903,13 @@ namespace Brella.Controllers
 
                 TempData[success] = ElementUpdate;
 
-                return RedirectToAction(SlideBarOptions, Admin);
+                return RedirectToAction("SlideBarOptions", "Admin");
             }
             catch
             {
                 TempData[error] = ElementError;
 
-                return RedirectToAction(SlideBarOptions, Admin);
-            }
-        }
-
-        #endregion
-
-
-        #region About Us CRUD
-
-        public IActionResult UpdateAboutUsProp(List<int> languageIds, List<string> AboutUsShortDeses, List<string> AboutUsLongDeses)
-        {
-            int langId = 1;
-            languageIds.Select(x => new { id = langId++, value = x }).ToList().ForEach(x =>
-            {
-                ElementProp elementProp = elementpropRepo.Get(y => y.languageId == x.value, null, null).FirstOrDefault();
-
-                int aboutUsShortDeses = 1;
-                AboutUsShortDeses.Select(y => new { id = aboutUsShortDeses++, value = y }).ToList().ForEach(y =>
-                {
-                    int aboutUsLongDeses = 1;
-                    AboutUsLongDeses.Select(z => new { id = aboutUsLongDeses++, value = z }).ToList().ForEach(z =>
-                    {
-                        if (x.id == y.id && y.id == z.id)
-                        {
-                            elementProp.aboutUsShortDes = y.value;
-                            elementProp.aboutUsLongDes = z.value;
-
-                            elementpropRepo.Update(elementProp);
-                            elementpropRepo.SaveChange();
-                        }
-                    });
-                });
-            });
-
-            TempData[success] = ElementUpdate;
-
-            return RedirectToAction(Index, Home);
-        }
-
-        #endregion
-
-
-        #region Contact Us CRUD
-
-        public IActionResult UpdateContactUsProp(List<int> languageIds, List<string> ContactUsTitles, List<string> ContactUsDescriptions)
-        {
-            int langId = 1;
-            languageIds.Select(x => new { id = langId++, value = x }).ToList().ForEach(x =>
-            {
-                ElementProp elementProp = elementpropRepo.Get(y => y.languageId == x.value, null, null).FirstOrDefault();
-
-                int contactUsTitles = 1;
-                ContactUsTitles.Select(y => new { id = contactUsTitles++, value = y }).ToList().ForEach(y =>
-                {
-                    int contactUsDescriptions = 1;
-                    ContactUsDescriptions.Select(z => new { id = contactUsDescriptions++, value = z }).ToList().ForEach(z =>
-                    {
-                        if (x.id == y.id && y.id == z.id)
-                        {
-                            elementProp.contactUsTitle = y.value;
-                            elementProp.contactUsDescription = z.value;
-
-                            elementpropRepo.Update(elementProp);
-                            elementpropRepo.SaveChange();
-                        }
-                    });
-                });
-            });
-
-            TempData[success] = ElementUpdate;
-
-            return RedirectToAction(Index, Home);
-        }
-
-        #endregion
-
-
-        #region Contract CRUD
-
-        public IActionResult UpdateContractProp(List<int> languageIds, List<string> ContractDescription)
-        {
-            int langId = 1;
-            languageIds.Select(x => new { id = langId++, value = x }).ToList().ForEach(x =>
-            {
-                ElementProp elementProp = elementpropRepo.Get(y => y.languageId == x.value, null, null).FirstOrDefault();
-
-                int contractDescription = 1;
-                ContractDescription.Select(y => new { id = contractDescription++, value = y }).ToList().ForEach(y =>
-                {
-                    if (x.id == y.id)
-                    {
-                        elementProp.contractDescription = y.value;
-
-                        elementpropRepo.Update(elementProp);
-                        elementpropRepo.SaveChange();
-                    }
-                });
-            });
-
-            TempData[success] = ElementUpdate;
-
-            return RedirectToAction(Index, Home);
-        }
-
-
-        public IActionResult UpdateContractFileProp(int elementPropId, IFormFile file, int price)
-        {
-            try
-            {
-                ElementProp elementProp = elementpropRepo.Find(elementPropId);
-
-                if (file != null)
-                {
-                    if (Path.GetExtension(file.FileName) == ".pdf")
-                    {
-                        byte[] b = new byte[file.Length];
-                        file.OpenReadStream().Read(b, 0, b.Length);
-
-                        elementProp.file = b;
-                    }
-                }
-                elementProp.price = price;
-
-                elementpropRepo.Update(elementProp);
-                elementpropRepo.SaveChange();
-
-                TempData[success] = ElementUpdate;
-
-                return RedirectToAction(ContractFileProp, Admin);
-            }
-            catch
-            {
-                TempData[error] = ElementError;
-
-                return RedirectToAction(ContractFileProp, Admin);
-            }
-        }
-
-        #endregion
-
-
-        #region Transportation CRUD
-
-        public IActionResult UpdateTransportationProp(List<int> languageIds, List<string> TransportationDescription)
-        {
-            int langId = 1;
-            languageIds.Select(x => new { id = langId++, value = x }).ToList().ForEach(x =>
-            {
-                ElementProp elementProp = elementpropRepo.Get(y => y.languageId == x.value, null, null).FirstOrDefault();
-
-                int transportationDescription = 1;
-                TransportationDescription.Select(y => new { id = transportationDescription++, value = y }).ToList().ForEach(y =>
-                {
-                    if (x.id == y.id)
-                    {
-                        elementProp.transportationDescription = y.value;
-
-                        elementpropRepo.Update(elementProp);
-                        elementpropRepo.SaveChange();
-                    }
-                });
-            });
-
-            TempData[success] = ElementUpdate;
-
-            return RedirectToAction(Index, Home);
-        }
-
-        #endregion
-
-
-        #region Province
-
-        public IActionResult InsertProvince(ProvinceViewModel model)
-        {
-            try
-            {
-                provinceRepo.Add(new Province
-                {
-                    name = model.name,
-                    price = model.price
-                });
-
-                provinceRepo.SaveChange();
-
-                TempData[success] = ElementSuccess;
-
-                return RedirectToAction(nameof(ProvinceOptions), Admin);
-            }
-            catch
-            {
-                TempData[error] = ElementError;
-
-                return RedirectToAction(nameof(ProvinceOptions), Admin);
-            }
-        }
-
-
-        public IActionResult DeleteProvince(int id)
-        {
-            try
-            {
-                provinceRepo.Remove(id);
-                provinceRepo.SaveChange();
-
-                TempData[success] = ElementRemove;
-
-                return RedirectToAction(ProvinceOptions, Admin);
-            }
-            catch
-            {
-                TempData[error] = ElementError;
-
-                return RedirectToAction(ProvinceOptions, Admin);
-            }
-        }
-
-
-        public IActionResult UpdateProvince(int id, string name, int price)
-        {
-            var province = provinceRepo.Find(id);
-
-            province.name = name;
-            province.price = price;
-
-            try
-            {
-                provinceRepo.Update(province);
-                provinceRepo.SaveChange();
-
-                TempData[success] = ElementUpdate;
-
-                return RedirectToAction(ProvinceOptions, Admin);
-            }
-            catch
-            {
-                TempData[error] = ElementError;
-
-                return RedirectToAction(ProvinceOptions, Admin);
+                return RedirectToAction("SlideBarOptions", "Admin");
             }
         }
 
@@ -957,7 +951,7 @@ namespace Brella.Controllers
 
             TempData[success] = ElementUpdate;
 
-            return RedirectToAction(Index, Home);
+            return RedirectToAction("Index", "Home");
         }
 
 
@@ -992,13 +986,13 @@ namespace Brella.Controllers
 
                 TempData[success] = ElementSuccess;
 
-                return RedirectToAction(nameof(Element1Options), Admin);
+                return RedirectToAction("Element1Options", "Admin");
             }
             catch
             {
                 TempData[error] = ElementError;
 
-                return RedirectToAction(nameof(Element1Options), Admin);
+                return RedirectToAction("Element1Options", "Admin");
             }
         }
 
@@ -1012,13 +1006,13 @@ namespace Brella.Controllers
 
                 TempData[success] = ElementRemove;
 
-                return RedirectToAction(Element1Options, Admin);
+                return RedirectToAction("Element1Options", "Admin");
             }
             catch
             {
                 TempData[error] = ElementError;
 
-                return RedirectToAction(Element1Options, Admin);
+                return RedirectToAction("Element1Options", "Admin");
             }
         }
 
@@ -1037,13 +1031,13 @@ namespace Brella.Controllers
 
                 TempData[success] = ElementUpdate;
 
-                return RedirectToAction(Element1Options, Admin);
+                return RedirectToAction("Element1Options", "Admin");
             }
             catch
             {
                 TempData[error] = ElementError;
 
-                return RedirectToAction(Element1Options, Admin);
+                return RedirectToAction("Element1Options", "Admin");
             }
         }
 
@@ -1098,7 +1092,7 @@ namespace Brella.Controllers
 
             TempData[success] = ElementUpdate;
 
-            return RedirectToAction(Index, Home);
+            return RedirectToAction("Index", "Home");
         }
 
 
@@ -1133,13 +1127,13 @@ namespace Brella.Controllers
 
                 TempData[success] = ElementSuccess;
 
-                return RedirectToAction(nameof(Element2Options), Admin);
+                return RedirectToAction("Element2Options", "Admin");
             }
             catch
             {
                 TempData[error] = ElementError;
 
-                return RedirectToAction(nameof(Element2Options), Admin);
+                return RedirectToAction("Element2Options", "Admin");
             }
         }
 
@@ -1153,13 +1147,13 @@ namespace Brella.Controllers
 
                 TempData[success] = ElementRemove;
 
-                return RedirectToAction(Element2Options, Admin);
+                return RedirectToAction("Element2Options", "Admin");
             }
             catch
             {
                 TempData[error] = ElementError;
 
-                return RedirectToAction(Element2Options, Admin);
+                return RedirectToAction("Element2Options", "Admin");
             }
         }
 
@@ -1178,13 +1172,13 @@ namespace Brella.Controllers
 
                 TempData[success] = ElementUpdate;
 
-                return RedirectToAction(Element2Options, Admin);
+                return RedirectToAction("Element2Options", "Admin");
             }
             catch
             {
                 TempData[error] = ElementError;
 
-                return RedirectToAction(Element2Options, Admin);
+                return RedirectToAction("Element2Options", "Admin");
             }
         }
 
@@ -1239,7 +1233,7 @@ namespace Brella.Controllers
 
             TempData[success] = ElementUpdate;
 
-            return RedirectToAction(Index, Home);
+            return RedirectToAction("Index", "Home");
         }
 
 
@@ -1274,13 +1268,13 @@ namespace Brella.Controllers
 
                 TempData[success] = ElementSuccess;
 
-                return RedirectToAction(nameof(Element3Options), Admin);
+                return RedirectToAction("Element3Options", "Admin");
             }
             catch
             {
                 TempData[error] = ElementError;
 
-                return RedirectToAction(nameof(Element3Options), Admin);
+                return RedirectToAction("Element3Options", "Admin");
             }
         }
 
@@ -1294,13 +1288,13 @@ namespace Brella.Controllers
 
                 TempData[success] = ElementRemove;
 
-                return RedirectToAction(Element3Options, Admin);
+                return RedirectToAction("Element3Options", "Admin");
             }
             catch
             {
                 TempData[error] = ElementError;
 
-                return RedirectToAction(Element3Options, Admin);
+                return RedirectToAction("Element3Options", "Admin");
             }
         }
 
@@ -1319,13 +1313,13 @@ namespace Brella.Controllers
 
                 TempData[success] = ElementUpdate;
 
-                return RedirectToAction(Element3Options, Admin);
+                return RedirectToAction("Element3Options", "Admin");
             }
             catch
             {
                 TempData[error] = ElementError;
 
-                return RedirectToAction(Element3Options, Admin);
+                return RedirectToAction("Element3Options", "Admin");
             }
         }
 
@@ -1375,7 +1369,7 @@ namespace Brella.Controllers
 
             TempData[success] = ElementUpdate;
 
-            return RedirectToAction(Index, Home);
+            return RedirectToAction("Index", "Home");
         }
 
 
@@ -1410,13 +1404,13 @@ namespace Brella.Controllers
 
                 TempData[success] = ElementSuccess;
 
-                return RedirectToAction(nameof(Element4Options), Admin);
+                return RedirectToAction("Element4Options", "Admin");
             }
             catch
             {
                 TempData[error] = ElementError;
 
-                return RedirectToAction(nameof(Element4Options), Admin);
+                return RedirectToAction("Element4Options", "Admin");
             }
         }
 
@@ -1430,13 +1424,13 @@ namespace Brella.Controllers
 
                 TempData[success] = ElementRemove;
 
-                return RedirectToAction(Element4Options, Admin);
+                return RedirectToAction("Element4Options", "Admin");
             }
             catch
             {
                 TempData[error] = ElementError;
 
-                return RedirectToAction(Element4Options, Admin);
+                return RedirectToAction("Element4Options", "Admin");
             }
         }
 
@@ -1455,13 +1449,13 @@ namespace Brella.Controllers
 
                 TempData[success] = ElementUpdate;
 
-                return RedirectToAction(Element4Options, Admin);
+                return RedirectToAction("Element4Options", "Admin");
             }
             catch
             {
                 TempData[error] = ElementError;
 
-                return RedirectToAction(Element4Options, Admin);
+                return RedirectToAction("Element4Options", "Admin");
             }
         }
 
@@ -1508,7 +1502,7 @@ namespace Brella.Controllers
 
             TempData[success] = ElementUpdate;
 
-            return RedirectToAction(Index, Home);
+            return RedirectToAction("Index", "Home");
         }
 
         #endregion

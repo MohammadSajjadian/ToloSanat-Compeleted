@@ -18,15 +18,15 @@
 <section style="margin-top: 15px">
     <div class="w-100 pb-100 position-relative">
         <div class="container">
-            <form asp-action="updatetransportationprop" asp-controller="crud" class="contact-form text-center w-100">
+            <form asp-action="updateorderprop" asp-controller="crud" class="contact-form text-center w-100">
                 @foreach (var item in Model)
                 {
                     <h3 style="margin-top: 30px">ویرایش @item.language.faTitle توضیحات</h3>
 
                     <div class="row" style="margin-top: 20px">
                         <div class="col-md-12 col-sm-12 col-lg-12">
-                            <label class="d-block">توضیحات درباره حمل و نقل</label>
-                            <textarea name="transportationDescription" class="fname" type="text">@item.transportationDescription</textarea>
+                            <label class="d-block">توضیحات درباره سفارش</label>
+                            <textarea name="OrderDescription" class="fname" type="text">@item.OrderDescription</textarea>
                         </div>
                     </div>
                     <input name="languageIds" value="@item.languageId" hidden />

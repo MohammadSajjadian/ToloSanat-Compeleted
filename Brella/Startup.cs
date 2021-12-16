@@ -153,12 +153,13 @@ namespace Brella
                 await roleManager.CreateAsync(role);
             }
 
-            var user = await userManager.FindByNameAsync("Admin");
+            var user = await userManager.FindByNameAsync("mohammad.you41@gmail.com");
             if (user == null)
             {
                 user = new ApplicationUser()
                 {
                     UserName = "mohammad.you41@gmail.com",
+                    PhoneNumber = "09178486041",
                     Email = "mohammad.you41@gmail.com",
                     name = "admin",
                     family = "",

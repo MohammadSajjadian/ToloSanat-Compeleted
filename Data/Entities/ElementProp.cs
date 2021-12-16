@@ -13,6 +13,7 @@ namespace Data.Entities
 
         #region Header
 
+        public byte[] logo { get; set; }
         public string address { get; set; }
         public string email { get; set; }
         public string phoneNumber { get; set; }
@@ -81,23 +82,9 @@ namespace Data.Entities
 
         #endregion
 
-        #region Contract
+        #region Order
 
-        public string contractDescription { get; set; }
-
-        #endregion
-
-        #region Transportation
-
-        public string transportationDescription { get; set; }
-
-        #endregion
-
-        #region File
-
-        public byte[] file { get; set; }
-
-        public int price { get; set; }
+        public string OrderDescription { get; set; }
 
         #endregion
 

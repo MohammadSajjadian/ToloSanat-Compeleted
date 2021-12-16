@@ -3,7 +3,7 @@
     ViewData["Title"] = "نتیجه خرید";
 }
 
-@model TransportationPayers
+@model Order
 
 <section>
     <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
@@ -24,7 +24,8 @@
                 <td class="text-center"><b>خریدار</b></td>
                 <td class="text-center"><b>زمان</b></td>
                 <td class="text-center"><b>کد رهگیری</b></td>
-                <td class="text-center"><b>استان</b></td>
+                <td class="text-center"><b>ایمیل</b></td>
+                <td class="text-center"><b>شماره تلفن</b></td>
                 <td class="text-center"><b>قیمت</b></td>
             </tr>
         </thead>
@@ -34,7 +35,8 @@
                 <td class="text-center"><b>@($"{Model.applicationUser.name} {Model.applicationUser.family}")</b></td>
                 <td class="text-center"><b>@Model.payTime</b></td>
                 <th class="text-center">@Model.trackingCode</th>
-                <th class="text-center">@Model.province.name</th>
+                <th class="text-center">@Model.applicationUser.Email</th>
+                <th class="text-center">@Model.applicationUser.PhoneNumber</th>
                 <th class="text-center">@($"{Model.price:0,0} تومان")</th>
             </tr>
         </tbody>
