@@ -4,17 +4,18 @@
 }
 
 @model ElementProp
-
+@inject UserManager<ApplicationUser> userManager
+@{ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name); }
 
 <section>
     <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
         <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
         <div class="container">
             <div class="page-top-wrap w-100">
-                <h1 class="mb-0">حمل و نقل</h1>
+                <h1 class="mb-0">هزینه تصویب شده</h1>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
-                    <li class="breadcrumb-item active"><a asp-action="transportation" asp-controller="payment" asp-route-pagenumber="1" title="">حمل و نقل</a></li>
+                    <li class="breadcrumb-item active"><a asp-action="order" asp-controller="payment" title="">هزینه تصویب شده</a></li>
                 </ol>
             </div>
         </div>
@@ -29,24 +30,18 @@
                     <div class="col-md-12 col-sm-12 col-lg-10">
                         <div class="about-content-wrap w-100">
                             <div class="row" style="margin-bottom: 30px">
-                                @Html.Raw(Model.transportationDescription)
+                                @Html.Raw(Model.OrderDescription)
                             </div>
-                            <form asp-action="transportationPayment">
-                                <select id="province" name="provinceId" class="form-control col-6">
-                                    <option value="-1">-- شهر خود را انتخاب کنید --</option>
-                                    @foreach (var item in ViewData["Provinces"] as List<Province>)
-                                    {
-                                        <option value="@item.id">@item.name</option>
-                                    }
-                                </select>
 
-                                <br />
+                            @if (user.price != 0)
+                            {
+                                <label style="font-size: 20px"><b>قیمت: @($"{user.price:0,0} تومان")</b></label>
+                            }
 
-                                <label style="font-size: 25px; margin-top: 20px" id="price"></label>
-
+                            <form asp-action="orderPayment">
                                 <div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 30px">
                                     <button class="thm-btn thm-bg">
-                                        پرداخت<i class="flaticon-arrow-pointing-to-left"></i>
+                                        ورود به درگاه<i class="flaticon-arrow-pointing-to-left"></i>
                                     </button>
                                 </div>
                             </form>
@@ -57,13 +52,3 @@
         </div>
     </div>
 </section>
-
-<script>
-    $(function () {
-        $(province).change(function () {
-            $.post('/Payment/FindProvincePrice', { provinceId: $(province).val() }, function (value) {
-                $(price).html(value);
-            })
-        })
-    })
-</script>

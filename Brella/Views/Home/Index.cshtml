@@ -92,7 +92,7 @@ i == 3 ? "flaticon-carpenter" : i == 4 ? "flaticon-jigsaw" : "flaticon-wheel-saw
             <div class="sec-title w-100">
                 <div class="sec-title-inner d-inline-block">
                     <span class="d-block thm-clr">کارهای ما</span>
-                    <h3 class="mb-0">آخرین پروژه های ما</h3>
+                    <a asp-action="index" asp-controller="project"><h3 style="color: white" class="mb-0">آخرین پروژه های ما</h3></a>
                 </div>
             </div>
         </div>
@@ -106,7 +106,7 @@ i == 3 ? "flaticon-carpenter" : i == 4 ? "flaticon-jigsaw" : "flaticon-wheel-saw
                         <div class="col-md-4 col-sm-6 col-lg-3">
                             <div class="proj-box position-relative w-100">
                                 <div class="proj-thumb overflow-hidden w-100">
-                                    <a href="project-detail.html" title="">
+                                    <a asp-action="projectdetailbridge" asp-controller="project" asp-route-id="@item.id" title="">
                                         <img class="img-fluid w-100" src="@($"data:image/jpeg;base64,{Convert.ToBase64String(item.thumbNail)}")"
                                              alt="Project Image 1">
                                     </a>
@@ -116,7 +116,7 @@ i == 3 ? "flaticon-carpenter" : i == 4 ? "flaticon-jigsaw" : "flaticon-wheel-saw
 j == 4 ? "flaticon-lighthouse" : j == 5 ? "flaticon-worker" : j == 6 ? "flaticon-engineer-2" :
 j == 7 ? "flaticon-file" : j == 8 ? "flaticon-electric-tower" : "flaticon-helmet")"></i>
                                     <h3 class="mb-0">
-                                        <a href="project-detail.html" title="">@item.title</a>
+                                        <a asp-action="projectdetailbridge" asp-controller="project" asp-route-id="@item.id" title="">@item.title</a>
                                     </h3>
                                 </div>
                             </div>
@@ -323,7 +323,7 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
                             <div class="col-md-6 col-sm-6 col-lg-4">
                                 <div class="post-box w-100 text-center">
                                     <div class="post-img overflow-hidden w-100">
-                                        <a href="blog-detail.html" title="">
+                                        <a asp-action="blogdetailbridge" asp-controller="blog" asp-route-id="@item.id" title="">
                                             <img class="img-fluid w-100"
                                                  src="@($"data:image/jpeg;base64,{Convert.ToBase64String(item.thumbNail)}")"
                                                  alt="Post Image 1">
@@ -331,7 +331,7 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
                                     </div>
                                     <div class="post-info w-100">
                                         <h3 class="mb-0">
-                                            <a href="blog-detail.html" title="">@item.title</a>
+                                            <a asp-action="blogdetailbridge" asp-controller="blog" asp-route-id="@item.id" title="">@item.title</a>
                                         </h3>
                                         @Html.Raw(item.shortDecpription)
                                         <div class="post-info-bottom d-flex flex-wrap w-100">
@@ -353,7 +353,7 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
                 </div>
             </div><!-- Blog Wrap -->
             <div class="view-all w-100 text-center">
-                <a class="thm-btn thm-bg" href="blog.html" title="">
+                <a class="thm-btn thm-bg" asp-action="index" asp-controller="blog" title="">
                     مشاهده همه اخبار<i class="flaticon-arrow-pointing-to-left"></i>
                 </a>
             </div><!-- View All -->

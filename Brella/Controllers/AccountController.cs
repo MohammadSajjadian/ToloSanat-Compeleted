@@ -22,9 +22,6 @@ namespace Brella.Controllers
         private const string error = "error";
         private const string warning = "warning";
         private const string info = "info";
-        private const string Index = "Index";
-        private const string Home = "Home";
-        private const string Account = "Account";
 
         #endregion
 
@@ -35,21 +32,18 @@ namespace Brella.Controllers
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IRepository<Group> groupRepo;
         private readonly IRepository<Message> messagesRepo;
-        private readonly IRepository<ContractPayers> contractPayersRepo;
-        private readonly IRepository<TransportationPayers> transportationPayersRepo;
+        private readonly IRepository<Order> orderRepo;
         private readonly IEmail mail;
         private readonly string lang = CultureInfo.CurrentCulture.Name;
 
         public AccountController(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager,
-            IRepository<Group> _groupRepo, IRepository<Message> _messagesRepo, IRepository<ContractPayers> _contractPayersRepo,
-            IRepository<TransportationPayers> _transportationPayersRepo, IEmail _mail)
+            IRepository<Group> _groupRepo, IRepository<Message> _messagesRepo, IRepository<Order> _orderRepo, IEmail _mail)
         {
             userManager = _userManager;
             signInManager = _signInManager;
             groupRepo = _groupRepo;
             messagesRepo = _messagesRepo;
-            contractPayersRepo = _contractPayersRepo;
-            transportationPayersRepo = _transportationPayersRepo;
+            orderRepo = _orderRepo;
             mail = _mail;
         }
 
@@ -69,6 +63,7 @@ namespace Brella.Controllers
             var user = new ApplicationUser()
             {
                 UserName = model.userName,
+                PhoneNumber = model.phoneNumber,
                 Email = model.userName,
                 name = model.name,
                 family = model.family,
@@ -82,25 +77,122 @@ namespace Brella.Controllers
 
                 var address = Url.Action(nameof(AccountConfirm), "Account", new { userId = user.Id, token = token }, "https");
 
+                #region Multi language SMS
+
                 if (user.name != null && user.family != null)
-                    await mail.Send("تایید ایمیل", $"{user.name} {user.family}" +
-                        $" عزیز <br/> جهت تایید ایمیل خود و دسترسی به آخرین بروزرسانی های سایت " +
-                        $"<a href={address}>اینجا </a> کلیک کنید.", user.Email);
+                {
+                    string subject = "";
+                    string message = "";
+
+                    switch (lang)
+                    {
+                        case "fa-IR":
+                            subject = "تایید ایمیل";
+                            message = $"{user.name} {user.family} عزیز <br/> جهت تایید ایمیل خود و دسترسی به آخرین بروزرسانی های سایت <a href={address}>اینجا</a> کلیک کنید.";
+                            break;
+
+                        case "en-US":
+                            subject = "Email confirmation";
+                            message = $"{user.name} {user.family} Dear <br/> Click <a href={address}> here </a> to confirm your email and access the latest site updates.";
+                            break;
+
+                        case "ar-AE":
+                            subject = "تأكيد البريد الإلكتروني";
+                            message = $"{user.name} {user.family} عزيزي <br/> انقر <a href={address}> هنا </a> لتأكيد بريدك الإلكتروني والوصول إلى آخر تحديثات الموقع.";
+                            break;
+
+                        case "it-IT":
+                            subject = "Conferma via email";
+                            message = $"{user.name} {user.family} Gentile <br/> Fai clic <a href={address}> qui </a> per confermare la tua email e accedere agli ultimi aggiornamenti del sito.";
+                            break;
+                    }
+                    await mail.Send(subject, message, user.Email);
+                }
                 else
-                    await mail.Send("تایید ایمیل", $"کاربر عزیز <br/> جهت تایید ایمیل خود و" +
-                        $" دسترسی به آخرین بروزرسانی های سایت <a href={address}>اینجا </a> کلیک کنید.", user.Email);
+                {
+                    string subject = "";
+                    string message = "";
+
+                    switch (lang)
+                    {
+                        case "fa-IR":
+                            subject = "تایید ایمیل";
+                            message = $"کاربر عزیز <br/> جهت تایید ایمیل خود و دسترسی به آخرین بروزرسانی های سایت <a href={address}>اینجا</a> کلیک کنید.";
+                            break;
+
+                        case "en-US":
+                            subject = "Email confirmation";
+                            message = $"Dear user <br/> Click <a href={address}> here </a> to confirm your email and access the latest site updates.";
+                            break;
+
+                        case "ar-AE":
+                            subject = "تأكيد البريد الإلكتروني";
+                            message = $"عزيزي المستخدم <br/> انقر <a href={address}> هنا </a> لتأكيد بريدك الإلكتروني والوصول إلى آخر تحديثات الموقع.";
+                            break;
+
+                        case "it-IT":
+                            subject = "Conferma via email";
+                            message = $"Gentile utente <br/> Fai clic <a href={address}> qui </a> per confermare la tua email e accedere agli ultimi aggiornamenti del sito.";
+                            break;
+                    }
+                    await mail.Send(subject, message, user.Email);
+                }
+
+                #endregion
 
                 user.tokenCreationTime = DateTime.Now;
 
                 await userManager.UpdateAsync(user);
 
-                TempData[info] = "ایمیل تایید حساب کاربری برای شما ارسال شد.";
+                #region Multi language TempData
 
-                return RedirectToAction(Index, Home);
+                switch (lang)
+                {
+                    case "fa-IR":
+                        TempData[info] = "ایمیل تایید حساب کاربری برای شما ارسال شد.";
+                        break;
+
+                    case "en-US":
+                        TempData[info] = "An account confirmation email has been sent to you.";
+                        break;
+
+                    case "ar-AE":
+                        TempData[info] = "تم إرسال بريد إلكتروني لتأكيد الحساب إليك.";
+                        break;
+
+                    case "it-IT":
+                        TempData[info] = "Ti è stata inviata un'email di conferma dell'account.";
+                        break;
+                }
+
+                #endregion
+
+                return RedirectToAction("Index", "Home");
             }
             else
             {
-                TempData[error] = "رمزعبور نامعتبر است.";
+                #region Multi language TempData
+
+                switch (lang)
+                {
+                    case "fa-IR":
+                        TempData[info] = "رمزعبور نامعتبر است.";
+                        break;
+
+                    case "en-US":
+                        TempData[info] = "Invalid password.";
+                        break;
+
+                    case "ar-AE":
+                        TempData[info] = "رمز مرور خاطئ.";
+                        break;
+
+                    case "it-IT":
+                        TempData[info] = "Password non valida.";
+                        break;
+                }
+
+                #endregion
 
                 return RedirectToAction(nameof(Register));
             }
@@ -118,24 +210,87 @@ namespace Brella.Controllers
                 {
                     await userManager.AddToRoleAsync(user, "user");
 
-                    TempData[success] = "حساب کاربری شما با موفقیت تایید شد.";
+                    #region Multi language TempData
 
-                    return RedirectToAction(Index, Home);
+                    switch (lang)
+                    {
+                        case "fa-IR":
+                            TempData[success] = "حساب کاربری شما با موفقیت تایید شد.";
+                            break;
+
+                        case "en-US":
+                            TempData[success] = "Your account has been successfully verified.";
+                            break;
+
+                        case "ar-AE":
+                            TempData[success] = "تم التحقق من حسابك بنجاح.";
+                            break;
+
+                        case "it-IT":
+                            TempData[success] = "Il tuo account è stato verificato con successo.";
+                            break;
+                    }
+
+                    #endregion
+
+                    return RedirectToAction(nameof(Login), "Account");
                 }
                 else
                 {
                     await userManager.DeleteAsync(user);
 
-                    TempData[error] = "عملیات با شکست مواجه شد.";
+                    #region Multi language TempData
 
-                    return RedirectToAction(Index, Home);
+                    switch (lang)
+                    {
+                        case "fa-IR":
+                            TempData[error] = "عملیات با شکست مواجه شد.";
+                            break;
+
+                        case "en-US":
+                            TempData[error] = "The operation failed.";
+                            break;
+
+                        case "ar-AE":
+                            TempData[error] = "فشلت العملية.";
+                            break;
+
+                        case "it-IT":
+                            TempData[error] = "L'operazione non è riuscita.";
+                            break;
+                    }
+
+                    #endregion
+
+                    return RedirectToAction("Index", "Home");
                 }
             }
             else
             {
                 await userManager.DeleteAsync(user);
 
-                TempData[error] = "لینک تایید ایمیل منقضی شده است. دوباره تلاش کنید.";
+                #region Multi language TempData
+
+                switch (lang)
+                {
+                    case "fa-IR":
+                        TempData[error] = "لینک تایید ایمیل منقضی شده است. دوباره تلاش کنید.";
+                        break;
+
+                    case "en-US":
+                        TempData[error] = "The email verification link has expired. Try again.";
+                        break;
+
+                    case "ar-AE":
+                        TempData[error] = "انتهت صلاحية رابط التحقق من البريد الإلكتروني. حاول مجددا.";
+                        break;
+
+                    case "it-IT":
+                        TempData[error] = "Il link di verifica dell'e-mail è scaduto. Riprova.";
+                        break;
+                }
+
+                #endregion
 
                 return RedirectToAction(nameof(Register));
             }
@@ -171,9 +326,30 @@ namespace Brella.Controllers
                 var status = await signInManager.PasswordSignInAsync(user, model.password, model.rememberMe, true);
                 if (status.IsLockedOut)
                 {
-                    TempData[warning] = "به دلیل اشتباه وارد کردن متوالی رمز عبور، اکانت شما به مدت 1 دقیقه غیر فعال خواهد شد.";
+                    #region Multi language TempData
 
-                    return RedirectToAction(Index, Home);
+                    switch (lang)
+                    {
+                        case "fa-IR":
+                            TempData[warning] = "به دلیل اشتباه وارد کردن متوالی رمز عبور، اکانت شما به مدت 1 دقیقه غیر فعال خواهد شد.";
+                            break;
+
+                        case "en-US":
+                            TempData[warning] = "Your account will be deactivated for 1 minute due to incorrect password entry.";
+                            break;
+
+                        case "ar-AE":
+                            TempData[warning] = "سيتم إلغاء تنشيط حسابك لمدة دقيقة واحدة بسبب إدخال كلمة مرور غير صحيحة.";
+                            break;
+
+                        case "it-IT":
+                            TempData[warning] = "Il tuo account verrà disattivato per 1 minuto a causa dell'immissione di una password errata.";
+                            break;
+                    }
+
+                    #endregion
+
+                    return RedirectToAction("Index", "Home");
                 }
 
                 if (status.Succeeded)
@@ -186,29 +362,93 @@ namespace Brella.Controllers
 
                     //    HttpContext.Session.SetString("password", model.password);
 
-                    //    mail.Send("ورود ادمین", $"جهت ورود به حساب کاربری خود <a href={address}>اینجا</a> کلیک کنید.", user.Email);
+
+                    //    await mail.Send("ورود ادمین", $"جهت ورود به حساب کاربری خود <a href={address}>اینجا</a> کلیک کنید.", user.Email);
 
                     //    TempData[info] = "کد تایید برای شما ارسال شد.";
 
-                    //    return RedirectToAction(Index, Home);
+                    //    return RedirectToAction("Index", "Home");
                     //}
                     //else
                     //{
-                    TempData[success] = "وارد حساب کاربری خود شدید.";
+                    #region Multi language TempData
 
-                    return RedirectToAction(Index, Home);
+                    switch (lang)
+                    {
+                        case "fa-IR":
+                            TempData[success] = "وارد حساب کاربری خود شدید.";
+                            break;
+
+                        case "en-US":
+                            TempData[success] = "Log in to your account.";
+                            break;
+
+                        case "ar-AE":
+                            TempData[success] = "تسجيل الدخول إلى حسابك.";
+                            break;
+
+                        case "it-IT":
+                            TempData[success] = "Accedi al tuo account.";
+                            break;
+                    }
+
+                    #endregion
+
+                    return RedirectToAction("Index", "Home");
                     //}
                 }
                 else
                 {
-                    TempData[error] = "نام کاربری یا رمزعبور نادرست است.";
+                    #region Multi language TempData
+
+                    switch (lang)
+                    {
+                        case "fa-IR":
+                            TempData[error] = "نام کاربری یا رمزعبور نادرست است.";
+                            break;
+
+                        case "en-US":
+                            TempData[error] = "Username or password is incorrect.";
+                            break;
+
+                        case "ar-AE":
+                            TempData[error] = "اسم المستخدم أو كلمة المرور غير صحيحة.";
+                            break;
+
+                        case "it-IT":
+                            TempData[error] = "Nome utente o password non sono corretti.";
+                            break;
+                    }
+
+                    #endregion
 
                     return RedirectToAction(nameof(Login));
                 }
             }
             else
             {
-                TempData[error] = "نام کاربری موجود نمیباشد.";
+                #region Multi language TempData
+
+                switch (lang)
+                {
+                    case "fa-IR":
+                        TempData[error] = "نام کاربری موجود نمیباشد.";
+                        break;
+
+                    case "en-US":
+                        TempData[error] = "Username is not available.";
+                        break;
+
+                    case "ar-AE":
+                        TempData[error] = "اسم المستخدم غير متاح.";
+                        break;
+
+                    case "it-IT":
+                        TempData[error] = "il nome utente non è disponibile.";
+                        break;
+                }
+
+                #endregion
 
                 return RedirectToAction(nameof(Login));
             }
@@ -225,7 +465,7 @@ namespace Brella.Controllers
 
             TempData[success] = "وارد حساب کاربری خود شدید.";
 
-            return RedirectToAction(Index, Home);
+            return RedirectToAction("Index", "Home");
         }
 
 
@@ -237,7 +477,7 @@ namespace Brella.Controllers
             {
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
-                var address = Url.Action(nameof(ForgotPasslvlTwoBridge), "account", new { userName = user.UserName, token = token }, "https");
+                var address = Url.Action(nameof(ForgotPasslvlTwoBridge), "Account", new { userName = user.UserName, token = token }, "https");
 
                 #region Send email by region
 
@@ -266,12 +506,53 @@ namespace Brella.Controllers
 
                 await userManager.UpdateAsync(user);
 
-                TempData[info] = "پیامک تغییر رمز عبور برای شما ارسال شد.";
+                #region Multi language TempData
+
+                switch (lang)
+                {
+                    case "fa-IR":
+                        TempData[info] = "پیامک تغییر رمز عبور برای شما ارسال شد.";
+                        break;
+
+                    case "en-US":
+                        TempData[info] = "A password change SMS was sent to you.";
+                        break;
+
+                    case "ar-AE":
+                        TempData[info] = "تم إرسال رسالة SMS لتغيير كلمة المرور إليك.";
+                        break;
+
+                    case "it-IT":
+                        TempData[info] = "Ti è stato inviato un SMS di modifica della password.";
+                        break;
+                }
+
+                #endregion
             }
             else
             {
-                TempData[error] = "حساب کاربری با این ایمیل تلفن موجود نمی باشد.";
+                #region Multi language TempData
 
+                switch (lang)
+                {
+                    case "fa-IR":
+                        TempData[error] = "حساب کاربری با این ایمیل موجود نمی باشد.";
+                        break;
+
+                    case "en-US":
+                        TempData[error] = "Account with this email is not available.";
+                        break;
+
+                    case "ar-AE":
+                        TempData[error] = "الحساب مع هذا البريد الإلكتروني غير متوفر.";
+                        break;
+
+                    case "it-IT":
+                        TempData[error] = "L'account con questa email non è disponibile.";
+                        break;
+                }
+
+                #endregion
             }
             return RedirectToAction(nameof(Login));
         }
@@ -294,9 +575,30 @@ namespace Brella.Controllers
             var user = await userManager.FindByNameAsync(userName);
             if (DateTime.Now.Subtract(user.forgotPassTimeSpan) > TimeSpan.FromMinutes(3))
             {
-                TempData[error] = "کاربر گرامی، اعتبار این لینک 3 دقیقه است. لطفا دوباره تلاش کنید.";
+                #region Multi language TempData
 
-                return RedirectToAction(nameof(Index), Home);
+                switch (lang)
+                {
+                    case "fa-IR":
+                        TempData[error] = "کاربر گرامی، اعتبار این لینک 3 دقیقه است. لطفا دوباره تلاش کنید.";
+                        break;
+
+                    case "en-US":
+                        TempData[error] = "Dear user, the validity of this link is 3 minutes. Please try again.";
+                        break;
+
+                    case "ar-AE":
+                        TempData[error] = "عزيزي المستخدم صلاحية هذا الرابط 3 دقائق. حاول مرة اخرى.";
+                        break;
+
+                    case "it-IT":
+                        TempData[error] = "Gentile utente, la validità di questo link è di 3 minuti. Per favore riprova.";
+                        break;
+                }
+
+                #endregion
+
+                return RedirectToAction("Index", "Home");
             }
 
             HttpContext.Session.SetString("userName", userName);
@@ -316,15 +618,57 @@ namespace Brella.Controllers
             var result = await userManager.ResetPasswordAsync(user, token, newPassword);
             if (result.Succeeded)
             {
-                TempData[success] = "رمز عبور شما با موفقیت تغییر یافت.";
+                #region Multi language TempData
 
-                return RedirectToAction(nameof(Index), Home);
+                switch (lang)
+                {
+                    case "fa-IR":
+                        TempData[success] = "رمز عبور شما با موفقیت تغییر یافت.";
+                        break;
+
+                    case "en-US":
+                        TempData[success] = "Your password has been successfully changed.";
+                        break;
+
+                    case "ar-AE":
+                        TempData[success] = "كلمة السر الخاصة بك تم تغييرها بنجاح.";
+                        break;
+
+                    case "it-IT":
+                        TempData[success] = "la tua password è stata cambiata con successo.";
+                        break;
+                }
+
+                #endregion
+
+                return RedirectToAction("Index", "Home");
             }
             else
             {
-                TempData[error] = "تغییر رمز عبور با شکست مواجه شد.";
+                #region Multi language TempData
 
-                return RedirectToAction(nameof(Index), Home);
+                switch (lang)
+                {
+                    case "fa-IR":
+                        TempData[error] = "تغییر رمز عبور با شکست مواجه شد.";
+                        break;
+
+                    case "en-US":
+                        TempData[error] = "Password change failed.";
+                        break;
+
+                    case "ar-AE":
+                        TempData[error] = "فشل تغيير كلمة المرور.";
+                        break;
+
+                    case "it-IT":
+                        TempData[error] = "Modifica della password non riuscita.";
+                        break;
+                }
+
+                #endregion
+
+                return RedirectToAction("Index", "Home");
             }
 
         }
@@ -334,7 +678,252 @@ namespace Brella.Controllers
         {
             await signInManager.SignOutAsync();
 
-            return RedirectToAction(Index, Home);
+            return RedirectToAction("Index", "Home");
+        }
+
+        #endregion
+
+
+        #region Admin
+
+        [Authorize(policy: "AdminPolicy")]
+        public async Task<IActionResult> IsUserBan(string userId)
+        {
+            ApplicationUser user = await userManager.FindByIdAsync(userId);
+
+            if (user.EmailConfirmed == true)
+            {
+                user.EmailConfirmed = false;
+
+                await userManager.UpdateAsync(user);
+
+                return Json(new { count = userManager.Users.Where(x => x.EmailConfirmed == false).Count(), text = "کاربر با موفقیت مسدود شد." });
+            }
+            else
+            {
+                user.EmailConfirmed = true;
+
+                await userManager.UpdateAsync(user);
+
+                return Json(new { count = userManager.Users.Where(x => x.EmailConfirmed == false).Count(), text = "محدودیت های کاربر برداشته شد." });
+            }
+        }
+
+        #endregion
+
+
+        #region Profile
+
+        [Authorize]
+        public IActionResult EditProfile()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> EditProfileConfirm(EditProfileViewModel model)
+        {
+            if (model.userName != null)
+            {
+                if (await userManager.FindByNameAsync(model.userName) == null)
+                {
+                    ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);
+
+                    if (model.userName != null)
+                    {
+                        user.UserName = model.userName;
+                        user.Email = model.userName;
+                    }
+                    if (model.phoneNumber != null)
+                    {
+                        user.PhoneNumber = model.phoneNumber;
+                    }
+                    if (model.name != null)
+                    {
+                        user.name = model.name;
+                    }
+                    if (model.family != null)
+                    {
+                        user.family = model.family;
+                    }
+
+                    await userManager.UpdateAsync(user);
+                    await signInManager.RefreshSignInAsync(user);
+
+                    #region Multi language TempData
+
+                    switch (lang)
+                    {
+                        case "fa-IR":
+                            TempData[success] = "اطلاعات شما با موفقیت ویرایش شد.";
+                            break;
+
+                        case "en-US":
+                            TempData[success] = "Your information has been successfully edited.";
+                            break;
+
+                        case "ar-AE":
+                            TempData[success] = "تم تحرير المعلومات الخاصة بك بنجاح.";
+                            break;
+
+                        case "it-IT":
+                            TempData[success] = "Le tue informazioni sono state modificate con successo.";
+                            break;
+                    }
+
+                    #endregion
+
+                    return RedirectToAction(nameof(EditProfile), "Account");
+                }
+                else
+                {
+                    #region Multi language TempData
+
+                    switch (lang)
+                    {
+                        case "fa-IR":
+                            TempData[error] = "این نام کاربری در حال حاظر موجود میباشد.";
+                            break;
+
+                        case "en-US":
+                            TempData[error] = "This username is currently available.";
+                            break;
+
+                        case "ar-AE":
+                            TempData[error] = "اسم المستخدم هذا متاح حاليا.";
+                            break;
+
+                        case "it-IT":
+                            TempData[error] = "Questo nome utente è attualmente disponibile.";
+                            break;
+                    }
+
+                    #endregion
+
+                    return RedirectToAction(nameof(EditProfile), "Account");
+                }
+            }
+            else
+            {
+                ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);
+
+                if (model.userName != null)
+                {
+                    user.UserName = model.userName;
+                    user.Email = model.userName;
+                }
+                if (model.phoneNumber != null)
+                {
+                    user.PhoneNumber = model.phoneNumber;
+                }
+                if (model.name != null)
+                {
+                    user.name = model.name;
+                }
+                if (model.family != null)
+                {
+                    user.family = model.family;
+                }
+
+                await userManager.UpdateAsync(user);
+                await signInManager.RefreshSignInAsync(user);
+
+                #region Multi language TempData
+
+                switch (lang)
+                {
+                    case "fa-IR":
+                        TempData[success] = "اطلاعات شما با موفقیت ویرایش شد.";
+                        break;
+
+                    case "en-US":
+                        TempData[success] = "Your information has been successfully edited.";
+                        break;
+
+                    case "ar-AE":
+                        TempData[success] = "تم تحرير المعلومات الخاصة بك بنجاح.";
+                        break;
+
+                    case "it-IT":
+                        TempData[success] = "Le tue informazioni sono state modificate con successo.";
+                        break;
+                }
+
+                #endregion
+
+                return RedirectToAction(nameof(EditProfile), "Account");
+            }
+
+        }
+
+        [Authorize]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> ChangePasswordConfirm(string password, string newPassword)
+        {
+            ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);
+
+            var status = await userManager.ChangePasswordAsync(user, password, newPassword);
+
+            if (status.Succeeded)
+            {
+                #region Multi language TempData
+
+                switch (lang)
+                {
+                    case "fa-IR":
+                        TempData[success] = "رمز عبور با موفقیت تغییر یافت.";
+                        break;
+
+                    case "en-US":
+                        TempData[success] = "Password changed successfully.";
+                        break;
+
+                    case "ar-AE":
+                        TempData[success] = "تم تغيير الرقم السري بنجاح.";
+                        break;
+
+                    case "it-IT":
+                        TempData[success] = "password cambiata con successo.";
+                        break;
+                }
+
+                #endregion
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                #region Multi language TempData
+
+                switch (lang)
+                {
+                    case "fa-IR":
+                        TempData[error] = "تغییر رمز عبور با شکست مواجه شد.";
+                        break;
+
+                    case "en-US":
+                        TempData[error] = "Password change failed.";
+                        break;
+
+                    case "ar-AE":
+                        TempData[error] = "فشل تغيير كلمة المرور.";
+                        break;
+
+                    case "it-IT":
+                        TempData[error] = "Modifica della password non riuscita.";
+                        break;
+                }
+
+                #endregion
+
+                return RedirectToAction(nameof(ChangePassword), "Account");
+            }
+
         }
 
         #endregion
@@ -342,6 +931,7 @@ namespace Brella.Controllers
 
         #region Chats
 
+        [Authorize]
         public async Task<IActionResult> Support()
         {
             if (!User.IsInRole("admin"))
@@ -365,17 +955,12 @@ namespace Brella.Controllers
 
         #region Purchases
 
+        [Authorize]
         public async Task<IActionResult> Purchases()
         {
             ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);
 
-            List<TransportationPayers> transportationPayers = transportationPayersRepo.Get(x => x.userId == user.Id,
-                x => x.OrderByDescending(x => x.id), "province");
-
-            ViewData["TransportationPayers"] = transportationPayers;
-            ViewBag.TransportationPayersCount = transportationPayers.Count;
-
-            return View(contractPayersRepo.Get(x => x.userId == user.Id, null, null).FirstOrDefault());
+            return View(orderRepo.Get(x => x.userId == user.Id, x => x.OrderByDescending(x => x.id), null));
         }
 
         #endregion

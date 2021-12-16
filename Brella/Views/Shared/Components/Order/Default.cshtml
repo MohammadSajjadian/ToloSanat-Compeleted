@@ -1,0 +1,9 @@
+﻿
+@if (Model == 0)
+{
+    <li><a asp-action="orders" asp-route-pagenumber="1" asp-controller="admin" id="TransportationCount" title="">@($"سفارش های بررسی نشده ({Model})")</a></li>
+}
+else
+{
+    <li><a asp-action="orders" asp-route-pagenumber="1" asp-controller="admin" id="TransportationCount" title="">@($"سفارش های جدید ({Model})")</a></li>
+}

@@ -1,0 +1,125 @@
+﻿
+@{
+    ViewData["Title"] = "لیست کاربران";
+}
+
+@model PagedResult<ApplicationUser>
+@inject UserManager<ApplicationUser> userManager
+
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+            </div>
+        </div>
+    </div>
+</section>
+@if (userManager.Users.Count() != 0)
+{
+    <h3 style="margin-top: 30px; margin-right: 40px">لیست کاربران</h3>
+    <div class="table-responsive">
+        <label>تعداد کل کاربران: @Model.TotalItems</label>
+        <br />
+        <label>تعداد کاربران تایید نشده : <span id="BanedUsers">@userManager.Users.Where(x => x.EmailConfirmed == false).Count()</span></label>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td class="text-center"><b>#</b></td>
+                    <td class="text-center"><b>نام</b></td>
+                    <td class="text-center"><b>نام خانوادگی</b></td>
+                    <td class="text-center"><b>ایمیل</b></td>
+                    <td class="text-center"><b>شماره تلفن</b></td>
+                    <td class="text-center"><b>قیمت اعمال شده</b></td>
+                    <td class="text-center"><b>گفت و گو ها</b></td>
+                    <td class="text-center"><b>مسدود</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @{ int i = 1;}
+                @foreach (var item in Model.Data)
+                {
+                    if (await userManager.IsInRoleAsync(item, "admin") == false)
+                    {
+                        <tr>
+                            <td class="text-center">@(i++)</td>
+                            <td class="text-center">@item.name</td>
+                            <th class="text-center">@item.family</th>
+                            <th class="text-center"><a href="mailto:@item.Email">@item.Email</a></th>
+                            <th class="text-center"><a href="tel:@item.PhoneNumber">@item.PhoneNumber</a></th>
+                            <th class="text-center">@(item.price != 0 ? item.price : "-")</th>
+                            <th class="text-center"><a asp-action="adminsidechatsbridge" asp-controller="admin" asp-route-clientId="@item.Id">رفتن به گفت و گو ها</a></th>
+                            <th class="text-center"><input id="IsBan" userId="@item.Id" type="checkbox" @(item.EmailConfirmed == true ? "" : "checked") /></th>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <cs-pager asp-action="users" asp-controller="admin"
+                  cs-pager-li-current-class="page-item active"
+                  cs-pager-li-other-class="page-item"
+                  cs-pager-li-non-active-class="page-item disabled"
+                  cs-pager-link-current-class="page-link"
+                  cs-pager-link-other-class="page-link"
+                  cs-pager-ul-class="pagination"
+                  cs-show-first-last="true"
+                  cs-first-page-title="صفحه اول"
+                  cs-last-page-title="صفحه آخر"
+                  cs-next-page-title="صفحه بعد"
+                  cs-previous-page-title="صفحه قبل"
+                  cs-paging-pagenumber="@Model.PageNumber"
+                  cs-paging-totalitems="@Model.TotalItems"
+                  cs-paging-pagesize="@Model.PageSize"
+                  asp-route-listId=""
+                  asp-route-sortmode="">
+        </cs-pager>
+}
+else
+{
+    <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">کاربری جهت نمایش وجود ندارد!</h3>
+}
+
+
+<script>
+    $(function () {
+        $(IsBan).click(function (event) {
+            event.preventDefault();
+            var userId = $(this).attr("userId");
+
+            Swal.fire({
+                title: 'مطمعن هستید؟',
+                text: "تغییرات اعمال شود؟",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'بله',
+                confirmButtonColor: '#00A300',
+                cancelButtonText: 'بازگشت',
+                cancelButtonColor: '#d33',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.post('/Account/IsUserBan', { userId: userId }, function (value) {
+                        $(BanedUsers).html(value.count)
+                        Swal.fire({
+                            icon: `success`,
+                            text: `${value.text}`,
+                            confirmButtonText: 'باشه'
+                        })
+                    })
+
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    Swal.fire(
+                        'لغو شد',
+                        'اعمال تغییرات لغو شد.',
+                        'error',
+                    )
+                }
+            })
+        })
+    })
+</script>

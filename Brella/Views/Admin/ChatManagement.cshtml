@@ -29,6 +29,8 @@
                     <td class="text-center"><b>آخرین پیغام</b></td>
                     <td class="text-center"><b>زمان</b></td>
                     <td class="text-center"><b>ایمیل</b></td>
+                    <td class="text-center"><b>شماره تلفن</b></td>
+                    <td class="text-center"><b>مسدود</b></td>
                     <td class="text-center"><b>حذف گفت و گو</b></td>
                 </tr>
             </thead>
@@ -47,12 +49,21 @@
                                 @($"{user.name} {user.family}")
                             </a>
                         </td>
-                        <th class="text-center">@(item.messages.Where(x => x.IsDeleteForAdmin == false).OrderByDescending(x => x.createTime).Take(1).Select(x => x.text).FirstOrDefault())</th>
+                        <th class="text-center">@(item.messages.Count != 0 ? item.messages.Where(x => x.IsDeleteForAdmin == false).OrderByDescending(x => x.createTime).Take(1).Select(x => x.text).FirstOrDefault() : "-")</th>
                         <th class="text-center">
-                            @($"{persian.GetYear(createTime)}/{persian.GetMonth(createTime)}/{persian.GetDayOfMonth(createTime)}  {persian.GetHour(createTime)}:{persian.GetMinute(createTime)}:{persian.GetSecond(createTime)}")
+                            @(item.messages.Count != 0 ? $"{persian.GetYear(createTime)}/{persian.GetMonth(createTime)}/{persian.GetDayOfMonth(createTime)}  {persian.GetHour(createTime)}:{persian.GetMinute(createTime)}:{persian.GetSecond(createTime)}" : "-")
                         </th>
-                        <th class="text-center" href="mailto:@user.Email">@user.Email</th>
-                        <td class="text-center"><a id="deletechat" chatId="@item.id" href="#">حذف</a></td>
+                        <th class="text-center"><a href="mailto:@user.Email">@user.Email</a></th>
+                        <th class="text-center"><a href="tel:@user.PhoneNumber">@user.PhoneNumber</a></th>
+                        <th class="text-center"><input id="IsBan" userId="@item.userId" type="checkbox" @(user.EmailConfirmed == true ? "" : "checked") /></th>
+                        @if (item.messages.Count != 0)
+                        {
+                            <td class="text-center"><a id="deletechat" chatId="item.id" href="#">حذف</a></td>
+                        }
+                        else
+                        {
+                            <td class="text-center">-</td>
+                        }
                     </tr>
                 }
             </tbody>
@@ -111,6 +122,45 @@ else
                     Swal.fire(
                         'لغو شد',
                         'حذف گفت و گو لغو شد.',
+                        'error',
+                    )
+                }
+            })
+        })
+    })
+
+    $(function () {
+       $(IsBan).click(function (event) {
+        event.preventDefault();
+           var userId = $(this).attr("userId");
+
+            Swal.fire({
+                title: 'مطمعن هستید؟',
+                text: "تغییرات اعمال شود؟",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'بله',
+                confirmButtonColor: '#00A300',
+                cancelButtonText: 'بازگشت',
+                cancelButtonColor: '#d33',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.post('/Account/IsUserBan', { userId: userId }, function (value) {
+                       Swal.fire({
+                          icon: `success`,
+                          text: `${value}`,
+                          confirmButtonText: 'باشه'
+                       })
+                    })
+
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    Swal.fire(
+                        'لغو شد',
+                        'مسدود کردن کاربر لغو شد.',
                         'error',
                     )
                 }

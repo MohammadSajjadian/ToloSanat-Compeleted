@@ -23,7 +23,7 @@ namespace Brella.Controllers
         private readonly IRepository<Post> postRepo;
         private readonly IRepository<Group> groupRepo;
         private readonly IRepository<Message> messageRepo;
-        private readonly IRepository<Province> provinceRepo;
+        private readonly IRepository<Order> orderRepo;
         private readonly IRepository<Language> languageRepo;
         private readonly IRepository<Inbox> inboxRepo;
         private readonly IRepository<ElementProp> elementPropRepo;
@@ -34,8 +34,8 @@ namespace Brella.Controllers
         private readonly IRepository<Element4> element4Repo;
 
         public AdminController(UserManager<ApplicationUser> _userManager, IRepository<Project> _projectRepo, IRepository<Post> _postRepo, IRepository<Group> _groupRepo,
-            IRepository<Message> _messageRepo, IRepository<Province> _provinceRepo, IRepository<Language> _languageRepo,
-            IRepository<Inbox> _inboxRepo, IRepository<ElementProp> _elementPropRepo, IRepository<SlideBar> _slideBarRepo,
+            IRepository<Message> _messageRepo, IRepository<Order> _orderRepo,
+            IRepository<Language> _languageRepo, IRepository<Inbox> _inboxRepo, IRepository<ElementProp> _elementPropRepo, IRepository<SlideBar> _slideBarRepo,
             IRepository<Element1> _element1Repo, IRepository<Element2> _element2Repo, IRepository<Element3> _element3Repo, IRepository<Element4> _element4Repo)
         {
             userManager = _userManager;
@@ -43,7 +43,7 @@ namespace Brella.Controllers
             postRepo = _postRepo;
             groupRepo = _groupRepo;
             messageRepo = _messageRepo;
-            provinceRepo = _provinceRepo;
+            orderRepo = _orderRepo;
             languageRepo = _languageRepo;
             inboxRepo = _inboxRepo;
             elementPropRepo = _elementPropRepo;
@@ -64,17 +64,17 @@ namespace Brella.Controllers
         {
             #region Pagination
 
-            IEnumerable<Group> groups = groupRepo.Get(x => x.IsDeleteForAdmin == false,
-                x => x.OrderBy(x => x.lastMessageTime), "messages").AsEnumerable();
+            List<Group> groups = groupRepo.Get(x => x.IsDeleteForAdmin == false,
+                x => x.OrderByDescending(x => x.lastMessageTime), "messages");
 
-            PagingList<Group> paging = PagingList.Create(groups, 2, pagenumber);
+            PagingList<Group> paging = PagingList.Create(groups, 10, pagenumber);
 
             PagedResult<Group> result = new()
             {
                 Data = paging.ToList(),
-                PageSize = 2,
+                PageSize = 10,
                 PageNumber = pagenumber,
-                TotalItems = groups.Count()
+                TotalItems = groups.Count
             };
 
             #endregion
@@ -86,7 +86,7 @@ namespace Brella.Controllers
         public IActionResult AdminSideChatsBridge(string clientId)
         {
             HttpContext.Session.SetString("clientId", clientId);
-
+             
             return RedirectToAction(nameof(AdminSideChats));
         }
 
@@ -94,6 +94,18 @@ namespace Brella.Controllers
         public async Task<IActionResult> AdminSideChats()
         {
             string clientId = HttpContext.Session.GetString("clientId");
+
+            if (groupRepo.Get(null, null, null).Any(x => x.userId == clientId) == false)
+            {
+                groupRepo.Add(new Group
+                {
+                    userId = clientId,
+                    lastMessageTime = DateTime.Now,
+                    IsDeleteForAdmin = false
+                });
+
+                groupRepo.SaveChange();
+            }
 
             Group group = groupRepo.Get(x => x.userId == clientId, null, null).FirstOrDefault();
 
@@ -103,10 +115,35 @@ namespace Brella.Controllers
 
             ViewBag.clientId = client.Id;
             ViewBag.clientNameFamily = $"{client.name} {client.family}";
-            ViewBag.clientId = client.Id;
             ViewBag.groupId = group.id;
+            ViewBag.clientPrice = client.price;
 
             return View(messages);
+        }
+
+        #endregion
+
+
+        #region User
+
+        [Route("/users/{pagenumber}")]
+        public  IActionResult Users(int pagenumber)
+        {
+            #region Pagination
+
+            List<ApplicationUser> users = userManager.Users.ToList();
+
+            var result = new PagedResult<ApplicationUser>
+            {
+                Data = PagingList.Create(users, 20, pagenumber),
+                PageSize = 20,
+                PageNumber = pagenumber,
+                TotalItems = users.Count
+            };
+
+            #endregion
+
+            return View(result);
         }
 
         #endregion
@@ -270,45 +307,37 @@ namespace Brella.Controllers
         #endregion
 
 
-        #region Contract
+        #region Order
 
-        public IActionResult ContractFileProp()
+        [Route("admin/orders/{pagenumber}")]
+        public IActionResult Orders(int pagenumber)
         {
-            return View(elementPropRepo.Get(x => x.language.faTitle == "فارسی", null, "language").FirstOrDefault());
+            #region Pagination
+
+            List<Order> order = orderRepo.Get(null, x => x.OrderByDescending(x => x.payTime), "applicationUser");
+
+            var paging = PagingList.Create(order, 10, pagenumber);
+            var result = new PagedResult<Order>
+            {
+                Data = paging,
+                PageSize = 10,
+                PageNumber = pagenumber,
+                TotalItems = order.Count
+            };
+
+            #endregion
+
+            return View(result);
         }
 
 
-        public IActionResult ContractProp()
+        public IActionResult FindOrderByCode(int code)
         {
-            return View(elementPropRepo.Get(null, null, "language"));
-        }
-
-        #endregion
-
-
-        #region Province
-
-        public IActionResult ProvinceOptions()
-        {
-            List<Province> provinces = provinceRepo.Get(null, x => x.OrderByDescending(x => x.id), null);
-            ViewData["Provinces"] = provinces;
-            ViewBag.ProvincesCount = provinces.Count;
-
-            return View();
+            return View(orderRepo.Get(null, null, "applicationUser").FirstOrDefault(x => x.trackingCode == code));
         }
 
 
-        public IActionResult UpdateProvince(int id)
-        {
-            return View(provinceRepo.Find(id));
-        }
-
-        #endregion
-
-
-        #region Transportation
-
-        public IActionResult TransportationProp()
+        public IActionResult OrderProp()
         {
             return View(elementPropRepo.Get(null, null, "language"));
         }

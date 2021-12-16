@@ -20,6 +20,13 @@ namespace Data.Entities
 
         #endregion
 
+        #region Bool Attributes
+
+        public bool IsSms { get; set; }
+        public bool IsEmail { get; set; }
+
+        #endregion
+
         #region ForeignKeys
 
         public string userId { get; set; }

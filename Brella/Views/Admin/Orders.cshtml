@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewData["Title"] = "لیست خریداران";
+}
+
+@model PagedResult<Order>
+@inject UserManager<ApplicationUser> userManager
+
+@{PersianCalendar persian = new();}
+
+<section>
+    <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
+        <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
+        <div class="container">
+            <div class="page-top-wrap w-100">
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (Model.TotalItems != 0)
+{
+    <div class="comments w-100">
+        <form asp-action="findorderbycode" asp-controller="admin">
+            <div style="margin-bottom: 15px" class="col-md-7 col-sm-7 col-lg-7">
+                <label class="d-block">کد رهگیری :</label>
+                <input class="form-control" name="code" type="text" required>
+            </div>
+
+            <button class="thm-btn thm-bg" type="submit" style="margin-top: 15px; margin-bottom: 15px">جست و جو<i class="flaticon-arrow-pointing-to-left"></i></button>
+        </form>
+    </div>
+    <h3 style="margin-top: 30px; margin-right: 40px">لیست خریداران <span style="font-size: medium">(برای ادامه گفت و گو آن را انتخاب کنید.)</span></h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td class="text-center">#</td>
+                    <td class="text-center">نام و نام خانوادگی</td>
+                    <td class="text-center">ایمیل</td>
+                    <td class="text-center">شماره تلفن</td>
+                    <td class="text-center">زمان</td>
+                    <td class="text-center">کد رهگیری</td>
+                    <td class="text-center">قیمت</td>
+                    <td class="text-center">خوانده شده</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Data)
+                {
+                    ApplicationUser user = await userManager.FindByIdAsync(item.userId);
+                    <tr>
+                        @if (!item.IsAdminConfirmed)
+                        {
+                            <td class="text-center"><b>-</b></td>
+                            <td class="text-center">
+                                <b>
+                                    <a asp-action="adminsidechatsbridge" asp-route-clientId="@item.applicationUser.Id">
+                                        @($"{item.applicationUser.name} {item.applicationUser.family}")
+                                    </a>
+                                </b>
+                            </td>
+                            <td class="text-center"><b>@item.applicationUser.Email</b></td>
+                            <td class="text-center"><b>@item.applicationUser.PhoneNumber</b></td>
+                            <td class="text-center"><b>@($"{persian.GetYear(item.payTime)}/{persian.GetMonth(item.payTime)}/{persian.GetDayOfMonth(item.payTime)}  {persian.GetHour(item.payTime)}:{persian.GetMinute(item.payTime)}:{persian.GetSecond(item.payTime)}")</b></td>
+                            <td class="text-center"><b>@item.trackingCode</b></td>
+                            <td class="text-center"><b>@($"{item.price:0,0}")</b></td>
+                            <th class="text-center"><input id="IsAdminConfirmed" OrderId="@item.id" type="checkbox" /></th>
+                        }
+                        else
+                        {
+                            <td class="text-center">-</td>
+                            <td class="text-center">
+                                <a asp-action="adminsidechatsbridge" asp-route-clientId="@item.applicationUser.Id">
+                                    @($"{item.applicationUser.name} {item.applicationUser.family}")
+                                </a>
+                            </td>
+                            <td class="text-center">@item.applicationUser.Email</td>
+                            <td class="text-center">@item.applicationUser.PhoneNumber</td>
+                            <td class="text-center">@($"{persian.GetYear(item.payTime)}/{persian.GetMonth(item.payTime)}/{persian.GetDayOfMonth(item.payTime)}  {persian.GetHour(item.payTime)}:{persian.GetMinute(item.payTime)}:{persian.GetSecond(item.payTime)}")</td>
+                            <td class="text-center">@item.trackingCode</td>
+                            <td class="text-center">@($"{item.price:0,0}")</td>
+                            <th class="text-center"><input id="IsAdminConfirmed" OrderId="@item.id" type="checkbox" checked /></th>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">سفارشی جهت نمایش وجود ندارد!</h3>
+}
+
+<cs-pager asp-action="orders" asp-controller="admin"
+          cs-pager-li-current-class="page-item active"
+          cs-pager-li-other-class="page-item"
+          cs-pager-li-non-active-class="page-item disabled"
+          cs-pager-link-current-class="page-link"
+          cs-pager-link-other-class="page-link"
+          cs-pager-ul-class="pagination"
+          cs-show-first-last="true"
+          cs-first-page-title="صفحه اول"
+          cs-last-page-title="صفحه آخر"
+          cs-next-page-title="صفحه بعد"
+          cs-previous-page-title="صفحه قبل"
+          cs-paging-pagenumber="@Model.PageNumber"
+          cs-paging-totalitems="@Model.TotalItems"
+          cs-paging-pagesize="@Model.PageSize"
+          asp-route-listId=""
+          asp-route-sortmode="">
+</cs-pager>
+
+<script>
+    $(function () {
+        $(IsAdminConfirmed).click(function () {
+            $.post('/CRUD/OrderConfirmationToggle', { OrderId: $(this).attr("OrderId") }, function (value) {
+                if (value != 0) {
+                    $(TransportationCount).html(`سفارش های بررسی نشده (${value})`)
+                } else {
+                    $(TransportationCount).html(`سفارش های جدید (${value})`)
+                }
+            })
+        })
+    })
+</script>

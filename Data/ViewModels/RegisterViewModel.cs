@@ -19,6 +19,14 @@ namespace Data.ViewModels
         #endregion
         public string userName { get; set; }
 
+        #region Attributes
+        
+        [Required(ErrorMessage = "شماره تلفن خود را وارد کنید.")]
+        [Phone(ErrorMessage = "فرمت وارد شده نادرست است.")]
+
+        #endregion
+        public string phoneNumber { get; set; }
+
 
         #region Attributes
 
@@ -32,7 +40,7 @@ namespace Data.ViewModels
 
         #region Attributes
 
-        [Compare(nameof(password), ErrorMessage ="رمزعبور و تکرار رمزعبور باید برابر باشد")]
+        [Compare(nameof(password), ErrorMessage = "رمزعبور و تکرار رمزعبور باید برابر باشد")]
 
         #endregion
         public string rePassword { get; set; }

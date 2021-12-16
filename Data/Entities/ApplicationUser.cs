@@ -8,6 +8,8 @@ namespace Data.Entities
 {
     public class ApplicationUser : IdentityUser
     {
+        public int price { get; set; }
+
         public string  name { get; set; }
         public string  family { get; set; }
 
@@ -19,7 +21,7 @@ namespace Data.Entities
         public ICollection<Post> posts { get; set; }
         public ICollection<Project> projects { get; set; }
         public ICollection<Message> messages { get; set; }
-        public ICollection<TransportationPayers> transportationPayers { get; set; }
+        public ICollection<Order> orders { get; set; }
 
         #endregion
     }

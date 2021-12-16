@@ -18,6 +18,9 @@ namespace Data.ViewModels
         [Required(ErrorMessage = "توضیح مورد نظر را وارد کنید.")]
         public List<string> description { get; set; }
 
+        public bool IsSms { get; set; }
+        public bool IsEmail { get; set; }
+
         [Required(ErrorMessage = "عکس را وارد کنید.")]
         public IFormFile img { get; set; }
     }

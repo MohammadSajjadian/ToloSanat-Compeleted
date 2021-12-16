@@ -4,14 +4,16 @@ using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(DBbrella))]
-    partial class DBbrellaModelSnapshot : ModelSnapshot
+    [Migration("20211210153232_x17")]
+    partial class x17
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -278,9 +280,6 @@ namespace Data.Migrations
 
                     b.Property<int>("languageId")
                         .HasColumnType("int");
-
-                    b.Property<byte[]>("logo")
-                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("phoneNumber")
                         .HasColumnType("nvarchar(max)");

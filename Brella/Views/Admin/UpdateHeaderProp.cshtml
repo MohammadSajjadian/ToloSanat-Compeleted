@@ -4,6 +4,7 @@
 }
 
 @model List<ElementProp>
+
 <section>
     <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
         <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
@@ -16,10 +17,19 @@
 <section style="margin-top: 15px">
     <div class="w-100 pb-100 position-relative">
         <div class="container">
-            <form asp-action="updateheaderprop" asp-controller="crud" class="contact-form text-center w-100">
+            <form asp-action="updateheaderprop" asp-controller="crud" enctype="multipart/form-data" method="post"
+                  class="contact-form text-center w-100">
                 @foreach (var item in Model)
                 {
                     <h3 style="margin-top: 30px">ویرایش @item.language.faTitle توضیحات</h3>
+                    if (item.language.faTitle == "فارسی")
+                    {
+                        <div class="col-md-12 col-sm-12 col-lg-12 custom-file" style="margin-top: 15px">
+                            <input name="logo" id="picture" class="fname custom-file-input" type="file" accept=".png, .jpg, .jpeg" />
+                            <label class="d-block custom-file-label text-center">لوگو</label>
+                        </div>
+                        <img width="250" style="margin-top: 15px; border-radius: 15px" id="slideBarImg" />
+                    }
 
                     <div class="row" style="margin-top: 20px">
                         <div class="col-md-12 col-sm-12 col-lg-12">
@@ -28,7 +38,7 @@
                         </div>
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">ایمیل</label>
-                            <input name="Email" value="@item.email" class="fname" type="text" required /> 
+                            <input name="Email" value="@item.email" class="fname" type="text" required />
                         </div>
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">شماره تلفن</label>
@@ -75,6 +85,17 @@
                     $(mainupdatebtn).click()
                 }
             })
+        })
+    })
+
+    $(function () {
+        $(picture).change(function () {
+            var reader = new FileReader
+
+            reader.readAsDataURL(picture.files[0])
+            reader.onloadend = (x) => {
+                slideBarImg.src = x.target.result
+            }
         })
     })
 </script>
