@@ -29,6 +29,7 @@ namespace Brella.Controllers
         private const string ElementError = "عملیات با شکست مواجه شد.";
         private const string ElementUpdate = "فیلد مورد نظر ویرایش شد.";
         private const string ElementRemove = "فیلد مورد حذف شد.";
+        private const string siteName = "www.xyz.com";
 
         #endregion
 
@@ -172,22 +173,22 @@ namespace Brella.Controllers
                 {
                     case "fa-IR":
                         subject = "بازدید از نمونه کار جدید";
-                        message = "کاربر گرامی، از جدید ترین نمونه کار ما از لینک زیر دیدن کنید:";
+                        message = $"کاربر گرامی، از جدید ترین نمونه کار ما از لینک زیر دیدن کنید:<br/>{siteName}";
                         break;
 
                     case "en-US":
                         subject = "Visit the new work sample";
-                        message = "Dear user, see the latest example of our work from the link below:";
+                        message = $"Dear user, see the latest example of our work from the link below:<br/>{siteName}";
                         break;
 
                     case "ar-AE":
                         subject = "قم بزيارة نموذج العمل الجديد";
-                        message = "عزيزي المستخدم، شاهد أحدث مثال على عملنا من الرابط أدناه:";
+                        message = $"عزيزي المستخدم، شاهد أحدث مثال على عملنا من الرابط أدناه:<br/>{siteName}";
                         break;
 
                     case "it-IT":
                         subject = "Visita il nuovo campione di lavoro";
-                        message = "Gentile utente, guarda l'ultimo esempio del nostro lavoro dal link sottostante:";
+                        message = $"Gentile utente, guarda l'ultimo esempio del nostro lavoro dal link sottostante:<br/>{siteName}";
                         break;
                 }
 
@@ -375,22 +376,22 @@ namespace Brella.Controllers
                 {
                     case "fa-IR":
                         subject = "بازدید از نمونه کار جدید";
-                        message = "کاربر گرامی، از جدید ترین نمونه کار ما از لینک زیر دیدن کنید:";
+                        message = $"کاربر گرامی، از جدید ترین نمونه کار ما از لینک زیر دیدن کنید:<br/>{siteName}";
                         break;
 
                     case "en-US":
                         subject = "Visit the new work sample";
-                        message = "Dear user, see the latest example of our work from the link below:";
+                        message = $"Dear user, see the latest example of our work from the link below:<br/>{siteName}";
                         break;
 
                     case "ar-AE":
                         subject = "قم بزيارة نموذج العمل الجديد";
-                        message = "عزيزي المستخدم، شاهد أحدث مثال على عملنا من الرابط أدناه:";
+                        message = $"عزيزي المستخدم، شاهد أحدث مثال على عملنا من الرابط أدناه:<br/>{siteName}";
                         break;
 
                     case "it-IT":
                         subject = "Visita il nuovo campione di lavoro";
-                        message = "Gentile utente, guarda l'ultimo esempio del nostro lavoro dal link sottostante:";
+                        message = $"Gentile utente, guarda l'ultimo esempio del nostro lavoro dal link sottostante:<br/>{siteName}";
                         break;
                 }
 
@@ -509,7 +510,7 @@ namespace Brella.Controllers
         #region Inbox CRUD
 
         [AllowAnonymous]
-        public IActionResult InsertInbox(InboxViewModel model)
+        public async Task<IActionResult> InsertInbox(InboxViewModel model)
         {
             var inbox = new Inbox()
             {
@@ -523,24 +524,40 @@ namespace Brella.Controllers
                 inboxRepo.Add(inbox);
                 inboxRepo.SaveChange();
 
+                #region Send email to admin
+
+                string address = Url.Action("InboxOptions", "Admin", new { pagenumber = 1 }, "https");
+
+                foreach (var item in userManager.Users.ToList())
+                {
+                    if (await userManager.IsInRoleAsync(item, "admin"))
+                    {
+                        await email.Send("پیغام جدید", $"پیغام جدیدی برای شما ارسال شد. جهت مشاهده <a href='{address}'>اینجا</a> کلیک کنید.<br />" + siteName, item.Email);
+
+                        break;
+                    }
+                }
+
+                #endregion
+
                 #region Multi language TempData
 
                 switch (lang)
                 {
                     case "fa-IR":
-                        TempData[success] = "پیغام شما با موفقیت ثبت شد.";
+                        TempData[success] = "پیغام شما با موفقیت ارسال شد.";
                         break;
 
                     case "en-US":
-                        TempData[success] = "Your message was successfully registered.";
+                        TempData[success] = "Your message was sent successfully.";
                         break;
 
                     case "ar-AE":
-                        TempData[success] = "تم تسجيل رسالتك بنجاح.";
+                        TempData[success] = "لقد تم ارسال رسالتك بنجاح.";
                         break;
 
                     case "it-IT":
-                        TempData[success] = "Il tuo messaggio è stato registrato con successo.";
+                        TempData[success] = "Il tema dell'invio del tuo messaggio ha successo.";
                         break;
                 }
 
@@ -550,7 +567,28 @@ namespace Brella.Controllers
             }
             catch
             {
-                TempData[error] = "ثبت پیغام با شکست مواجه شد.";
+                #region Multi language TempData
+
+                switch (lang)
+                {
+                    case "fa-IR":
+                        TempData[error] = "ارسال پیغام با شکست مواجه شد.";
+                        break;
+
+                    case "en-US":
+                        TempData[error] = "Failed to send message.";
+                        break;
+
+                    case "ar-AE":
+                        TempData[error] = "فشل في إرسال الرسالة.";
+                        break;
+
+                    case "it-IT":
+                        TempData[error] = "Impossibile inviare il messaggio.";
+                        break;
+                }
+
+                #endregion
 
                 return RedirectToAction("ContactUs", "Home");
             }

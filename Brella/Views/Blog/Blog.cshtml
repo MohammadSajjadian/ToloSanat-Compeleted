@@ -1,19 +1,21 @@
 ﻿
 @{
-    ViewData["Title"] = "وبلاگ";
+    ViewData["Title"] = localizer["Blog"];
 }
 
 @model PagedResult<Post>
+
+@inject IViewLocalizer localizer
 
 <section>
     <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
         <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
         <div class="container">
             <div class="page-top-wrap w-100">
-                <h1 class="mb-0">وبلاگ</h1>
+                <h1 class="mb-0">@localizer["Blog"]</h1>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
-                    <li class="breadcrumb-item"><a title="">وبلاگ</a></li>
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">@localizer["Home"]</a></li>
+                    <li class="breadcrumb-item"><a title="">@localizer["Blog"]</a></li>
                 </ol>
             </div><!-- Page Top Wrap -->
         </div>

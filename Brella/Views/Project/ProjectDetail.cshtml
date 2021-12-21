@@ -3,6 +3,8 @@
     ViewData["Title"] = Model.title;
 }
 
+@inject IViewLocalizer localizer
+
 @model Project
 @{PersianCalendar persian = new(); }
 
@@ -11,10 +13,10 @@
         <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
         <div class="container">
             <div class="page-top-wrap w-100">
-                <h1 class="mb-0">جزییات نمونه کار</h1>
+                <h1 class="mb-0">@localizer["ProjectDetail"]</h1>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
-                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="project">نمونه کار</a></li>
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">@localizer["Home"]</a></li>
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="project">@localizer["Project"]</a></li>
                     <li class="breadcrumb-item">@Model.title</li>
                 </ol>
             </div><!-- Page Top Wrap -->
@@ -40,7 +42,7 @@
                         <div class="col-md-6 col-sm-12 col-lg-4">
                             <aside class="sidebar-wrap w-100">
                                 <div class="widget2 blog_widget brd-rd5 w-100">
-                                    <h3>آخرین نمونه کارها</h3>
+                                    <h3>@localizer["LatestProjects"]</h3>
                                     <div class="blog-widget-post-list w-100">
                                         @foreach (var item in ViewData["Projects"] as List<Project>)
                                         {

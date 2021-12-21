@@ -1,9 +1,12 @@
 ﻿
 @{
-    ViewData["Title"] = "صفحه اصلی";
+    ViewData["Title"] = localizer["Home"];
 }
 
 @model ElementProp
+
+@inject IViewLocalizer localizer
+
 <section>
     <div class="w-100 position-relative">
         <div class="feat-wrap style2 position-relative w-100">
@@ -19,6 +22,7 @@
                                 <div class="feat-cap">
                                     <h1 class="mb-0">@item.title</h1>
                                     <p class="mb-0">@Html.Raw(item.description)</p>
+                                    <br />
                                     <div class="feat-cap-innr">
                                         <a class="thm-btn thm-bg" href="@item.buttonLink" title="">
                                             @item.buttonTitle<i class="flaticon-arrow-pointing-to-left"></i>
@@ -91,8 +95,8 @@ i == 3 ? "flaticon-carpenter" : i == 4 ? "flaticon-jigsaw" : "flaticon-wheel-saw
         <div class="container">
             <div class="sec-title w-100">
                 <div class="sec-title-inner d-inline-block">
-                    <span class="d-block thm-clr">کارهای ما</span>
-                    <a asp-action="index" asp-controller="project"><h3 style="color: white" class="mb-0">آخرین پروژه های ما</h3></a>
+                    <span class="d-block thm-clr">@localizer["OurWorks"]</span>
+                    <a asp-action="index" asp-controller="project"><h3 style="color: white" class="mb-0">@localizer["LatestProjects"]</h3></a>
                 </div>
             </div>
         </div>
@@ -309,8 +313,8 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
         <div class="container">
             <div class="sec-title w-100">
                 <div class="sec-title-inner d-inline-block">
-                    <span class="d-block thm-clr">وبلاگ ما</span>
-                    <h3 class="mb-0">آخرین اخبار ما</h3>
+                    <span class="d-block thm-clr">@localizer["OurBlog"]</span>
+                    <h3 class="mb-0">@localizer["LatestNews"]</h3>
                 </div>
             </div>
             <div class="blog-wrap w-100">
@@ -354,7 +358,7 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
             </div><!-- Blog Wrap -->
             <div class="view-all w-100 text-center">
                 <a class="thm-btn thm-bg" asp-action="index" asp-controller="blog" title="">
-                    مشاهده همه اخبار<i class="flaticon-arrow-pointing-to-left"></i>
+                    @localizer["AllNews"]<i class="flaticon-arrow-pointing-to-left"></i>
                 </a>
             </div><!-- View All -->
         </div>
@@ -370,14 +374,14 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
                     <div class="row align-items-center justify-content-between">
                         <div class="col-md-7 col-sm-12 col-lg-5">
                             <div class="getin-touch-title w-100">
-                                <span class="text-color1 d-block">مشترک شوید</span>
-                                <h2 class="mb-0">با ساخت حساب کاربری آخرین مطالب ما را از طریق ایمیل دریافت کنید</h2>
+                                <span class="text-color1 d-block">@localizer["Subscribe"]</span>
+                                <h2 class="mb-0">@localizer["SubscribeMessage"]</h2>
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-12 col-lg-4">
                             <div class="getin-touch-btn text-left">
                                 <a class="thm-btn bg-color1" asp-action="register" asp-controller="" title="">
-                                    ساخت حساب<i class="flaticon-arrow-pointing-to-left"></i>
+                                    @localizer["CreateAccount"]<i class="flaticon-arrow-pointing-to-left"></i>
                                 </a>
                             </div>
                         </div>

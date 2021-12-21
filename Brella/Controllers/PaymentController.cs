@@ -4,6 +4,7 @@ using Dto.Payment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Services.EmailService;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -28,14 +29,16 @@ namespace Brella.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IRepository<ElementProp> elementPropRepo;
         private readonly IRepository<Order> orderRepo;
+        private readonly IEmail email;
         private readonly string lang = CultureInfo.CurrentCulture.Name;
 
         public PaymentController(UserManager<ApplicationUser> _userManager, IRepository<ElementProp> _elementPropRepo,
-            IRepository<Order> _orderRepo)
+            IRepository<Order> _orderRepo, IEmail _email)
         {
             userManager = _userManager;
             elementPropRepo = _elementPropRepo;
             orderRepo = _orderRepo;
+            email = _email;
         }
 
         #endregion
@@ -151,6 +154,16 @@ namespace Brella.Controllers
 
                 orderRepo.Add(ord);
                 orderRepo.SaveChange();
+
+                string address = Url.Action("Orders", "Admin", new { pagenumber = 1 }, "https");
+
+                foreach (var item in userManager.Users.ToList())
+                {
+                    if (await userManager.IsInRoleAsync(item, "admin"))
+                    {
+                        await email.Send("ثبت خرید", $"خرید جدیدی انجام شد.<br>جهت مشاهده <a href='{address}'>اینجا</a> کلیک کنید.", item.Email);
+                    }
+                }
 
                 return View(ord);
             }

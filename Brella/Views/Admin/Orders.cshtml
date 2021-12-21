@@ -60,8 +60,8 @@
                                     </a>
                                 </b>
                             </td>
-                            <td class="text-center"><b>@item.applicationUser.Email</b></td>
-                            <td class="text-center"><b>@item.applicationUser.PhoneNumber</b></td>
+                            <td class="text-center"><b><a href="mailto:@item.applicationUser.Email">@item.applicationUser.Email</a></b></td>
+                            <td class="text-center"><b><a href="tel:@item.applicationUser.PhoneNumber">@item.applicationUser.PhoneNumber</a></b></td>
                             <td class="text-center"><b>@($"{persian.GetYear(item.payTime)}/{persian.GetMonth(item.payTime)}/{persian.GetDayOfMonth(item.payTime)}  {persian.GetHour(item.payTime)}:{persian.GetMinute(item.payTime)}:{persian.GetSecond(item.payTime)}")</b></td>
                             <td class="text-center"><b>@item.trackingCode</b></td>
                             <td class="text-center"><b>@($"{item.price:0,0}")</b></td>
@@ -75,8 +75,8 @@
                                     @($"{item.applicationUser.name} {item.applicationUser.family}")
                                 </a>
                             </td>
-                            <td class="text-center">@item.applicationUser.Email</td>
-                            <td class="text-center">@item.applicationUser.PhoneNumber</td>
+                            <td class="text-center"><a href="mailto:@item.applicationUser.Email">@item.applicationUser.Email</a></td>
+                            <td class="text-center"><a href="tel:@item.applicationUser.PhoneNumber">@item.applicationUser.PhoneNumber</a></td>
                             <td class="text-center">@($"{persian.GetYear(item.payTime)}/{persian.GetMonth(item.payTime)}/{persian.GetDayOfMonth(item.payTime)}  {persian.GetHour(item.payTime)}:{persian.GetMinute(item.payTime)}:{persian.GetSecond(item.payTime)}")</td>
                             <td class="text-center">@item.trackingCode</td>
                             <td class="text-center">@($"{item.price:0,0}")</td>
@@ -87,30 +87,29 @@
             </tbody>
         </table>
     </div>
+    <cs-pager asp-action="orders" asp-controller="admin"
+              cs-pager-li-current-class="page-item active"
+              cs-pager-li-other-class="page-item"
+              cs-pager-li-non-active-class="page-item disabled"
+              cs-pager-link-current-class="page-link"
+              cs-pager-link-other-class="page-link"
+              cs-pager-ul-class="pagination"
+              cs-show-first-last="true"
+              cs-first-page-title="صفحه اول"
+              cs-last-page-title="صفحه آخر"
+              cs-next-page-title="صفحه بعد"
+              cs-previous-page-title="صفحه قبل"
+              cs-paging-pagenumber="@Model.PageNumber"
+              cs-paging-totalitems="@Model.TotalItems"
+              cs-paging-pagesize="@Model.PageSize"
+              asp-route-listId=""
+              asp-route-sortmode="">
+    </cs-pager>
 }
 else
 {
     <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">سفارشی جهت نمایش وجود ندارد!</h3>
 }
-
-<cs-pager asp-action="orders" asp-controller="admin"
-          cs-pager-li-current-class="page-item active"
-          cs-pager-li-other-class="page-item"
-          cs-pager-li-non-active-class="page-item disabled"
-          cs-pager-link-current-class="page-link"
-          cs-pager-link-other-class="page-link"
-          cs-pager-ul-class="pagination"
-          cs-show-first-last="true"
-          cs-first-page-title="صفحه اول"
-          cs-last-page-title="صفحه آخر"
-          cs-next-page-title="صفحه بعد"
-          cs-previous-page-title="صفحه قبل"
-          cs-paging-pagenumber="@Model.PageNumber"
-          cs-paging-totalitems="@Model.TotalItems"
-          cs-paging-pagesize="@Model.PageSize"
-          asp-route-listId=""
-          asp-route-sortmode="">
-</cs-pager>
 
 <script>
     $(function () {

@@ -1,29 +1,31 @@
 ﻿
 @{
-    ViewData["Title"] = "گفت و گو ها";
+    ViewData["Title"] = localizer["Chats"];
 }
 
 @model List<Message>
+
 @inject UserManager<ApplicationUser> userManager
+@inject IViewLocalizer localizer
+
 <section>
     <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
         <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
         <div class="container">
             <div class="page-top-wrap w-100">
-                <h1 class="mb-0">پشتیبانی</h1>
+                <h1 class="mb-0">@localizer["Support"]</h1>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
-                    <li class="breadcrumb-item active"><a asp-action="support" asp-controller="account" title="">پشتیبانی</a></li>
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">@localizer["Home"]</a></li>
+                    <li class="breadcrumb-item active"><a asp-action="support" asp-controller="account" title="">@localizer["Support"]</a></li>
                 </ol>
             </div><!-- Page Top Wrap -->
         </div>
     </div>
 </section>
-
 <div class="comments w-100">
     @if (Model.Count != 0)
     {
-        <h3 class="mb-0">گفت و گو ها (@Model.Count())</h3>
+        <h3 class="mb-0">@localizer["Chats"] (@Model.Count())</h3>
         <ul class="comments-thread mb-0 list-unstyled">
             <li>
                 @{PersianCalendar persian = new();}
@@ -34,12 +36,12 @@
                         <div class="comment w-100 left">
                             <div class="comment-img"><span class="rounded-circle"><img class="img-fluid rounded-circle" src="~/assets/images/resources/download.png" alt="Comment Image 1"></span></div>
                             <div class="comment-detail">
-                                <h4 class="mb-0">مدیریت</h4>
+                                <h4 class="mb-0">@localizer["Management"]</h4>
                                 <p class="mb-0" style="white-space: pre-wrap">@item.text</p>
                                 @if (item.file != null)
                                 {
                                     <br />
-                                    <p>جهت دانلود فایل <a asp-action="downloadpdf" asp-controller="chat" asp-route-messageId="@item.id"><u>اینجا</u></a> کلیک کنید.</p>
+                                    <p><a asp-action="downloadpdf" asp-controller="chat" asp-route-messageId="@item.id"><u>@localizer["DownloadMessage"]</u></a></p>
                                 }
                                 <span class="d-inline-block">
                                     <i class="far fa-clock"></i>
@@ -58,7 +60,7 @@
                                 @if (item.file != null)
                                 {
                                     <br />
-                                    <p>جهت دانلود فایل <a asp-action="downloadpdf" asp-controller="chat" asp-route-messageId="@item.id">اینجا</a> کلیک کنید.</p>
+                                    <p><a asp-action="downloadpdf" asp-controller="chat" asp-route-messageId="@item.id"><u>@localizer["DownloadMessage"]</u></a></p>
                                 }
                                 <span class="d-inline-block">
                                     <i class="far fa-clock"></i>
@@ -73,26 +75,26 @@
     }
     else
     {
-        <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">گفت و گویی جهت نمایش وجود ندارد!</h3>
+        <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">@localizer["NullChat"]</h3>
     }
 </div>
 @{ var client = await userManager.FindByNameAsync(User.Identity.Name);}
 <div class="reply-form w-100">
-    <h3 class="mb-0">پیغام دهید</h3>
+    <h3 class="mb-0">@localizer["SendMessage"]</h3>
     <form asp-action="insertclientmessage" asp-controller="chat" asp-route-clientId="@client.Id"
           enctype="multipart/form-data" method="post" class="w-100">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="field-wrap w-100">
-                    <label>پیغام:</label>
+                    <label>@localizer["Message"]</label>
                     <textarea name="text" required></textarea>
                 </div>
                 <div class="w-100">
-                    <label>پیوست ها:</label>
+                    <label>@localizer["File"]</label>
                     <br />
                     <input name="file" type="file" accept="application/pdf" />
                 </div>
-                <button class="thm-btn thm-bg" type="submit" style="margin-top: 15px; margin-bottom: 15px">ارسال<i class="flaticon-arrow-pointing-to-left"></i></button>
+                <button class="thm-btn thm-bg" type="submit" style="margin-top: 15px; margin-bottom: 15px">@localizer["Send"]<i class="flaticon-arrow-pointing-to-left"></i></button>
             </div>
         </div>
     </form>

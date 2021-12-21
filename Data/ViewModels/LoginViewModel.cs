@@ -9,11 +9,11 @@ namespace Data.ViewModels
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "ایمیل خود را وارد کنید.")]
+        [Required(ErrorMessage = "Required")]
         public string userName { get; set; }
 
 
-        [Required(ErrorMessage = "رمزعبور خود را وارد کنید.")]
+        [Required(ErrorMessage = "Required")]
         public string password { get; set; }
 
         public bool rememberMe { get; set; }

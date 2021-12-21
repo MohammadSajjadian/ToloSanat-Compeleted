@@ -11,11 +11,13 @@ namespace Data.ViewModels
     {
         #region String Attributes
 
-        [Required(ErrorMessage ="نام و نام خانوادگی را وارد کنید")]
+        [Required(ErrorMessage = "Required")]
         public string nameFamily { get; set; }
-        [Required(ErrorMessage ="شماره تلفن را وارد کنید")]
+
+        [Required(ErrorMessage = "Required")]
         public string phonenumber { get; set; }
-        [Required(ErrorMessage ="پیغام خود را وارد کنید")]
+
+        [Required(ErrorMessage = "Required")]
         public string message { get; set; }
 
         #endregion

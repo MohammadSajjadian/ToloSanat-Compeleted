@@ -179,7 +179,7 @@ namespace Brella.Controllers
                 messageRepo.Add(message);
                 messageRepo.SaveChange();
 
-                #region Answer Email by SMS
+                #region Answer Email by Email
 
                 foreach (var item in userManager.Users.ToList())
                 {

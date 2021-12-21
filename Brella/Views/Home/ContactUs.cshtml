@@ -1,18 +1,21 @@
 ﻿
 @{
-    ViewData["Title"] = "تماس با ما";
+    ViewData["Title"] = localizer["ContactUs"];
 }
 
 @model InboxViewModel
+
+@inject IViewLocalizer localizer
+
 <section>
     <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
         <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
         <div class="container">
             <div class="page-top-wrap w-100">
-                <h1 class="mb-0">تماس با ما</h1>
+                <h1 class="mb-0">@localizer["ContactUs"]</h1>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
-                    <li class="breadcrumb-item active"><a asp-action="contactus" asp-controller="home" title="">تماس با ما</a></li>
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">@localizer["Home"]</a></li>
+                    <li class="breadcrumb-item active"><a asp-action="contactus" asp-controller="home" title="">@localizer["ContactUs"]</a></li>
                 </ol>
             </div><!-- Page Top Wrap -->
         </div>
@@ -27,21 +30,21 @@
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="contact-info-box w-100">
                                 <i class="thm-clr flaticon-headset"></i>
-                                <strong>تلفن ما</strong>
+                                <strong>@localizer["Phone"]</strong>
                                 <span class="d-block"><a href="tel:@ViewBag.PhoneNumber">@ViewBag.PhoneNumber</a></span>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="contact-info-box w-100">
                                 <i class="thm-clr flaticon-mail"></i>
-                                <strong>صندوق پستی ما</strong>
+                                <strong>@localizer["Email"]</strong>
                                 <a class="d-block" href="mailto:ViewBag.Email" title="">@ViewBag.Email</a>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="contact-info-box w-100">
                                 <i class="thm-clr flaticon-placeholder"></i>
-                                <strong>آدرس ما</strong>
+                                <strong>@localizer["Address"]</strong>
                                 <p class="mb-0">
                                     @ViewBag.Address
                                 </p>
@@ -58,7 +61,7 @@
         <div class="container">
             <div class="sec-title v2 text-center w-100">
                 <div class="sec-title-inner d-inline-block">
-                    <span class="thm-clr d-block">تماس با ما</span>
+                    <span class="thm-clr d-block">@localizer["ContactUs"]</span>
                     <h2 class="mb-0">@(ViewBag.contactUsTitle != null ? ViewBag.contactUsTitle : "")</h2>
                     <p class="mb-0">@(ViewBag.contactUsDescription != null ? ViewBag.contactUsDescription : "")</p>
                 </div>
@@ -72,17 +75,17 @@
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label class="d-block">نام و نام خانوادگی :</label>
+                        <label class="d-block">@localizer["NameFamily"]</label>
                         <input class="fname" type="text" asp-for="nameFamily">
                         <span asp-validation-for="nameFamily"></span>
                     </div>
                     <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label class="d-block">شماره تلفن :</label>
+                        <label class="d-block">@localizer["PhoneNumber"]</label>
                         <input class="fname" type="text" asp-for="phonenumber">
                         <span asp-validation-for="phonenumber"></span>
                     </div>
                     <div class="col-md-12 col-sm-12 col-lg-12">
-                        <label class="d-block">یک پیغام بنویسید :</label>
+                        <label class="d-block">@localizer["Message"]</label>
                         <textarea class="contact_message" asp-for="message"></textarea>
                         <span asp-validation-for="message"></span>
                         <button id="maininboxbtn" hidden></button>
@@ -90,7 +93,7 @@
                 </div>
             </form><!-- Contact Form -->
             <button class="thm-btn thm-bg" id="secondinboxbtn" type="button">
-                ارسال<i class="flaticon-arrow-pointing-to-left"></i>
+                @localizer["Send"]<i class="flaticon-arrow-pointing-to-left"></i>
             </button>
         </div>
     </div>
@@ -100,14 +103,14 @@
     $(function () {
         $(secondinboxbtn).click(function () {
             Swal.fire({
-                title: 'ثبت پیغام',
-                text: "پیغام مورد نظر ثبت شود؟",
+                title: '@localizer["Confirm"]',
+                text: "@localizer["ConfirmMessage"]",
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'بله',
-                cancelButtonText: 'بازگشت'
+                confirmButtonText: '@localizer["Yes"]',
+                cancelButtonText: '@localizer["Back"]'
 
             }).then((result) => {
                 if (result.isConfirmed) {

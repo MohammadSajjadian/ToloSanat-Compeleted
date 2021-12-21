@@ -22,6 +22,7 @@ namespace Brella.Controllers
         private const string error = "error";
         private const string warning = "warning";
         private const string info = "info";
+        private const string siteName = "www.xyz.com";
 
         #endregion
 
@@ -77,66 +78,34 @@ namespace Brella.Controllers
 
                 var address = Url.Action(nameof(AccountConfirm), "Account", new { userId = user.Id, token = token }, "https");
 
-                #region Multi language SMS
+                #region Multi language Email
 
-                if (user.name != null && user.family != null)
+                string subject = "";
+                string message = "";
+
+                switch (lang)
                 {
-                    string subject = "";
-                    string message = "";
+                    case "fa-IR":
+                        subject = "تایید ایمیل";
+                        message = $"{user.name} {user.family} عزیز <br/> جهت تایید ایمیل خود و دسترسی به آخرین بروزرسانی های سایت <a href={address}>اینجا</a> کلیک کنید.<br/>{siteName}";
+                        break;
 
-                    switch (lang)
-                    {
-                        case "fa-IR":
-                            subject = "تایید ایمیل";
-                            message = $"{user.name} {user.family} عزیز <br/> جهت تایید ایمیل خود و دسترسی به آخرین بروزرسانی های سایت <a href={address}>اینجا</a> کلیک کنید.";
-                            break;
+                    case "en-US":
+                        subject = "Email confirmation";
+                        message = $"{user.name} {user.family} Dear <br/> Click <a href={address}> here </a> to confirm your email and access the latest site updates.<br/>{siteName}";
+                        break;
 
-                        case "en-US":
-                            subject = "Email confirmation";
-                            message = $"{user.name} {user.family} Dear <br/> Click <a href={address}> here </a> to confirm your email and access the latest site updates.";
-                            break;
+                    case "ar-AE":
+                        subject = "تأكيد البريد الإلكتروني";
+                        message = $"{user.name} {user.family} عزيزي <br/> انقر <a href={address}> هنا </a> لتأكيد بريدك الإلكتروني والوصول إلى آخر تحديثات الموقع.<br/>{siteName}";
+                        break;
 
-                        case "ar-AE":
-                            subject = "تأكيد البريد الإلكتروني";
-                            message = $"{user.name} {user.family} عزيزي <br/> انقر <a href={address}> هنا </a> لتأكيد بريدك الإلكتروني والوصول إلى آخر تحديثات الموقع.";
-                            break;
-
-                        case "it-IT":
-                            subject = "Conferma via email";
-                            message = $"{user.name} {user.family} Gentile <br/> Fai clic <a href={address}> qui </a> per confermare la tua email e accedere agli ultimi aggiornamenti del sito.";
-                            break;
-                    }
-                    await mail.Send(subject, message, user.Email);
+                    case "it-IT":
+                        subject = "Conferma via email";
+                        message = $"{user.name} {user.family} Gentile <br/> Fai clic <a href={address}> qui </a> per confermare la tua email e accedere agli ultimi aggiornamenti del sito.<br/>{siteName}";
+                        break;
                 }
-                else
-                {
-                    string subject = "";
-                    string message = "";
-
-                    switch (lang)
-                    {
-                        case "fa-IR":
-                            subject = "تایید ایمیل";
-                            message = $"کاربر عزیز <br/> جهت تایید ایمیل خود و دسترسی به آخرین بروزرسانی های سایت <a href={address}>اینجا</a> کلیک کنید.";
-                            break;
-
-                        case "en-US":
-                            subject = "Email confirmation";
-                            message = $"Dear user <br/> Click <a href={address}> here </a> to confirm your email and access the latest site updates.";
-                            break;
-
-                        case "ar-AE":
-                            subject = "تأكيد البريد الإلكتروني";
-                            message = $"عزيزي المستخدم <br/> انقر <a href={address}> هنا </a> لتأكيد بريدك الإلكتروني والوصول إلى آخر تحديثات الموقع.";
-                            break;
-
-                        case "it-IT":
-                            subject = "Conferma via email";
-                            message = $"Gentile utente <br/> Fai clic <a href={address}> qui </a> per confermare la tua email e accedere agli ultimi aggiornamenti del sito.";
-                            break;
-                    }
-                    await mail.Send(subject, message, user.Email);
-                }
+                await mail.Send(subject, message, user.Email);
 
                 #endregion
 
@@ -354,48 +323,47 @@ namespace Brella.Controllers
 
                 if (status.Succeeded)
                 {
-                    //if (await userManager.IsInRoleAsync(user, "admin"))
-                    //{
-                    //    await signInManager.SignOutAsync();
-
-                    //    var address = Url.Action(nameof(AdminConfirm), "Account", new { userId = user.Id }, "https");
-
-                    //    HttpContext.Session.SetString("password", model.password);
-
-
-                    //    await mail.Send("ورود ادمین", $"جهت ورود به حساب کاربری خود <a href={address}>اینجا</a> کلیک کنید.", user.Email);
-
-                    //    TempData[info] = "کد تایید برای شما ارسال شد.";
-
-                    //    return RedirectToAction("Index", "Home");
-                    //}
-                    //else
-                    //{
-                    #region Multi language TempData
-
-                    switch (lang)
+                    if (await userManager.IsInRoleAsync(user, "admin"))
                     {
-                        case "fa-IR":
-                            TempData[success] = "وارد حساب کاربری خود شدید.";
-                            break;
+                        await signInManager.SignOutAsync();
 
-                        case "en-US":
-                            TempData[success] = "Log in to your account.";
-                            break;
+                        var address = Url.Action(nameof(AdminConfirm), "Account", new { userId = user.Id }, "https");
 
-                        case "ar-AE":
-                            TempData[success] = "تسجيل الدخول إلى حسابك.";
-                            break;
+                        HttpContext.Session.SetString("password", model.password);
 
-                        case "it-IT":
-                            TempData[success] = "Accedi al tuo account.";
-                            break;
+                        await mail.Send("ورود ادمین", $"جهت ورود به حساب کاربری خود <a href={address}>اینجا</a> کلیک کنید.<br/>{siteName}", user.Email);
+
+                        TempData[info] = "کد تایید برای شما ارسال شد.";
+
+                        return RedirectToAction("Index", "Home");
                     }
+                    else
+                    {
+                        #region Multi language TempData
 
-                    #endregion
+                        switch (lang)
+                        {
+                            case "fa-IR":
+                                TempData[success] = "وارد حساب کاربری خود شدید.";
+                                break;
 
-                    return RedirectToAction("Index", "Home");
-                    //}
+                            case "en-US":
+                                TempData[success] = "Log in to your account.";
+                                break;
+
+                            case "ar-AE":
+                                TempData[success] = "تسجيل الدخول إلى حسابك.";
+                                break;
+
+                            case "it-IT":
+                                TempData[success] = "Accedi al tuo account.";
+                                break;
+                        }
+
+                        #endregion
+
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
                 else
                 {
@@ -484,19 +452,19 @@ namespace Brella.Controllers
                 switch (lang)
                 {
                     case "fa-IR":
-                        await mail.Send("تغییر رمز عبور", $"برای تغییر رمز عبور <a href={address}>اینجا</a> کلیک کنید.", user.Email);
+                        await mail.Send("تغییر رمز عبور", $"برای تغییر رمز عبور <a href={address}>اینجا</a> کلیک کنید.<br/>{siteName}", user.Email);
                         break;
 
                     case "en-US":
-                        await mail.Send("Change Password", $"Click <a href={address}>here</a> To change the password.", user.Email);
+                        await mail.Send("Change Password", $"Click <a href={address}>here</a> To change the password.<br/>{siteName}", user.Email);
                         break;
 
                     case "ar-AE":
-                        await mail.Send("غير كلمة السر", $"انقر <a href={address}>هنا</a> لتغيير كلمة مرورك.", user.Email);
+                        await mail.Send("غير كلمة السر", $"انقر <a href={address}>هنا</a> لتغيير كلمة مرورك.<br/>{siteName}", user.Email);
                         break;
 
                     case "it-IT":
-                        await mail.Send("cambia la password", $"Fare clic <a href={address}>qui</a> per modificare la password.", user.Email);
+                        await mail.Send("cambia la password", $"Fare clic <a href={address}>qui</a> per modificare la password.<br/>{siteName}", user.Email);
                         break;
                 }
 

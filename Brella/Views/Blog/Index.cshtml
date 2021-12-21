@@ -1,19 +1,21 @@
 ﻿
 @{
-    ViewData["Title"] = "وبلاگ";
+    ViewData["Title"] = localizer["Blog"];
 }
 
 @model PagedResult<Post>
+
+@inject IViewLocalizer localizer
 
 <section>
     <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
         <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
         <div class="container">
             <div class="page-top-wrap w-100">
-                <h1 class="mb-0">وبلاگ</h1>
+                <h1 class="mb-0">@localizer["Blog"]</h1>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
-                    <li class="breadcrumb-item"><a title="">وبلاگ</a></li>
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">@localizer["Home"]</a></li>
+                    <li class="breadcrumb-item"><a title="">@localizer["Blog"]</a></li>
                 </ol>
             </div><!-- Page Top Wrap -->
         </div>
@@ -50,7 +52,7 @@
                     }
                     else
                     {
-                        <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">مطلبی جهت نمایش وجود ندارد!</h3>
+                        <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">@localizer["NullBlog"]</h3>
                     }
                 </div>
                 @if (Model.TotalItems != 0)
@@ -63,10 +65,10 @@
                               cs-pager-link-other-class="page-link"
                               cs-pager-ul-class="pagination"
                               cs-show-first-last="true"
-                              cs-first-page-title="صفحه اول"
-                              cs-last-page-title="صفحه آخر"
-                              cs-next-page-title="صفحه بعد"
-                              cs-previous-page-title="صفحه قبل"
+                              cs-first-page-title="@localizer["FirstPage"]"
+                              cs-last-page-title="@localizer["LastPage"]"
+                              cs-next-page-title="@localizer["NextPage"]"
+                              cs-previous-page-title="@localizer["PreviousPage"]"
                               cs-paging-pagenumber="Model.PageNumber"
                               cs-paging-totalitems="@Model.TotalItems"
                               cs-paging-pagesize="Model.PageSize"

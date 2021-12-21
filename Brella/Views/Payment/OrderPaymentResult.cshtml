@@ -1,9 +1,11 @@
 ﻿
 @{
-    ViewData["Title"] = "نتیجه خرید";
+    ViewData["Title"] = localizer["OrderResult"];
 }
 
 @model Order
+
+@inject IViewLocalizer localizer
 
 <section>
     <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
@@ -15,18 +17,18 @@
     </div>
 </section>
 
-<h3 style="margin-top: 30px; margin-right: 40px">@($"{Model.applicationUser.name} {Model.applicationUser.family} عزیز پرداخت با موفقیت انجام شد!")</h3>
+<h3 style="margin-top: 30px; margin-right: 40px">@($"{Model.applicationUser.name} {Model.applicationUser.family}") @localizer["ResultMessage"]</h3>
 <div class="table-responsive">
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
                 <td class="text-center"><b>#</b></td>
-                <td class="text-center"><b>خریدار</b></td>
-                <td class="text-center"><b>زمان</b></td>
-                <td class="text-center"><b>کد رهگیری</b></td>
-                <td class="text-center"><b>ایمیل</b></td>
-                <td class="text-center"><b>شماره تلفن</b></td>
-                <td class="text-center"><b>قیمت</b></td>
+                <td class="text-center"><b>@localizer["Buyer"]</b></td>
+                <td class="text-center"><b>@localizer["Time"]</b></td>
+                <td class="text-center"><b>@localizer["TrackingCode"]</b></td>
+                <td class="text-center"><b>@localizer["Email"]</b></td>
+                <td class="text-center"><b>@localizer["PhoneNumber"]</b></td>
+                <td class="text-center"><b>@localizer["Price"]</b></td>
             </tr>
         </thead>
         <tbody>
@@ -42,4 +44,4 @@
         </tbody>
     </table>
 </div>
-<p style="color: red"><b>نکته: جهت کسب اطلاعات بیشتر با واحد پشتیبانی در تماس باشید.</b></p>
+<p style="color: red"><b>@localizer["ResultInfo"]</b></p>

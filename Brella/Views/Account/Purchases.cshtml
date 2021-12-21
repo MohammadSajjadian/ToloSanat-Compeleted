@@ -1,10 +1,13 @@
 ﻿
 @{
-    ViewData["Title"] = "پرداخت ها";
+    ViewData["Title"] = localizer["Purchasess"];
 }
 
 @model List<Order>
+
 @inject UserManager<ApplicationUser> userManager
+@inject IViewLocalizer localizer
+
 @{ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);
     PersianCalendar persian = new();}
 
@@ -13,10 +16,10 @@
         <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
         <div class="container">
             <div class="page-top-wrap w-100">
-                <h1 class="mb-0">پرداخت ها</h1>
+                <h1 class="mb-0">@localizer["Purchasess"]</h1>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
-                    <li class="breadcrumb-item active"><a asp-action="purchases" asp-controller="account" title="">پرداخت ها</a></li>
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">@localizer["Home"]</a></li>
+                    <li class="breadcrumb-item active"><a asp-action="purchases" asp-controller="account" title="">@localizer["Purchasess"]</a></li>
                 </ol>
             </div>
         </div>
@@ -24,18 +27,18 @@
 </section>
 @if (Model.Count != 0)
 {
-    <h3 style="margin-top: 30px; margin-right: 40px">هزینه های پرداخت شده</h3>
+    <h3 style="margin-top: 30px; margin-right: 40px">@localizer["PurchasessMessage"]</h3>
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <td class="text-center"><b>#</b></td>
-                    <td class="text-center"><b>خریدار</b></td>
-                    <td class="text-center"><b>زمان</b></td>
-                    <td class="text-center"><b>کد رهگیری</b></td>
-                    <td class="text-center"><b>ایمیل</b></td>
-                    <td class="text-center"><b>شماره تلفن</b></td>
-                    <td class="text-center"><b>قیمت</b></td>
+                    <td class="text-center"><b>@localizer["Buyer"]</b></td>
+                    <td class="text-center"><b>@localizer["Time"]</b></td>
+                    <td class="text-center"><b>@localizer["TrackingCode"]</b></td>
+                    <td class="text-center"><b>@localizer["Email"]</b></td>
+                    <td class="text-center"><b>@localizer["PhoneNumber"]</b></td>
+                    <td class="text-center"><b>@localizer["Price"]</b></td>
                 </tr>
             </thead>
             <tbody>
@@ -58,5 +61,5 @@
 }
 else
 {
-    <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">خریدی انجام نشده است!</h3>
+    <h3 style="margin-top: 150px; margin-bottom: 150px; margin-right: 40px">@localizer["NullPurchasess"]</h3>
 }
