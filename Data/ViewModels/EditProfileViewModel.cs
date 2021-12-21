@@ -10,22 +10,21 @@ namespace Data.ViewModels
 {
     public class EditProfileViewModel
     {
-        #region Attributes
-
-        [EmailAddress(ErrorMessage = "فرمت وارد شده نادرست است.")]
-
-        #endregion
+        [EmailAddress(ErrorMessage = "EmailAddress")]
         public string userName { get; set; }
 
         #region Attributes
 
-        [Phone(ErrorMessage = "فرمت وارد شده نادرست است.")]
+        [Required(ErrorMessage = "Required")]
+        [Phone(ErrorMessage = "Phone")]
 
         #endregion
         public string phoneNumber { get; set; }
 
+        [Required(ErrorMessage = "Required")]
         public string name { get; set; }
 
+        [Required(ErrorMessage = "Required")]
         public string family { get; set; }
     }
 }

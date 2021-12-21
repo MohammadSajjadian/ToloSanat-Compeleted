@@ -1,6 +1,7 @@
 using Data.Context;
 using Data.Entities;
 using Data.Repository;
+using Data.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -57,7 +58,7 @@ namespace Brella
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, x => x.ResourcesPath = "Resource")
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, x => x.ResourcesPath = "Resources")
                 .AddDataAnnotationsLocalization(x =>
                 {
                     x.DataAnnotationLocalizerProvider = (type, factory) =>

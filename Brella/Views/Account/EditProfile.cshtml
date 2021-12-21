@@ -1,10 +1,12 @@
 ﻿
 @{
-    ViewData["Title"] = "ویرایش حساب کاربری";
+    ViewData["Title"] = localizer["EditAccount"];
 }
 
 @model EditProfileViewModel
+
 @inject UserManager<ApplicationUser> userManager
+@inject IViewLocalizer localizer
 
 @{ ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name);}
 
@@ -13,10 +15,10 @@
         <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
         <div class="container">
             <div class="page-top-wrap w-100">
-                <h1 class="mb-0">ثبت نام</h1>
+                <h1 class="mb-0">@localizer["EditAccount"]</h1>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
-                    <li class="breadcrumb-item active">ثبت نام</li>
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">@localizer["Home"]</a></li>
+                    <li class="breadcrumb-item active">@localizer["EditAccount"]</li>
                 </ol>
             </div><!-- Page Top Wrap -->
         </div>
@@ -28,29 +30,29 @@
             <form asp-action="editprofileconfirm" class="contact-form text-center w-100">
                 <div class="row">
                     <div class="col-md-7 col-sm-7 col-lg-7">
-                        <label class="d-block">نام :</label>
+                        <label class="d-block">@localizer["Name"]</label>
                         <input asp-for="name" value="@user.name" class="fname" type="text">
                         <span asp-validation-for="name"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
-                        <label class="d-block">نام خانوادگی :</label>
+                        <label class="d-block">@localizer["Family"]</label>
                         <input asp-for="family" value="@user.family" class="fname" type="text">
                         <span asp-validation-for="family"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
-                        <label class="d-block">آدرس ایمیل :</label>
-                        <label style="font-size: 12px">ایمیل فعلی: @user.Email</label>
-                        <input asp-for="userName" placeholder="ایمیل جدید" type="email">
+                        <label class="d-block">@localizer["Email"]</label>
+                        <label style="font-size: 12px">@localizer["CurrentEmail"] @user.Email</label>
+                        <input asp-for="userName" placeholder="@localizer["NewEmail"]" type="email">
                         <span asp-validation-for="userName"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
-                        <label class="d-block">شماره تلفن :</label>
+                        <label class="d-block">@localizer["PhoneNumber"]</label>
                         <input asp-for="phoneNumber" value="@user.PhoneNumber" type="tel">
                         <span asp-validation-for="phoneNumber"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
                         <button class="thm-btn thm-bg">
-                            ویرایش<i class="flaticon-arrow-pointing-to-left"></i>
+                            @localizer["Edit"]<i class="flaticon-arrow-pointing-to-left"></i>
                         </button>
                     </div>
                 </div>

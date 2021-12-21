@@ -1,10 +1,13 @@
 ﻿
 @{
-    ViewData["Title"] = "حمل و نقل";
+    ViewData["Title"] = localizer["ApprovedFee"];
 }
 
 @model ElementProp
+
 @inject UserManager<ApplicationUser> userManager
+@inject IViewLocalizer localizer
+
 @{ApplicationUser user = await userManager.FindByNameAsync(User.Identity.Name); }
 
 <section>
@@ -12,10 +15,10 @@
         <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
         <div class="container">
             <div class="page-top-wrap w-100">
-                <h1 class="mb-0">هزینه تصویب شده</h1>
+                <h1 class="mb-0">@localizer["ApprovedFee"]</h1>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
-                    <li class="breadcrumb-item active"><a asp-action="order" asp-controller="payment" title="">هزینه تصویب شده</a></li>
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">@localizer["Home"]</a></li>
+                    <li class="breadcrumb-item active"><a asp-action="order" asp-controller="payment" title="">@localizer["ApprovedFee"]</a></li>
                 </ol>
             </div>
         </div>
@@ -35,13 +38,13 @@
 
                             @if (user.price != 0)
                             {
-                                <label style="font-size: 20px"><b>قیمت: @($"{user.price:0,0} تومان")</b></label>
+                                <label style="font-size: 20px"><b>@localizer["Price"]: @($"{user.price:0,0} تومان")</b></label>
                             }
 
                             <form asp-action="orderPayment">
                                 <div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 30px">
                                     <button class="thm-btn thm-bg">
-                                        ورود به درگاه<i class="flaticon-arrow-pointing-to-left"></i>
+                                        @localizer["EnterPayment"]<i class="flaticon-arrow-pointing-to-left"></i>
                                     </button>
                                 </div>
                             </form>

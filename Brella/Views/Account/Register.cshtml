@@ -1,18 +1,21 @@
 ﻿
 @{
-    ViewData["Title"] = "ثبت نام";
+    ViewData["Title"] = localizer["Register"];
 }
 
 @model RegisterViewModel
+
+@inject IViewLocalizer localizer
+
 <section>
     <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
         <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
         <div class="container">
             <div class="page-top-wrap w-100">
-                <h1 class="mb-0">ثبت نام</h1>
+                <h1 class="mb-0">@localizer["Register"]</h1>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
-                    <li class="breadcrumb-item active">ثبت نام</li>
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">@localizer["Home"]</a></li>
+                    <li class="breadcrumb-item active">@localizer["Register"]</li>
                 </ol>
             </div><!-- Page Top Wrap -->
         </div>
@@ -24,38 +27,38 @@
             <form asp-action="registerconfirm" class="contact-form text-center w-100">
                 <div class="row">
                     <div class="col-md-7 col-sm-7 col-lg-7">
-                        <label class="d-block">نام :</label>
+                        <label class="d-block">@localizer["Name"]</label>
                         <input asp-for="name" class="fname" type="text">
                         <span asp-validation-for="name"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
-                        <label class="d-block">نام خانوادگی :</label>
+                        <label class="d-block">@localizer["Family"]</label>
                         <input asp-for="family" class="fname" type="text">
                         <span asp-validation-for="family"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
-                        <label class="d-block">آدرس ایمیل :</label>
+                        <label class="d-block">@localizer["Email"]</label>
                         <input asp-for="userName" type="email">
                         <span asp-validation-for="userName"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
-                        <label class="d-block">شماره تلفن :</label>
+                        <label class="d-block">@localizer["PhoneNumber"]</label>
                         <input asp-for="phoneNumber" type="tel">
                         <span asp-validation-for="phoneNumber"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
-                        <label class="d-block">رمز عبور :</label>
+                        <label class="d-block">@localizer["Password"]</label>
                         <input asp-for="password" type="password">
                         <span asp-validation-for="password"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
-                        <label class="d-block">تکرار رمز عبور :</label>
+                        <label class="d-block">@localizer["RePassword"]</label>
                         <input asp-for="rePassword" type="password">
                         <span asp-validation-for="rePassword"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
                         <button class="thm-btn thm-bg">
-                            ثبت نام<i class="flaticon-arrow-pointing-to-left"></i>
+                            @localizer["Register"]<i class="flaticon-arrow-pointing-to-left"></i>
                         </button>
                     </div>
                 </div>

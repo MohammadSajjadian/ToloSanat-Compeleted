@@ -1,18 +1,21 @@
 ﻿
 @{
-    ViewData["Title"] = "ورود";
+    ViewData["Title"] = localizer["Login"];
 }
 
 @model LoginViewModel
+
+@inject IViewLocalizer localizer
+
 <section>
     <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
         <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
         <div class="container">
             <div class="page-top-wrap w-100">
-                <h1 class="mb-0">ورود</h1>
+                <h1 class="mb-0">@localizer["Login"]</h1>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">خانه</a></li>
-                    <li class="breadcrumb-item active">ورود</li>
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">@localizer["Home"]</a></li>
+                    <li class="breadcrumb-item active">@localizer["Login"]</li>
                 </ol>
             </div><!-- Page Top Wrap -->
         </div>
@@ -24,27 +27,27 @@
             <form asp-action="loginconfirm" class="contact-form text-center w-100">
                 <div class="row">
                     <div class="col-md-7 col-sm-7 col-lg-7">
-                        <label class="d-block">آدرس ایمیل :</label>
+                        <label class="d-block">@localizer["Email"]</label>
                         <input asp-for="userName" type="email">
                         <span asp-validation-for="userName"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
-                        <label class="d-block">رمز عبور :</label>
+                        <label class="d-block">@localizer["Password"]</label>
                         <input asp-for="password" type="password">
                         <span asp-validation-for="password"></span>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
                         <label>
                             <input asp-for="rememberMe" type="checkbox" />
-                            مرا به خاطر بسپار
+                            @localizer["RememberMe"]
                         </label>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
-                        <a href="#" id="forgotpassword">رمز عبور خود را فراموش کرده اید؟</a>
+                        <a href="#" id="forgotpassword">@localizer["ForgotPass"]</a>
                     </div>
                     <div class="col-md-7 col-sm-7 col-lg-7">
                         <button class="thm-btn thm-bg">
-                            ورود<i class="flaticon-arrow-pointing-to-left"></i>
+                            @localizer["Enter"]<i class="flaticon-arrow-pointing-to-left"></i>
                         </button>
                     </div>
                 </div>
@@ -59,16 +62,16 @@
             event.preventDefault();
 
             Swal.fire({
-                title: "ایمیل",
-                text: "ایمیل خود را وارد کنید:",
+                title: "@localizer["Email2"]",
+                text: "@localizer["Email2Message"]",
                 input: "text",
                 showCancelButton: true,
-                confirmButtonText: 'تایید',
-                cancelButtonText: 'بازگشت',
+                confirmButtonText: '@localizer["Confirm"]',
+                cancelButtonText: '@localizer["Back"]',
                 cancelButtonColor: '#d33',
                 inputValidator: (value) => {
                     if (!value) {
-                        return 'ایمیل خود را وارد کنید!'
+                        return '@localizer["Email2Message2"]'
                     }
                 }
             }).then((result) => {

@@ -12,17 +12,17 @@ namespace Data.ViewModels
     {
         #region Attributes
 
-        [Required(ErrorMessage = "ایمیل خود را وارد کنید.")]
-        [EmailAddress(ErrorMessage = "فرمت وارد شده نادرست است.")]
-        [Remote("IsUserExist", "Account", ErrorMessage = "ایمیل در حال حاظر موجود میباشد.")]
+        [Required(ErrorMessage = "Required")]
+        [EmailAddress(ErrorMessage = "EmailAddress")]
+        [Remote("IsUserExist", "Account", ErrorMessage = "Remote")]
 
         #endregion
         public string userName { get; set; }
 
         #region Attributes
         
-        [Required(ErrorMessage = "شماره تلفن خود را وارد کنید.")]
-        [Phone(ErrorMessage = "فرمت وارد شده نادرست است.")]
+        [Required(ErrorMessage = "Required")]
+        [Phone(ErrorMessage = "Phone")]
 
         #endregion
         public string phoneNumber { get; set; }
@@ -30,9 +30,9 @@ namespace Data.ViewModels
 
         #region Attributes
 
-        [Required(ErrorMessage = "رمز عبور را وارد کنید")]
-        [MinLength(6, ErrorMessage = "رمز عبور باید حداقل 6 کاراکتر باشد")]
-        [MaxLength(20, ErrorMessage = "رمز عبور باید حداکثر 20 کاراکتر باشد")]
+        [Required(ErrorMessage = "Required")]
+        [MinLength(6, ErrorMessage = "MinLength")]
+        [MaxLength(20, ErrorMessage = "MaxLength")]
 
         #endregion
         public string password { get; set; }
@@ -40,21 +40,21 @@ namespace Data.ViewModels
 
         #region Attributes
 
-        [Compare(nameof(password), ErrorMessage = "رمزعبور و تکرار رمزعبور باید برابر باشد")]
+        [Compare(nameof(password), ErrorMessage = "Compare")]
 
         #endregion
         public string rePassword { get; set; }
 
         #region Attributes
 
-        [Required(ErrorMessage = "نام خود را وارد کنید")]
+        [Required(ErrorMessage = "Required")]
 
         #endregion
         public string name { get; set; }
 
         #region Attributes
 
-        [Required(ErrorMessage = "نام خانوادگی خود را وارد کنید")]
+        [Required(ErrorMessage = "Required")]
 
         #endregion
         public string family { get; set; }

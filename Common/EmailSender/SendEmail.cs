@@ -22,7 +22,7 @@ namespace Common.EmailSender
 
         public async Task Send(string url, string subject, string message)
         {
-            foreach (var item in userManager.Users)
+            foreach (var item in userManager.Users.ToList())
             {
                 await email.Send(subject, $"{message} <br/> {url}", item.Email);
             }
