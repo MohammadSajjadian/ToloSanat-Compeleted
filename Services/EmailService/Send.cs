@@ -12,7 +12,7 @@ namespace Services.EmailService
     {
         async Task IEmail.Send(string subject, string body, string receiver)
         {
-            var mailmessage = new MailMessage("rexongame1@gmail.com", receiver)
+            var mailmessage = new MailMessage("", receiver)
             {
                 Subject = subject,
                 Body = body,
@@ -21,7 +21,7 @@ namespace Services.EmailService
 
             var smtpClient = new SmtpClient("smtp.gmail.com", 587)
             {
-                Credentials = new NetworkCredential("rexongame1@gmail.com", "RexonGame_1100"),
+                Credentials = new NetworkCredential("", ""),
                 EnableSsl = true
             };
 
