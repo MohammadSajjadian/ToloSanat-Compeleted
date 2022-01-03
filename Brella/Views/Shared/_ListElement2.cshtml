@@ -19,8 +19,8 @@
                 {
                     <tr>
                         <td class="text-center"><b>@item.id</b></td>
-                        <td class="text-center">@item.title</td>
-                        <td class="text-center">@item.description</td>
+                        <td class="text-center">@(item.title != null ? item.title : "")</td>
+                        <td class="text-center">@(item.description != null ? item.description : "")</td>
                         <td class="text-center">@item.language.faTitle</td>
 
                         <td class="text-center"><a id="deleteElement2" element2Id="@item.id" href="#">حذف</a> | <a asp-action="UpdateElement2" asp-controller="admin" asp-route-id="@item.id">ویرایش</a></td>

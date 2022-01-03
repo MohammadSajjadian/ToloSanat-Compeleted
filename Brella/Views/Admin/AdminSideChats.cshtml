@@ -22,7 +22,7 @@
 </section>
 
 <div class="comments w-100">
-    @if (Model.Count != 0)
+    @if (Model.Where(x => x.IsDeleteForAdmin == false).Count() != 0)
     {
         <form asp-action="usercost" asp-route-userId="@ViewBag.clientId" asp-controller="crud">
             <div style="margin-bottom: 15px" class="col-md-7 col-sm-7 col-lg-7">
@@ -33,7 +33,7 @@
             <button class="thm-btn thm-bg" type="submit" style="margin-top: 15px; margin-bottom: 15px">ثبت<i class="flaticon-arrow-pointing-to-left"></i></button>
         </form>
 
-        <h3 class="mb-0">گفت و گو ها (@Model.Count)</h3>
+        <h3 class="mb-0">گفت و گو ها (@Model.Where(x => x.IsDeleteForAdmin == false).Count())</h3>
         <ul class="comments-thread mb-0 list-unstyled">
             <li>
                 @{PersianCalendar persian = new();}

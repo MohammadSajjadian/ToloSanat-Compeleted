@@ -22,7 +22,7 @@ namespace Brella.Controllers
         private const string error = "error";
         private const string warning = "warning";
         private const string info = "info";
-        private const string siteName = "www.xyz.com";
+        private const string siteName = "www.tolosanat.com";
 
         #endregion
 
@@ -327,7 +327,7 @@ namespace Brella.Controllers
                     {
                         await signInManager.SignOutAsync();
 
-                        var address = Url.Action(nameof(AdminConfirm), "Account", new { userId = user.Id }, "https");
+                        var address = Url.Action(nameof(AdminConfirm), "Account", new { userId = user.Id }, Request.Scheme);
 
                         HttpContext.Session.SetString("password", model.password);
 

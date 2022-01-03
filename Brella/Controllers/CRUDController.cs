@@ -29,7 +29,7 @@ namespace Brella.Controllers
         private const string ElementError = "عملیات با شکست مواجه شد.";
         private const string ElementUpdate = "فیلد مورد نظر ویرایش شد.";
         private const string ElementRemove = "فیلد مورد حذف شد.";
-        private const string siteName = "www.xyz.com";
+        private const string siteName = "www.tolosanat.com";
 
         #endregion
 
@@ -773,7 +773,7 @@ namespace Brella.Controllers
 
         #region Header
 
-        public IActionResult UpdateHeaderProp(List<int> languageIds, IFormFile logo, List<string> Address, List<string> Email,
+        public IActionResult UpdateHeaderProp(List<int> languageIds, IFormFile mainLogo, IFormFile secondaryLogo, List<string> Address, List<string> Email,
             List<string> PhoneNumber, List<string> InstaLink, List<string> TelegramLink)
         {
             int langId = 1;
@@ -798,14 +798,23 @@ namespace Brella.Controllers
                                 {
                                     if (x.id == y.id && y.id == z.id && z.id == m.id && m.id == n.id && n.id == k.id)
                                     {
-                                        if (System.IO.Path.GetExtension(logo.FileName) != ".jpg" ||
-                                            System.IO.Path.GetExtension(logo.FileName) != ".jpeg" ||
-                                            System.IO.Path.GetExtension(logo.FileName) != ".png")
+                                        if (x.value == 1)
                                         {
-                                            byte[] b = new byte[logo.Length];
-                                            logo.OpenReadStream().Read(b, 0, b.Length);
+                                            if (mainLogo != null)
+                                            {
+                                                byte[] b = new byte[mainLogo.Length];
+                                                mainLogo.OpenReadStream().Read(b, 0, b.Length);
 
-                                            elementProp.logo = resize.Resizer(b, 148, 50, ImageFormat.Jpeg);
+                                                elementProp.mainLogo = resize.Resizer(b, 148, 50, ImageFormat.Png);
+                                            }
+
+                                            if (secondaryLogo != null)
+                                            {
+                                                byte[] d = new byte[secondaryLogo.Length];
+                                                secondaryLogo.OpenReadStream().Read(d, 0, d.Length);
+
+                                                elementProp.secondaryLogo = resize.Resizer(d, 35, 35, ImageFormat.Png);
+                                            }
                                         }
                                         elementProp.address = y.value;
                                         elementProp.email = z.value;
@@ -1109,15 +1118,11 @@ namespace Brella.Controllers
 
                                 if (img != null)
                                 {
-                                    if (System.IO.Path.GetExtension(img.FileName) != ".gif" ||
-                                        System.IO.Path.GetExtension(img.FileName) != ".mp4" ||
-                                        System.IO.Path.GetExtension(img.FileName) != ".mp3")
-                                    {
-                                        byte[] b = new byte[img.Length];
-                                        img.OpenReadStream().Read(b, 0, b.Length);
+                                    byte[] b = new byte[img.Length];
+                                    img.OpenReadStream().Read(b, 0, b.Length);
 
-                                        elementProp.e2img = resize.Resizer(b, 470, 530, ImageFormat.Jpeg);
-                                    }
+                                    elementProp.e2img = resize.Resizer(b, 470, 530,
+                                        System.IO.Path.GetExtension(img.FileName) == ".jpg" ? ImageFormat.Jpeg : ImageFormat.Png);
                                 }
 
                                 elementpropRepo.Update(elementProp);
@@ -1196,7 +1201,7 @@ namespace Brella.Controllers
         }
 
 
-        public IActionResult Updateelement2(int id, string title, string description)
+        public IActionResult UpdateElement2(int id, string title, string description)
         {
             var element2 = element2Repo.Find(id);
 
@@ -1250,15 +1255,11 @@ namespace Brella.Controllers
 
                                 if (img != null)
                                 {
-                                    if (System.IO.Path.GetExtension(img.FileName) != ".gif" ||
-                                        System.IO.Path.GetExtension(img.FileName) != ".mp4" ||
-                                        System.IO.Path.GetExtension(img.FileName) != ".mp3")
-                                    {
-                                        byte[] b = new byte[img.Length];
-                                        img.OpenReadStream().Read(b, 0, b.Length);
+                                    byte[] b = new byte[img.Length];
+                                    img.OpenReadStream().Read(b, 0, b.Length);
 
-                                        elementProp.e3img = resize.Resizer(b, 570, 434, ImageFormat.Jpeg);
-                                    }
+                                    elementProp.e3img = resize.Resizer(b, 570, 434,
+                                        System.IO.Path.GetExtension(img.FileName) == ".jpg" ? ImageFormat.Jpeg : ImageFormat.Png);
                                 }
 
                                 elementpropRepo.Update(elementProp);
@@ -1337,7 +1338,7 @@ namespace Brella.Controllers
         }
 
 
-        public IActionResult Updateelement3(int id, string title, string description)
+        public IActionResult UpdateElement3(int id, string title, string description)
         {
             var element3 = element3Repo.Find(id);
 
@@ -1387,15 +1388,11 @@ namespace Brella.Controllers
 
                             if (img != null)
                             {
-                                if (System.IO.Path.GetExtension(img.FileName) != ".gif" ||
-                                    System.IO.Path.GetExtension(img.FileName) != ".mp4" ||
-                                    System.IO.Path.GetExtension(img.FileName) != ".mp3")
-                                {
-                                    byte[] b = new byte[img.Length];
-                                    img.OpenReadStream().Read(b, 0, b.Length);
+                                byte[] b = new byte[img.Length];
+                                img.OpenReadStream().Read(b, 0, b.Length);
 
-                                    elementProp.e4img = resize.Resizer(b, 568, 519, ImageFormat.Jpeg);
-                                }
+                                elementProp.e4img = resize.Resizer(b, 568, 519,
+                                    System.IO.Path.GetExtension(img.FileName) == ".jpg" ? ImageFormat.Jpeg : ImageFormat.Png);
                             }
 
                             elementpropRepo.Update(elementProp);

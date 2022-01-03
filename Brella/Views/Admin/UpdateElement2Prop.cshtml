@@ -25,21 +25,21 @@
                     <div class="row" style="margin-top: 20px">
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">عنوان کوتاه</label>
-                            <input name="PreTitles" value="@item.e2PreTitle" class="fname" type="text" required>
+                            <input name="PreTitles" value="@(item.e2PreTitle != null ? item.e2PreTitle : "")" class="fname" type="text">
                         </div>
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">عنوان کامل</label>
-                            <input name="Titles" value="@item.e2Title" class="fname" type="text" required>
+                            <input name="Titles" value="@(item.e2Title != null ? item.e2Title : "")" class="fname" type="text">
                         </div>
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">توضیحات</label>
-                            <textarea name="descriptions" class="fname" type="text" required>@item.e2Description</textarea>
+                            <textarea name="descriptions" class="fname" type="text">@(item.e2Description != null ? item.e2Description : "")</textarea>
                         </div>
                     </div>
                     if (item.language.faTitle == "فارسی")
                     {
                         <div class="col-md-12 col-sm-12 col-lg-12 custom-file" style="margin-top: 15px">
-                            <input name="img" id="picture" class="fname custom-file-input" type="file" />
+                            <input name="img" id="picture" class="fname custom-file-input" accept=".png, .jpg" type="file" />
                             <label class="d-block custom-file-label text-center">عکس فیلد</label>
                         </div>
                         if (item.e2img != null)

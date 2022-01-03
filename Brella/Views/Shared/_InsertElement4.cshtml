@@ -10,12 +10,10 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <label class="d-block">عنوان فیلد</label>
                 <input asp-for="titles" class="fname" type="text">
-                <span asp-validation-for="titles"></span>
             </div>
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <label class="d-block">توضیحات فیلد</label>
                 <textarea asp-for="descriptions" class="fname" type="text"></textarea>
-                <span asp-validation-for="descriptions"></span>
             </div>
         </div>
         <input asp-for="languageIds" value="@item.id" hidden />

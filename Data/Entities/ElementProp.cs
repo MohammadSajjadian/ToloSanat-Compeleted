@@ -13,7 +13,8 @@ namespace Data.Entities
 
         #region Header
 
-        public byte[] logo { get; set; }
+        public byte[] mainLogo { get; set; }
+        public byte[] secondaryLogo { get; set; }
         public string address { get; set; }
         public string email { get; set; }
         public string phoneNumber { get; set; }

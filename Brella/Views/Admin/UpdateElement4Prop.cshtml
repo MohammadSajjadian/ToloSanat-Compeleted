@@ -25,17 +25,17 @@
                     <div class="row" style="margin-top: 20px">
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">عنوان کوتاه</label>
-                            <input name="PreTitles" value="@item.e4PreTitle" class="fname" type="text" required>
+                            <input name="PreTitles" value="@(item.e4PreTitle != null ? item.e4PreTitle : "")" class="fname" type="text">
                         </div>
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">عنوان کامل</label>
-                            <input name="Titles" value="@item.e4Title" class="fname" type="text" required>
+                            <input name="Titles" value="@(item.e4Title != null ? item.e4Title : "")" class="fname" type="text">
                         </div>
                     </div>
                     if (item.language.faTitle == "فارسی")
                     {
                         <div class="col-md-12 col-sm-12 col-lg-12 custom-file" style="margin-top: 15px">
-                            <input name="img" id="picture" class="fname custom-file-input" type="file" />
+                            <input name="img" id="picture" class="fname custom-file-input" accept=".png, .jpg" type="file" />
                             <label class="d-block custom-file-label text-center">عکس فیلد</label>
                         </div>
                         if (item.e4img != null)

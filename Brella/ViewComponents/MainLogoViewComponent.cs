@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Brella.ViewComponents
 {
-    public class LogoViewComponent : ViewComponent
+    public class MainLogoViewComponent : ViewComponent
     {
         private readonly IRepository<ElementProp> elementPropRepo;
 
-        public LogoViewComponent(IRepository<ElementProp> _elementPropRepo)
+        public MainLogoViewComponent(IRepository<ElementProp> _elementPropRepo)
         {
             elementPropRepo = _elementPropRepo;
         }
@@ -21,9 +21,7 @@ namespace Brella.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            string lang = CultureInfo.CurrentCulture.Name;
-
-            ElementProp elementProp = elementPropRepo.Get(x => x.language.title == lang, null, null).FirstOrDefault();
+            ElementProp elementProp = elementPropRepo.Get(x => x.language.faTitle == "فارسی", null, null).FirstOrDefault();
 
             return View(elementProp);
         }

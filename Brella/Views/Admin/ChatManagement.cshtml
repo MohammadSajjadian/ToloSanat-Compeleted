@@ -4,7 +4,9 @@
 }
 
 @model PagedResult<Group>
+
 @inject UserManager<ApplicationUser> userManager
+
 <section>
     <div class="w-100 pt-170 pb-150 dark-layer3 opc7 position-relative">
         <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
@@ -39,26 +41,25 @@
 
                 @foreach (var item in Model.Data)
                 {
-                    ApplicationUser user = await userManager.FindByIdAsync(item.userId);
                     DateTime createTime = item.messages.Where(x => x.IsDeleteForAdmin == false).OrderByDescending(x => x.createTime).Take(1).Select(x => x.createTime).FirstOrDefault();
 
                     <tr>
                         <td class="text-center">@item.id</td>
                         <td class="text-center">
                             <a asp-action="adminsidechatsbridge" asp-route-clientId="@item.userId">
-                                @($"{user.name} {user.family}")
+                                @($"{item.applicationUser.name} {item.applicationUser.family}")
                             </a>
                         </td>
                         <th class="text-center">@(item.messages.Count != 0 ? item.messages.Where(x => x.IsDeleteForAdmin == false).OrderByDescending(x => x.createTime).Take(1).Select(x => x.text).FirstOrDefault() : "-")</th>
                         <th class="text-center">
                             @(item.messages.Count != 0 ? $"{persian.GetYear(createTime)}/{persian.GetMonth(createTime)}/{persian.GetDayOfMonth(createTime)}  {persian.GetHour(createTime)}:{persian.GetMinute(createTime)}:{persian.GetSecond(createTime)}" : "-")
                         </th>
-                        <th class="text-center"><a href="mailto:@user.Email">@user.Email</a></th>
-                        <th class="text-center"><a href="tel:@user.PhoneNumber">@user.PhoneNumber</a></th>
-                        <th class="text-center"><input id="IsBan" userId="@item.userId" type="checkbox" @(user.EmailConfirmed == true ? "" : "checked") /></th>
+                        <th class="text-center"><a href="mailto:@item.applicationUser.Email">@item.applicationUser.Email</a></th>
+                        <th class="text-center"><a href="tel:@item.applicationUser.PhoneNumber">@item.applicationUser.PhoneNumber</a></th>
+                        <th class="text-center"><input id="IsBan" userId="@item.userId" type="checkbox" @(item.applicationUser.EmailConfirmed == true ? "" : "checked") /></th>
                         @if (item.messages.Count != 0)
                         {
-                            <td class="text-center"><a id="deletechat" chatId="item.id" href="#">حذف</a></td>
+                            <td class="text-center"><a id="deletechat" chatId="@item.id" href="#">حذف</a></td>
                         }
                         else
                         {

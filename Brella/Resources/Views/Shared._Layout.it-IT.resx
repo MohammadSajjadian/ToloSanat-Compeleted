@@ -177,6 +177,9 @@
   <data name="Support" xml:space="preserve">
     <value>Supporto</value>
   </data>
+  <data name="TitleDes" xml:space="preserve">
+    <value>Costruzione di macchine per l'industria Tolo</value>
+  </data>
   <data name="Warning" xml:space="preserve">
     <value>!Avvertimento!</value>
   </data>

@@ -31,14 +31,14 @@
                             <div class="contact-info-box w-100">
                                 <i class="thm-clr flaticon-headset"></i>
                                 <strong>@localizer["Phone"]</strong>
-                                <span class="d-block"><a href="tel:@ViewBag.PhoneNumber">@ViewBag.PhoneNumber</a></span>
+                                <span class="d-block"><a href="tel:@(ViewBag.PhoneNumber != null ? ViewBag.PhoneNumber : "")">@(ViewBag.PhoneNumber != null ? ViewBag.PhoneNumber : "-")</a></span>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="contact-info-box w-100">
                                 <i class="thm-clr flaticon-mail"></i>
                                 <strong>@localizer["Email"]</strong>
-                                <a class="d-block" href="mailto:ViewBag.Email" title="">@ViewBag.Email</a>
+                                <a class="d-block" href="@(ViewBag.Email != null ? ViewBag.Email : "")" title="">@(ViewBag.Email != null ? ViewBag.Email : "-")</a>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-4 col-lg-4">
@@ -46,7 +46,7 @@
                                 <i class="thm-clr flaticon-placeholder"></i>
                                 <strong>@localizer["Address"]</strong>
                                 <p class="mb-0">
-                                    @ViewBag.Address
+                                    @(ViewBag.Address != null ? ViewBag.Address : "-")
                                 </p>
                             </div>
                         </div>

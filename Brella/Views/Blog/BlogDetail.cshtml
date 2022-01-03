@@ -1,6 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = Model.title;
+    ViewData["Description"] = Html.Raw(Model.shortDecpription);
 }
 
 @model Post
@@ -14,7 +15,7 @@
         <div class="fixed-bg" style="background-image: url(/assets/images/pagetop-bg.jpg);"></div>
         <div class="container">
             <div class="page-top-wrap w-100">
-                <h1 class="mb-0">@localizer["BlogDetail"]</h1>
+                <h1 class="mb-0">@Model.title</h1>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a asp-action="index" asp-controller="home" title="">@localizer["Home"]</a></li>
                     <li class="breadcrumb-item"><a asp-action="index" asp-controller="blog">@localizer["Blog"]</a></li>

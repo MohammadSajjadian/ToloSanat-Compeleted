@@ -25,32 +25,38 @@
                     if (item.language.faTitle == "فارسی")
                     {
                         <div class="col-md-12 col-sm-12 col-lg-12 custom-file" style="margin-top: 15px">
-                            <input name="logo" id="picture" class="fname custom-file-input" type="file" accept=".png, .jpg, .jpeg" />
-                            <label class="d-block custom-file-label text-center">لوگو</label>
+                            <input name="mainLogo" id="mainLogo" class="fname custom-file-input" accept=".png" type="file" />
+                            <label class="d-block custom-file-label text-center">لوگو اصلی</label>
                         </div>
-                        <img width="250" style="margin-top: 15px; border-radius: 15px" id="slideBarImg" />
+                        <img width="250" src="@($"data:image/jpeg;base64,{Convert.ToBase64String(item.mainLogo)}")" style="margin-top: 15px; border-radius: 15px" id="mainLogoImg" />
+                        
+                        <div class="col-md-12 col-sm-12 col-lg-12 custom-file" style="margin-top: 15px">
+                            <input name="secondaryLogo" id="secondaryLogo" class="fname custom-file-input" accept=".png" type="file" />
+                            <label class="d-block custom-file-label text-center">لوگو فرعی</label>
+                        </div>
+                        <img width="50" src="@($"data:image/jpeg;base64,{Convert.ToBase64String(item.secondaryLogo)}")" style="margin-top: 15px; border-radius: 15px" id="secondaryLogoImg" />
                     }
 
                     <div class="row" style="margin-top: 20px">
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">آدرس</label>
-                            <input name="Address" value="@item.address" class="fname" type="text" required>
+                            <input name="Address" value="@(item.address != null ? item.address : "")" class="fname" type="text">
                         </div>
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">ایمیل</label>
-                            <input name="Email" value="@item.email" class="fname" type="text" required />
+                            <input name="Email" value="@(item.email != null ? item.email : "")" class="fname" type="text" />
                         </div>
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">شماره تلفن</label>
-                            <input name="PhoneNumber" value="@item.phoneNumber" class="fname" type="text" required>
+                            <input name="PhoneNumber" value="@(item.phoneNumber != null ? item.phoneNumber : "")" class="fname" type="text">
                         </div>
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">لینک اینستاگرام</label>
-                            <input name="InstaLink" value="@item.instaLink" class="fname" type="text" required>
+                            <input name="InstaLink" value="@(item.instaLink != null ? item.instaLink : "")" class="fname" type="text">
                         </div>
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">لینک تلگرام</label>
-                            <input name="TelegramLink" value="@item.telegramLink" class="fname" type="text" required>
+                            <input name="TelegramLink" value="@(item.telegramLink != null ? item.telegramLink : "")" class="fname" type="text">
                         </div>
                     </div>
                     <input name="languageIds" value="@item.languageId" hidden />
@@ -89,12 +95,23 @@
     })
 
     $(function () {
-        $(picture).change(function () {
+        $(mainLogo).change(function () {
             var reader = new FileReader
 
-            reader.readAsDataURL(picture.files[0])
+            reader.readAsDataURL(mainLogo.files[0])
             reader.onloadend = (x) => {
-                slideBarImg.src = x.target.result
+                mainLogoImg.src = x.target.result
+            }
+        })
+    })
+
+    $(function () {
+        $(secondaryLogo).change(function () {
+            var reader = new FileReader
+
+            reader.readAsDataURL(secondaryLogo.files[0])
+            reader.onloadend = (x) => {
+                secondaryLogoImg.src = x.target.result
             }
         })
     })

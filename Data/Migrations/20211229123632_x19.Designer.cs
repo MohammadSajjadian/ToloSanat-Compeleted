@@ -4,14 +4,16 @@ using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(DBbrella))]
-    partial class DBbrellaModelSnapshot : ModelSnapshot
+    [Migration("20211229123632_x19")]
+    partial class x19
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -312,11 +314,9 @@ namespace Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("userId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
-
-                    b.HasIndex("userId");
 
                     b.ToTable("groups");
                 });
@@ -734,15 +734,6 @@ namespace Data.Migrations
                     b.Navigation("language");
                 });
 
-            modelBuilder.Entity("Data.Entities.Group", b =>
-                {
-                    b.HasOne("Data.Entities.ApplicationUser", "applicationUser")
-                        .WithMany("groups")
-                        .HasForeignKey("userId");
-
-                    b.Navigation("applicationUser");
-                });
-
             modelBuilder.Entity("Data.Entities.Message", b =>
                 {
                     b.HasOne("Data.Entities.Group", "group")
@@ -867,8 +858,6 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.ApplicationUser", b =>
                 {
-                    b.Navigation("groups");
-
                     b.Navigation("messages");
 
                     b.Navigation("orders");

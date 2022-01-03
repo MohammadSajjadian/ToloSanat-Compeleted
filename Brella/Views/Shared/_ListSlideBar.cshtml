@@ -25,10 +25,17 @@
                         <td class="text-center">
                             <img width="150" src="@($"data:image;base64,{Convert.ToBase64String(item.img)}")" />
                         </td>
-                        <td class="text-center">@item.title</td>
-                        <th class="text-center">@Html.Raw(item.description.Length >= 50 ? $"{item.description.Substring(0, 50)}..." : item.description)</th>
-                        <td class="text-center">@item.buttonTitle</td>
-                        <td class="text-center">@item.buttonLink</td>
+                        <td class="text-center">@(item.title != null ? item.title : "")</td>
+                        @if (item.description != null)
+                        {
+                            <th class="text-center">@Html.Raw(item.description.Length >= 50 ? $"{item.description.Substring(0, 50)}..." : item.description)</th>
+                        }
+                        else
+                        {
+                            <th class="text-center"></th>
+                        }
+                        <td class="text-center">@(item.buttonTitle != null ? item.buttonTitle : "")</td>
+                        <td class="text-center">@(item.buttonLink != null ? item.buttonLink : "")</td>
                         <td class="text-center">@item.language.faTitle</td>
 
                         <td class="text-center"><a id="deleteSlideBar" slideBarId="@item.id" href="#">حذف</a> | <a asp-action="UpdateSlideBar" asp-controller="admin" asp-route-id="@item.id">ویرایش</a></td>

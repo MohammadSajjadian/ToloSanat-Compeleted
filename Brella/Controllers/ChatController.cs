@@ -21,7 +21,7 @@ namespace Brella.Controllers
 
         private const string success = "success";
         private const string error = "error";
-        private const string siteName = "www.xyz.com";
+        private const string siteName = "www.tolosanat.com";
 
         #endregion
 
@@ -80,6 +80,7 @@ namespace Brella.Controllers
                 messageRepo.SaveChange();
 
                 Group group = groupRepo.Find(groupId);
+                group.IsDeleteForAdmin = false;
                 group.lastMessageTime = message.createTime;
 
                 groupRepo.Update(group);

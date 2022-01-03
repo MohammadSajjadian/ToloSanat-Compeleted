@@ -65,7 +65,7 @@ namespace Brella.Controllers
             #region Pagination
 
             List<Group> groups = groupRepo.Get(x => x.IsDeleteForAdmin == false,
-                x => x.OrderByDescending(x => x.lastMessageTime), "messages");
+                x => x.OrderByDescending(x => x.lastMessageTime), "applicationUser,messages");
 
             PagingList<Group> paging = PagingList.Create(groups, 10, pagenumber);
 

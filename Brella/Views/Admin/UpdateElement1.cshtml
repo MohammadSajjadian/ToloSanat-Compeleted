@@ -23,11 +23,11 @@
                 <div class="row" style="margin-top: 20px">
                     <div class="col-md-12 col-sm-12 col-lg-12">
                         <label class="d-block">عنوان</label>
-                        <input name="title" value="@Model.title" class="fname" type="text" required>
+                        <input name="title" value="@(Model.title != null ? Model.title : "")" class="fname" type="text">
                     </div>
                     <div class="col-md-12 col-sm-12 col-lg-12">
                         <label class="d-block">توضیحات</label>
-                        <textarea name="description" class="fname" type="text" required>@Model.description</textarea>
+                        <textarea name="description" class="fname" type="text">@(Model.description != null ? Model.description : "")</textarea>
                     </div>
                 </div>
 

@@ -20,6 +20,7 @@ namespace Data.Entities
 
         public ICollection<Post> posts { get; set; }
         public ICollection<Project> projects { get; set; }
+        public ICollection<Group> groups { get; set; }
         public ICollection<Message> messages { get; set; }
         public ICollection<Order> orders { get; set; }
 

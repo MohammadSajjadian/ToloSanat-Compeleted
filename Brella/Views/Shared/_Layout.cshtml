@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="" />
+    <meta name="@ViewData["Description"]" content="" />
     <meta name="keywords" content="" />
-    <link rel="icon" href="@await Component.InvokeAsync("Logo")" sizes="35x35" type="image/png">
-    <title>@ViewData["Title"] | جذاب ترین قالب جهان</title>
+    <link rel="icon" href="@await Component.InvokeAsync("SecondaryLogo")" type="image/png">
+    <title>@ViewData["Title"] | @localizer["TitleDes"]</title>
 
     <link rel="stylesheet" href="~/assets/css/all.min.css">
     <link rel="stylesheet" href="~/assets/css/flaticon.css">
@@ -57,8 +57,8 @@
                         @if (User.Identity.IsAuthenticated == false)
                         {
                             <ul class="topbar-links mb-0 list-unstyled d-inline-flex text-left">
-                                <li><a asp-action="register" asp-controller="account" title="">@localizer["Register"]</a></li>
-                                <li><a asp-action="login" asp-controller="account" title="">@localizer["Login"]</a></li>
+                                <li><a style="display: inline-block" asp-action="register" asp-controller="account" title="">@localizer["Register"]</a></li>
+                                <li><a style="display: inline-block" asp-action="login" asp-controller="account" title="">@localizer["Login"]</a></li>
                             </ul>
                         }
                         else
@@ -75,14 +75,12 @@
                     <div class="logo-info-bar-inner w-100 d-flex flex-wrap justify-content-between align-items-center">
                         <div class="logo-social d-inline-flex flex-wrap justify-content-between align-items-center">
                             <div class="logo">
-                                <h1 class="mb-0">
-                                    <a asp-action="index" asp-controller="home">
-                                        <img class="img-fluid"
-                                             src="@await Component.InvokeAsync("Logo")"
-                                             alt="Logo"
-                                             srcset="@await Component.InvokeAsync("Logo")">
-                                    </a>
-                                </h1>
+                                <a asp-action="index" asp-controller="home">
+                                    <img class="img-fluid"
+                                         src="@await Component.InvokeAsync("MainLogo")"
+                                         alt="Logo"
+                                         srcset="@await Component.InvokeAsync("MainLogo")" />
+                                </a>
                             </div><!-- Logo -->
                             <div class="social-links">
                                 @await Component.InvokeAsync("Socials")
@@ -188,9 +186,9 @@
                         <h1 class="mb-0">
                             <a asp-action="index" asp-controller="home" title="Home">
                                 <img class="img-fluid"
-                                     src="@await Component.InvokeAsync("Logo")"
+                                     src="@await Component.InvokeAsync("MainLogo")"
                                      alt="Logo"
-                                     srcset="@await Component.InvokeAsync("Logo")">
+                                     srcset="@await Component.InvokeAsync("MainLogo")">
                             </a>
                         </h1>
                     </div><!-- Logo -->
@@ -288,8 +286,8 @@
                             <li style="margin-right: 15px"><a asp-action="UpdateHeaderProp" asp-controller="admin">ویرایش</a><i class="fas fa-edit"></i></li>
                         }
                         @await Component.InvokeAsync("PhoneAddress")
-                        <li><a asp-action="register" asp-controller="account" title="">@localizer["Register"]</a></li>
-                        <li><a asp-action="login" asp-controller="account" title="">@localizer["Login"]</a></li>
+                        <li><a style="display: inline-block" asp-action="register" asp-controller="account" title="">@localizer["Register"]</a></li>
+                        <li><a style="display: inline-block" asp-action="login" asp-controller="account" title="">@localizer["Login"]</a></li>
                     </ul>
                 }
                 else
@@ -306,7 +304,7 @@
             </div>
             <div class="lg-mn">
                 <div class="logo">
-                    <a asp-action="index" asp-controller="home" title="Home"><img src="@await Component.InvokeAsync("Logo")" alt="Logo"></a>
+                    <a asp-action="index" asp-controller="home" title="Home"><img src="@await Component.InvokeAsync("MainLogo")" alt="Logo"></a>
                 </div>
                 <span class="rspn-mnu-btn"><i class="fa fa-list-ul"></i></span>
             </div>
@@ -404,9 +402,9 @@
                                         <h1 class="mb-0">
                                             <a asp-action="index" asp-controller="home">
                                                 <img class="img-fluid"
-                                                     src="@await Component.InvokeAsync("Logo")"
+                                                     src="@await Component.InvokeAsync("MainLogo")"
                                                      alt="Logo"
-                                                     srcset="@await Component.InvokeAsync("Logo")">
+                                                     srcset="@await Component.InvokeAsync("MainLogo")">
                                             </a>
                                         </h1>
                                     </div><!-- Logo -->
@@ -467,47 +465,47 @@
 
 @if (TempData["error"] != null)
 {
-<script>
+    <script>
         Swal.fire({
             icon: 'error',
             title: '@localizer["Error"]',
             text: '@Html.Raw(TempData["error"])',
             confirmButtonText: '@localizer["Ok"]',
         })
-</script>
+    </script>
 }
 
 @if (TempData["success"] != null)
 {
-<script>
+    <script>
         Swal.fire({
             icon: 'success',
             text: '@Html.Raw(TempData["success"])',
             confirmButtonText: '@localizer["Ok"]',
         })
-</script>
+    </script>
 }
 
 @if (TempData["info"] != null)
 {
-<script>
+    <script>
         Swal.fire({
             icon: 'info',
             title: '@localizer["Info"]',
             text: '@Html.Raw(TempData["info"])',
             confirmButtonText: '@localizer["Ok"]',
         })
-</script>
+    </script>
 }
 
 @if (TempData["warning"] != null)
 {
-<script>
+    <script>
         Swal.fire({
             icon: 'warning',
             title: '@localizer["Warning"]',
             text: '@Html.Raw(TempData["warning"])',
             confirmButtonText: '@localizer["Ok"]',
         })
-</script>
+    </script>
 }

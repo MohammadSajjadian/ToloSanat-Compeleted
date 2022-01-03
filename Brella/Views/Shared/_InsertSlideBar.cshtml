@@ -10,17 +10,14 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <label class="d-block">عنوان اسلاید</label>
                 <input asp-for="titles" class="fname" type="text">
-                <span asp-validation-for="titles"></span>
             </div>
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <label class="d-block">توضیحات اسلاید</label>
                 <textarea asp-for="descriptions" class="fname" type="text"></textarea>
-                <span asp-validation-for="descriptions"></span>
             </div>
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <label class="d-block">متن دکمه</label>
                 <input asp-for="buttonTitles" class="fname" type="text" />
-                <span asp-validation-for="buttonTitles"></span>
             </div>
         </div>
         if (item.faTitle == "فارسی")
@@ -28,7 +25,6 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <label class="d-block">لینک دکمه</label>
                 <input asp-for="buttonLink" class="fname" type="text" />
-                <span asp-validation-for="buttonLink"></span>
             </div>
             <div class="col-md-12 col-sm-12 col-lg-12 custom-file" style="margin-top: 15px">
                 <input asp-for="img" id="picture" class="fname custom-file-input" type="file" />

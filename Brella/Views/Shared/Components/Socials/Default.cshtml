@@ -1,4 +1,12 @@
 ﻿
 @model ElementProp
+
+@if (Model.instaLink != null)
+{
     <a href="@Model.instaLink" title="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+}
+
+@if (Model.telegramLink != null)
+{
     <a href="@Model.telegramLink" title="Telegram" target="_blank"><i class="fab fa-telegram"></i></a>
+}
