@@ -637,6 +637,9 @@ blockquote {
 }
 
 
+.flaticon-arrow-pointing:before {
+    content: "\f11b";
+}
 
 
 

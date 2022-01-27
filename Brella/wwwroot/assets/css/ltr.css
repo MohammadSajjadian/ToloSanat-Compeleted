@@ -80,40 +80,40 @@ ul li, ol li, .billing-details table thead th, .billing-details table tfoot th, 
 
 /*Header*/
 .list-unstyled {
-    padding-left: initial;
-    padding-right: 0;
+    padding-right: initial;
+    padding-left: 0;
 }
 
 .topbar-info-list > li i {
-    margin-right: initial;
-    margin-left: 10px;
+    margin-left: initial;
+    margin-right: 10px;
 }
 
 .topbar-info-list > li:not(:first-child) {
-    margin-left: initial;
-    margin-right: 4.0625rem;
+    margin-right initial;
+    margin-left: 4.0625rem;
 }
 
 .topbar-links > li:not(:first-child) {
-    margin-left: initial;
-    margin-right: 1rem;
-    padding-left: initial;
-    padding-right: 1.0625rem;
+    margin-right: initial;
+    margin-left: 1rem;
+    padding-right: initial;
+    padding-left: 1.0625rem;
 }
 
     .topbar-links > li:not(:first-child):before {
-        left: initial;
-        right: 0;
+        right: initial;
+        left: 0;
     }
 
 .logo + .social-links, .call-us + .add-cart {
-    margin-left: initial;
-    margin-right: 9.375rem;
+    margin-right: initial;
+    margin-left: 9.375rem;
 }
 
 .social-links > a:not(:first-child) {
-    margin-left: initial;
-    margin-right: 5px;
+    margin-right: initial;
+    margin-left: 5px;
 }
 
 .call-us {
@@ -142,13 +142,13 @@ nav > div > ul > li {
 }
 
     nav > div > ul > li.menu-item-has-children > a {
-        padding-right: initial;
-        padding-left: 1.25rem;
+        padding-left: initial;
+        padding-right: 1.25rem;
     }
 
         nav > div > ul > li.menu-item-has-children > a::before {
-            right: initial;
-            left: 0;
+            left: initial;
+            right: 0;
         }
 
 nav > div ul ul {
@@ -226,8 +226,8 @@ nav > div ul ul li:hover > a, nav > div ul ul li a:focus {
 }
 
     .rsnp-mnu > ul li.menu-item-has-children > a::before {
-        right: initial;
-        left: 0;
+        left: initial;
+        right: 0;
     }
 
     .rsnp-mnu > ul ul {
@@ -382,8 +382,8 @@ nav > div ul ul ul {
 }
 
 .social-links2 > a:not(:first-child) {
-    margin-left: initial;
-    margin-right: 1.4375rem;
+    margin-right: initial;
+    margin-left: 1.4375rem;
 }
 
 header.style2 {
@@ -411,16 +411,16 @@ header.style2 {
 }
 
 ol.breadcrumb li.breadcrumb-item + li.breadcrumb-item {
-    margin-left: initial;
-    margin-right: .75rem;
-    padding-left: initial;
-    padding-right: 1.5625rem;
+    margin-right: initial;
+    margin-left: .75rem;
+    padding-right: initial;
+    padding-left: 1.5625rem;
 }
 
     ol.breadcrumb li.breadcrumb-item + li.breadcrumb-item:before {
-        content: "\f060";
-        left: initial;
-        right: 0;
+        content: "\f061";
+        right: inherit;
+        left: 0;
     }
 
 .about-widget-img > a {
@@ -674,7 +674,9 @@ blockquote {
     float: right;
 }
 
-
+.flaticon-arrow-pointing:before {
+    content: "\f11a";
+}
 
 
 

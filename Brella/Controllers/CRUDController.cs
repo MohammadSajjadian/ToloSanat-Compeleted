@@ -137,8 +137,8 @@ namespace Brella.Controllers
                                 byte[] b = new byte[model.img.Length];
                                 model.img.OpenReadStream().Read(b, 0, b.Length);
 
-                                project.thumbNail = resize.Resizer(b, 270, 300, ImageFormat.Jpeg);
-                                project.detailImg = resize.Resizer(b, 770, 470, ImageFormat.Jpeg);
+                                project.thumbNail = resize.Resizer(b, 300, 300, ImageFormat.Jpeg);
+                                project.detailImg = resize.Resizer(b, 670, 470, ImageFormat.Jpeg);
                             }
 
                             projectRepo.Add(project);
@@ -257,8 +257,8 @@ namespace Brella.Controllers
                     byte[] b = new byte[img.Length];
                     img.OpenReadStream().Read(b, 0, b.Length);
 
-                    project.thumbNail = resize.Resizer(b, 270, 300, ImageFormat.Jpeg);
-                    project.detailImg = resize.Resizer(b, 770, 470, ImageFormat.Jpeg);
+                    project.thumbNail = resize.Resizer(b, 300, 300, ImageFormat.Jpeg);
+                    project.detailImg = resize.Resizer(b, 670, 470, ImageFormat.Jpeg);
                 }
             }
 
@@ -773,8 +773,8 @@ namespace Brella.Controllers
 
         #region Header
 
-        public IActionResult UpdateHeaderProp(List<int> languageIds, IFormFile mainLogo, IFormFile secondaryLogo, List<string> Address, List<string> Email,
-            List<string> PhoneNumber, List<string> InstaLink, List<string> TelegramLink)
+        public IActionResult UpdateHeaderProp(List<int> languageIds, IFormFile mainLogo, IFormFile secondaryLogo, List<string> Address, string Email,
+            string PhoneNumber, string InstaLink, string TelegramLink)
         {
             int langId = 1;
             languageIds.Select(x => new { id = langId++, value = x }).ToList().ForEach(x =>
@@ -784,51 +784,35 @@ namespace Brella.Controllers
                 int address = 1;
                 Address.Select(y => new { id = address++, value = y }).ToList().ForEach(y =>
                 {
-                    int email = 1;
-                    Email.Select(z => new { id = email++, value = z }).ToList().ForEach(z =>
+                    if (x.id == y.id)
                     {
-                        int phoneNumber = 1;
-                        PhoneNumber.Select(m => new { id = phoneNumber++, value = m }).ToList().ForEach(m =>
+                        if (x.value == 1)
                         {
-                            int instaLink = 1;
-                            InstaLink.Select(n => new { id = instaLink++, value = n }).ToList().ForEach(n =>
+                            if (mainLogo != null)
                             {
-                                int telegramLink = 1;
-                                TelegramLink.Select(k => new { id = telegramLink++, value = k }).ToList().ForEach(k =>
-                                {
-                                    if (x.id == y.id && y.id == z.id && z.id == m.id && m.id == n.id && n.id == k.id)
-                                    {
-                                        if (x.value == 1)
-                                        {
-                                            if (mainLogo != null)
-                                            {
-                                                byte[] b = new byte[mainLogo.Length];
-                                                mainLogo.OpenReadStream().Read(b, 0, b.Length);
+                                byte[] b = new byte[mainLogo.Length];
+                                mainLogo.OpenReadStream().Read(b, 0, b.Length);
 
-                                                elementProp.mainLogo = resize.Resizer(b, 148, 50, ImageFormat.Png);
-                                            }
+                                elementProp.mainLogo = resize.Resizer(b, 148, 50, ImageFormat.Png);
+                            }
 
-                                            if (secondaryLogo != null)
-                                            {
-                                                byte[] d = new byte[secondaryLogo.Length];
-                                                secondaryLogo.OpenReadStream().Read(d, 0, d.Length);
+                            if (secondaryLogo != null)
+                            {
+                                byte[] d = new byte[secondaryLogo.Length];
+                                secondaryLogo.OpenReadStream().Read(d, 0, d.Length);
 
-                                                elementProp.secondaryLogo = resize.Resizer(d, 35, 35, ImageFormat.Png);
-                                            }
-                                        }
-                                        elementProp.address = y.value;
-                                        elementProp.email = z.value;
-                                        elementProp.phoneNumber = m.value;
-                                        elementProp.instaLink = n.value;
-                                        elementProp.telegramLink = n.value;
+                                elementProp.secondaryLogo = resize.Resizer(d, 35, 35, ImageFormat.Png);
+                            }
+                        }
+                        elementProp.address = y.value;
+                        elementProp.email = Email;
+                        elementProp.phoneNumber = PhoneNumber;
+                        elementProp.instaLink = InstaLink;
+                        elementProp.telegramLink = TelegramLink;
 
-                                        elementpropRepo.Update(elementProp);
-                                        elementpropRepo.SaveChange();
-                                    }
-                                });
-                            });
-                        });
-                    });
+                        elementpropRepo.Update(elementProp);
+                        elementpropRepo.SaveChange();
+                    }
                 });
             });
 

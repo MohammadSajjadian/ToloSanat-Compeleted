@@ -57,8 +57,8 @@
                         @if (User.Identity.IsAuthenticated == false)
                         {
                             <ul class="topbar-links mb-0 list-unstyled d-inline-flex text-left">
-                                <li><a style="display: inline-block" asp-action="register" asp-controller="account" title="">@localizer["Register"]</a></li>
-                                <li><a style="display: inline-block" asp-action="login" asp-controller="account" title="">@localizer["Login"]</a></li>
+                                <li><a asp-action="register" asp-controller="account" title="">@localizer["Register"]</a></li>
+                                <li><a asp-action="login" asp-controller="account" title="">@localizer["Login"]</a></li>
                             </ul>
                         }
                         else
@@ -286,8 +286,8 @@
                             <li style="margin-right: 15px"><a asp-action="UpdateHeaderProp" asp-controller="admin">ویرایش</a><i class="fas fa-edit"></i></li>
                         }
                         @await Component.InvokeAsync("PhoneAddress")
-                        <li><a style="display: inline-block" asp-action="register" asp-controller="account" title="">@localizer["Register"]</a></li>
-                        <li><a style="display: inline-block" asp-action="login" asp-controller="account" title="">@localizer["Login"]</a></li>
+                        <li><a asp-action="register" asp-controller="account" title="">@localizer["Register"]</a></li>
+                        <li><a asp-action="login" asp-controller="account" title="">@localizer["Login"]</a></li>
                     </ul>
                 }
                 else

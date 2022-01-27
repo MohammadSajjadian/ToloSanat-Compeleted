@@ -25,11 +25,11 @@
                     <div class="row" style="margin-top: 20px">
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">عنوان کوتاه</label>
-                            <input name="PreTitles" value="@(item.e2PreTitle != null ? item.e2PreTitle : "")" class="fname" type="text">
+                            <textarea name="PreTitles" class="fname" type="text">@(item.e2PreTitle != null ? item.e2PreTitle : "")</textarea>
                         </div>
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">عنوان کامل</label>
-                            <input name="Titles" value="@(item.e2Title != null ? item.e2Title : "")" class="fname" type="text">
+                            <textarea name="Titles" class="fname" type="text">@(item.e2Title != null ? item.e2Title : "")</textarea>
                         </div>
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">توضیحات</label>
@@ -67,6 +67,51 @@
 </section>
 
 <script>
+    $(function () {
+        tinymce.init({
+            selector: 'textarea',
+            setup: function (editor) {
+                editor.on('change', function () {
+                    editor.save();
+                });
+            },
+            plugins: 'advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table contextmenu directionality emoticons template textcolor paste textcolor colorpicker',
+            toolbar: 'a11ycheck numlist bullist tabfocus addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
+            toolbar_mode: 'floating',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            forced_root_block: "",
+            force_br_newlines: true,
+            force_p_newlines: false,
+            image_title: true,
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+
+                input.onchange = function () {
+                    var file = this.files[0];
+
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        var id = 'blobid' + (new Date()).getTime();
+                        var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                        var base64 = reader.result.split(',')[1];
+                        var blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    };
+                    reader.readAsDataURL(file);
+                };
+
+                input.click();
+            },
+        });
+    })
+
     $(function () {
         $(secondupdatebtn).click(function () {
             Swal.fire({

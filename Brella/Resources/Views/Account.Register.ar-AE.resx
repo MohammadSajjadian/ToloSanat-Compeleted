@@ -120,6 +120,9 @@
   <data name="Email" xml:space="preserve">
     <value>البريد الإلكتروني :</value>
   </data>
+  <data name="EmailInfo" xml:space="preserve">
+    <value>سيتم إرسال بريد إلكتروني لتأكيد الحساب إليك. إذا كنت لا ترى البريد الإلكتروني ، فارجع إلى قسم البريد العشوائي.</value>
+  </data>
   <data name="Family" xml:space="preserve">
     <value>الكنية :</value>
   </data>

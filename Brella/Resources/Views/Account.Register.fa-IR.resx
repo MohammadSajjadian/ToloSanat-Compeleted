@@ -120,6 +120,9 @@
   <data name="Email" xml:space="preserve">
     <value>آدرس ایمیل :</value>
   </data>
+  <data name="EmailInfo" xml:space="preserve">
+    <value>ایمیل تایید حساب کاربری برای شما ارسال میشود. در صورت مشاهده نکردن ایمیل، به قسمت اسپم یا هرزنامه مراجعه نمایید.</value>
+  </data>
   <data name="Family" xml:space="preserve">
     <value>نام خانوادگی :</value>
   </data>

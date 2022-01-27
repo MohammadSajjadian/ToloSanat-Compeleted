@@ -20,14 +20,14 @@
                                  style="background-image: url(@($"data:image/jpeg;base64,{Convert.ToBase64String(item.img)}"))"></div>
                             <div class="container">
                                 <div class="feat-cap">
-                                    <h1 class="mb-0">@(item.title != null ? item.title : "")</h1>
-                                    <p class="mb-0">@(Html.Raw(item.description) != null ? Html.Raw(item.description) : "")</p>
+                                    <h1 class="mb-0">@(item.title != null ? Html.Raw(item.title) : "")</h1>
+                                    <p class="mb-0">@(item.description != null ? Html.Raw(item.description) : "")</p>
                                     <br />
                                     @if (item.buttonTitle != null)
                                     {
                                         <div class="feat-cap-innr">
                                             <a class="thm-btn thm-bg" href="@item.buttonLink" title="">
-                                                @item.buttonTitle<i class="flaticon-arrow-pointing-to-left"></i>
+                                                @Html.Raw(item.buttonTitle)<i class="flaticon-arrow-pointing-to-left"></i>
                                             </a>
                                         </div>
                                     }
@@ -54,9 +54,9 @@
                     {
                         <a asp-action="UpdateElement1Prop" asp-controller="admin" style="margin-right: 15px"><span>ویرایش<i class="fas fa-edit"></i></span></a>
                     }
-                    <span class="thm-clr d-block">@(Model.e1PreTitle != null ? Model.e1PreTitle : "")</span>
-                    <h2 class="mb-0">@(Model.e1Title != null ? Model.e1Title : "")</h2>
-                    <p class="mb-0">@(Model.e1Description != null ? Model.e1Description : "")</p>
+                    <span class="thm-clr d-block">@(Model.e1PreTitle != null ? Html.Raw(Model.e1PreTitle) : "")</span>
+                    <h2 class="mb-0">@(Model.e1Title != null ? Html.Raw(Model.e1Title) : "")</h2>
+                    <p class="mb-0">@(Model.e1Description != null ? Html.Raw(Model.e1Description) : "")</p>
                 </div>
             </div>
 
@@ -79,9 +79,9 @@
 i == 3 ? "flaticon-carpenter" : i == 4 ? "flaticon-jigsaw" : "flaticon-wheel-saw")"></i>
                                     <div class="serv-box-inner">
                                         <h3 class="mb-0">
-                                            @(item.title != null ? item.title : "")
+                                            @(item.title != null ? Html.Raw(item.title) : "")
                                         </h3>
-                                        <p class="mb-0">@(Html.Raw(item.description) != null ? Html.Raw(item.description) : "")</p>
+                                        <p class="mb-0">@(item.description != null ? Html.Raw(item.description) : "")</p>
                                     </div>
                                 </div>
                             </div>
@@ -157,9 +157,9 @@ j == 7 ? "flaticon-file" : j == 8 ? "flaticon-electric-tower" : "flaticon-helmet
                         }
                         <div class="about-desc w-100">
                             <h2 class="mb-0">
-                                @(Model.e2Title != null ? Model.e2Title : "") <strong class="thm-clr d-block">@(Model.e2PreTitle != null ? Model.e2PreTitle : "")</strong>
+                                @(Model.e2Title != null ? Html.Raw(Model.e2Title) : "") <strong class="thm-clr d-block">@(Model.e2PreTitle != null ? Html.Raw(Model.e2PreTitle) : "")</strong>
                             </h2>
-                            <p class="mb-0">@(Model.e2Description != null ? Model.e2Description : "")</p>
+                            <p class="mb-0">@(Model.e2Description != null ? Html.Raw(Model.e2Description) : "")</p>
                         </div>
                         @if (User.IsInRole("admin"))
                         {
@@ -178,8 +178,8 @@ j == 7 ? "flaticon-file" : j == 8 ? "flaticon-electric-tower" : "flaticon-helmet
 k == 3 ? "flaticon-builder" : k == 4 ? "flaticon-architect" : k == 5 ? "flaticon-wheel-saw" :
 k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
                                                 <div class="serv-box-inner">
-                                                    <h3 class="mb-0">@(item.title != null ? item.title : "")</h3>
-                                                    <p class="mb-0">@(Html.Raw(item.description) != null ? Html.Raw(item.description) : "")</p>
+                                                    <h3 class="mb-0">@(item.title != null ? Html.Raw(item.title) : "")</h3>
+                                                    <p class="mb-0">@(item.description != null ? Html.Raw(item.description) : "")</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -203,8 +203,8 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
             }
             <div class="sec-title2 w-100">
                 <div class="sec-title-inner2 d-inline-block">
-                    <h2 class="mb-0">@(Model.e3Title != null ? Model.e3Title : "")</h2>
-                    <p class="mb-0">@(Model.e3Description != null ? Model.e3Description : "")</p>
+                    <h2 class="mb-0">@(Model.e3Title != null ? Html.Raw(Model.e3Title) : "")</h2>
+                    <p class="mb-0">@(Model.e3Description != null ? Html.Raw(Model.e3Description) : "")</p>
                 </div>
             </div>
             <div class="solutions-wrap w-100">
@@ -218,7 +218,7 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
                     </div>
                     <div class="col-md-6 col-sm-12 col-lg-6">
                         <div class="solutions-content-wrap w-100">
-                            <h2 class="mb-0">@(Model.e3PreTitle != null ? Model.e3PreTitle : "")</h2>
+                            <h2 class="mb-0">@(Model.e3PreTitle != null ? Html.Raw(Model.e3PreTitle) : "")</h2>
                             @if (User.IsInRole("admin"))
                             {
                                 <a asp-action="Element3Options" asp-controller="admin" style="margin-right: 15px"><span>ویرایش<i class="fas fa-edit"></i></span></a>
@@ -230,8 +230,8 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
                                     {
                                         <li>
                                             <i class="">+</i>
-                                            <h4 class="mb-0">@(item.title != null ? item.title : "")</h4>
-                                            <p class="mb-0">@(Html.Raw(item.description) != null ? Html.Raw(item.description) : "")</p>
+                                            <h4 class="mb-0">@(item.title != null ? Html.Raw(item.title) : "")</h4>
+                                            <p class="mb-0">@(item.description != null ? Html.Raw(item.description) : "")</p>
                                         </li>
                                     }
                                 }
@@ -252,8 +252,8 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
             }
             <div class="sec-title w-100">
                 <div class="sec-title-inner d-inline-block">
-                    <span class="d-block thm-clr">@(Model.e4PreTitle != null ? Model.e4PreTitle : "")</span>
-                    <h3 class="mb-0">@(Model.e4Title != null ? Model.e4Title : "")</h3>
+                    <span class="d-block thm-clr">@(Model.e4PreTitle != null ? Html.Raw(Model.e4PreTitle) : "")</span>
+                    <h3 class="mb-0">@(Model.e4Title != null ? Html.Raw(Model.e4Title) : "")</h3>
                 </div>
             </div>
             <div class="faq-wrap w-100">
@@ -276,9 +276,9 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
                                 @foreach (var item in ViewData["Element4"] as List<Element4>)
                                 {
                                     <div class="toggle-item w-100">
-                                        <h4 class="mb-0"><span>@($"{l++}.")</span>@(item.title != null ? item.title : "")</h4>
+                                        <h4 class="mb-0"><span>@($"{l++}.")</span>@(item.title != null ? Html.Raw(item.title) : "")</h4>
                                         <div class="toggle-content w-100">
-                                            <p class="mb-0">@(Html.Raw(item.description) != null ? Html.Raw(item.description) : "")</p>
+                                            <p class="mb-0">@(item.description != null ? Html.Raw(item.description) : "")</p>
                                         </div>
                                     </div>
                                 }
@@ -301,13 +301,13 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
         <div class="container">
             <div class="banner-wrap position-relative text-center w-100">
                 <div class="banner-inner d-inline-block">
-                    <h2 class="mb-0">@(Model.e5Title != null ? Model.e5Title : "")</h2>
+                    <h2 class="mb-0">@(Model.e5Title != null ? Html.Raw(Model.e5Title) : "")</h2>
                     <p class="mb-0">@(Model.e5Description != null ? Html.Raw(Model.e5Description) : "")</p>
                     <br />
                     @if (Model.e5ButtonText != null)
                     {
                         <a class="thm-btn thm-bg" href="@Model.e5ButtonLink" title="">
-                            @Model.e5ButtonText<i class="flaticon-arrow-pointing-to-left"></i>
+                            @Html.Raw(Model.e5ButtonText)<i class="flaticon-arrow-pointing-to-left"></i>
                         </a>
                     }
                 </div>
@@ -387,7 +387,7 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
                         </div>
                         <div class="col-md-5 col-sm-12 col-lg-4">
                             <div class="getin-touch-btn text-left">
-                                <a class="thm-btn bg-color1" asp-action="register" asp-controller="" title="">
+                                <a class="thm-btn bg-color1" asp-action="register" asp-controller="Account" title="">
                                     @localizer["CreateAccount"]<i class="flaticon-arrow-pointing-to-left"></i>
                                 </a>
                             </div>

@@ -46,7 +46,7 @@
                                 <i class="thm-clr flaticon-placeholder"></i>
                                 <strong>@localizer["Address"]</strong>
                                 <p class="mb-0">
-                                    @(ViewBag.Address != null ? ViewBag.Address : "-")
+                                    @(ViewBag.Address != null ? Html.Raw(ViewBag.Address) : "-")
                                 </p>
                             </div>
                         </div>
@@ -62,8 +62,8 @@
             <div class="sec-title v2 text-center w-100">
                 <div class="sec-title-inner d-inline-block">
                     <span class="thm-clr d-block">@localizer["ContactUs"]</span>
-                    <h2 class="mb-0">@(ViewBag.contactUsTitle != null ? ViewBag.contactUsTitle : "")</h2>
-                    <p class="mb-0">@(ViewBag.contactUsDescription != null ? ViewBag.contactUsDescription : "")</p>
+                    <h2 class="mb-0">@(ViewBag.contactUsTitle != null ? Html.Raw(ViewBag.contactUsTitle) : "")</h2>
+                    <p class="mb-0">@(ViewBag.contactUsDescription != null ? Html.Raw(ViewBag.contactUsDescription) : "")</p>
                 </div>
             </div>
             <form asp-action="insertInbox" asp-controller="crud"

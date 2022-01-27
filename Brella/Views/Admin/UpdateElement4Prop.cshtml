@@ -25,11 +25,11 @@
                     <div class="row" style="margin-top: 20px">
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">عنوان کوتاه</label>
-                            <input name="PreTitles" value="@(item.e4PreTitle != null ? item.e4PreTitle : "")" class="fname" type="text">
+                            <textarea name="PreTitles" class="fname" type="text">@(item.e4PreTitle != null ? item.e4PreTitle : "")</textarea>
                         </div>
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">عنوان کامل</label>
-                            <input name="Titles" value="@(item.e4Title != null ? item.e4Title : "")" class="fname" type="text">
+                            <textarea name="Titles" class="fname" type="text">@(item.e4Title != null ? item.e4Title : "")</textarea>
                         </div>
                     </div>
                     if (item.language.faTitle == "فارسی")

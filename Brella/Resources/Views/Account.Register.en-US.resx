@@ -120,6 +120,9 @@
   <data name="Email" xml:space="preserve">
     <value>Email :</value>
   </data>
+  <data name="EmailInfo" xml:space="preserve">
+    <value>An account confirmation email will be sent to you. If you do not see the email, refer to the spam section.</value>
+  </data>
   <data name="Family" xml:space="preserve">
     <value>Family :</value>
   </data>
