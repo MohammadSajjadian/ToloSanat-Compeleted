@@ -14,7 +14,7 @@ namespace Services.EmailService
     {
         async Task IEmail.Send(string subject, string body, string receiver)
         {
-            var mailmessage = new MailMessage("", receiver)
+            var mailmessage = new MailMessage(" ", receiver)
             {
                 Subject = subject,
                 Body = body,
