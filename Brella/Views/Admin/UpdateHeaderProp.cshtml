@@ -37,6 +37,15 @@
                         </div>
                         <img width="50" src="@($"data:image/jpeg;base64,{Convert.ToBase64String(item.secondaryLogo)}")" style="margin-top: 15px; border-radius: 15px" id="secondaryLogoImg" />
 
+                        <div class="col-md-12 col-sm-12 col-lg-12 custom-file" style="margin-top: 15px">
+                            <input name="projectImage" id="projectImage" class="fname custom-file-input" accept=".png, .jpg, .jpeg" type="file" />
+                            <label class="d-block custom-file-label text-center">عکس پشت آخرین پروژه های ما</label>
+                        </div>
+                        @if (item.projectImage != null)
+                        {
+                            <img width="250" src="@($"data:image/jpeg;base64,{Convert.ToBase64String(item.projectImage)}")" style="margin-top: 15px; border-radius: 15px" id="projectImageImg" />
+                        }
+
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">ایمیل</label>
                             <input name="Email" value="@(item.email != null ? item.email : "")" class="fname" type="text" />
@@ -55,10 +64,29 @@
                         </div>
                     }
 
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <label class="d-block">توضیحات تب بالای سایت</label>
+                        <input name="SiteTopTab" value="@(item.siteTopTab != null ? item.siteTopTab : "")" class="fname" type="text">
+                    </div>
+
                     <div class="row" style="margin-top: 20px">
                         <div class="col-md-12 col-sm-12 col-lg-12">
                             <label class="d-block">آدرس</label>
                             <textarea name="Address" class="fname" type="text">@(item.address != null ? item.address : "")</textarea>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 20px">
+                        <div class="col-md-12 col-sm-12 col-lg-12">
+                            <label class="d-block">توضیخات اضافی 1</label>
+                            <textarea name="ExtraDes1" class="fname" type="text">@(item.extraDes1 != null ? item.extraDes1 : "")</textarea>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 20px">
+                        <div class="col-md-12 col-sm-12 col-lg-12">
+                            <label class="d-block">توضیحات اضافی 2</label>
+                            <textarea name="ExtraDes2" class="fname" type="text">@(item.extraDes2 != null ? item.extraDes2 : "")</textarea>
                         </div>
                     </div>
                     <input name="languageIds" value="@item.languageId" hidden />
@@ -159,6 +187,17 @@
             reader.readAsDataURL(secondaryLogo.files[0])
             reader.onloadend = (x) => {
                 secondaryLogoImg.src = x.target.result
+            }
+        })
+    })
+
+    $(function () {
+        $(projectImage).change(function () {
+            var reader = new FileReader
+
+            reader.readAsDataURL(projectImage.files[0])
+            reader.onloadend = (x) => {
+                projectImageImg.src = x.target.result
             }
         })
     })

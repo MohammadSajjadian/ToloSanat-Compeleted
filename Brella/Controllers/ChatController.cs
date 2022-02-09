@@ -95,22 +95,27 @@ namespace Brella.Controllers
                 {
                     case "fa-IR":
                         subject = "پاسخ پیغام";
-                        body = $"پیغام شما پاسخ داده شد.<br />{siteName}";
+                        body = $"<p style='font-size: 17px'>پیغام شما پاسخ داده شد</p><br /><label>{siteName}</label>";
                         break;
 
                     case "en-US":
                         subject = "Reply to message";
-                        body = $"Your message has been answered.<br />{siteName}";
+                        body = $"<p style='font-size: 17px'>Your message has been answered</p><br /><label>{siteName}</label>";
                         break;
 
                     case "ar-AE":
                         subject = "الرد على الرسالة";
-                        body = $"تم الرد على رسالتك.<br />{siteName}";
+                        body = $"<p style='font-size: 17px'>تم الرد على رسالتك</p><br /><label>{siteName}</label>";
                         break;
 
                     case "it-IT":
                         subject = "Rispondi al messaggio";
-                        body = $"Il tuo messaggio ha ricevuto risposta.<br />{siteName}";
+                        body = $"<p style='font-size: 17px'>Il tuo messaggio ha ricevuto risposta</p><br /><label>{siteName}</label>";
+                        break;
+
+                    case "tr-TR":
+                        subject = "mesajı yanıtla";
+                        body = $"<p style='font-size: 17px'>Mesajınız yanıtlandı</p><br /><label>{siteName}</label>";
                         break;
                 }
 
@@ -127,19 +132,23 @@ namespace Brella.Controllers
                 switch (lang)
                 {
                     case "fa-IR":
-                        TempData[error] = "ارسال پیغام با خطا مواجه شد.";
+                        TempData[error] = "ارسال پیغام با خطا مواجه شد";
                         break;
 
                     case "en-US":
-                        TempData[error] = "Error sending message.";
+                        TempData[error] = "Error sending message";
                         break;
 
                     case "ar-AE":
-                        TempData[error] = "خطأ في إرسال الرسالة.";
+                        TempData[error] = "خطأ في إرسال الرسالة";
                         break;
 
                     case "it-IT":
-                        TempData[error] = "Errore nell'invio del messaggio.";
+                        TempData[error] = "Errore nell'invio del messaggio";
+                        break;
+
+                    case "tr-TR":
+                        TempData[error] = "Mesaj gönderilirken hata oluştu";
                         break;
                 }
 
@@ -186,7 +195,7 @@ namespace Brella.Controllers
                 {
                     if (await userManager.IsInRoleAsync(item, "admin"))
                     {
-                        await email.Send("پاسخ پیغام", "پیغام شما پاسخ داده شد.<br />" + siteName, item.Email);
+                        await email.Send("پاسخ پیغام", "<p style='font-size: 17px'>پیغام شما پاسخ داده شد</p><br /><label>siteName</label>", item.Email);
 
                         break;
                     }
@@ -231,7 +240,7 @@ namespace Brella.Controllers
                 {
                     if (await userManager.IsInRoleAsync(item, "admin"))
                     {
-                        await email.Send("پاسخ پیغام", "پیغام شما پاسخ داده شد.\n" + siteName, item.Email);
+                        await email.Send("پاسخ پیغام", "<p style='font-size: 17px>پیغام شما پاسخ داده شد</p><br /><label>siteName</label>", item.Email);
 
                         break;
                     }

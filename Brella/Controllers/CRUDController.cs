@@ -25,10 +25,10 @@ namespace Brella.Controllers
         private const string error = "error";
         private const string warning = "warning";
         private const string info = "info";
-        private const string ElementSuccess = "فیلد مورد نظر با موفقیت ثبت شد.";
-        private const string ElementError = "عملیات با شکست مواجه شد.";
-        private const string ElementUpdate = "فیلد مورد نظر ویرایش شد.";
-        private const string ElementRemove = "فیلد مورد حذف شد.";
+        private const string ElementSuccess = "فیلد مورد نظر با موفقیت ثبت شد";
+        private const string ElementError = "عملیات با شکست مواجه شد";
+        private const string ElementUpdate = "فیلد مورد نظر ویرایش شد";
+        private const string ElementRemove = "فیلد مورد حذف شد";
         private const string siteName = "www.tolosanat.com";
 
         #endregion
@@ -96,7 +96,7 @@ namespace Brella.Controllers
             groupRepo.Update(group);
             groupRepo.SaveChange();
 
-            TempData[success] = "گفت و گو با موفقیت حذف شد.";
+            TempData[success] = "گفت و گو با موفقیت حذف شد";
 
             return RedirectToAction("ChatManagement", "Admin", new { pagenumber });
         }
@@ -130,16 +130,11 @@ namespace Brella.Controllers
                             project.languageId = x.value;
                             project.userId = user.Id;
 
-                            if (System.IO.Path.GetExtension(model.img.FileName) != ".gif" ||
-                                System.IO.Path.GetExtension(model.img.FileName) != ".mp4" ||
-                                System.IO.Path.GetExtension(model.img.FileName) != ".mp3")
-                            {
-                                byte[] b = new byte[model.img.Length];
-                                model.img.OpenReadStream().Read(b, 0, b.Length);
+                            byte[] b = new byte[model.img.Length];
+                            model.img.OpenReadStream().Read(b, 0, b.Length);
 
-                                project.thumbNail = resize.Resizer(b, 300, 300, ImageFormat.Jpeg);
-                                project.detailImg = resize.Resizer(b, 670, 470, ImageFormat.Jpeg);
-                            }
+                            project.thumbNail = resize.Resizer(b, 300, 300, ImageFormat.Jpeg);
+                            project.detailImg = b;
 
                             projectRepo.Add(project);
                             projectRepo.SaveChange();
@@ -167,28 +162,33 @@ namespace Brella.Controllers
 
                 string subject = "";
                 string message = "";
-                string url = Url.Action("ShowProjectBridge", "Post", new { id = projectId }, "https");
+                string url = Url.Action("ProjectDetailBridge", "Project", new { id = projectId }, "https");
 
                 switch (language)
                 {
                     case "fa-IR":
                         subject = "بازدید از نمونه کار جدید";
-                        message = $"کاربر گرامی، از جدید ترین نمونه کار ما از لینک زیر دیدن کنید:<br/>{siteName}";
+                        message = $"<p style='font-size: 17px'>کاربر گرامی، از جدید ترین نمونه کار ما از طریق لینک زیر دیدن کنید</p><br /><label>{siteName}</label>";
                         break;
 
                     case "en-US":
                         subject = "Visit the new work sample";
-                        message = $"Dear user, see the latest example of our work from the link below:<br/>{siteName}";
+                        message = $"<p style='font-size: 17px'>Dear user, see our latest work sample via the link below</p><br /><label>{siteName}</label>";
                         break;
 
                     case "ar-AE":
                         subject = "قم بزيارة نموذج العمل الجديد";
-                        message = $"عزيزي المستخدم، شاهد أحدث مثال على عملنا من الرابط أدناه:<br/>{siteName}";
+                        message = $"<p style='font-size: 17px'>عزيزي المستخدم ، شاهد أحدث نموذج عمل لدينا عبر الرابط أدناه</p><br /><label>{siteName}</label>";
                         break;
 
                     case "it-IT":
                         subject = "Visita il nuovo campione di lavoro";
-                        message = $"Gentile utente, guarda l'ultimo esempio del nostro lavoro dal link sottostante:<br/>{siteName}";
+                        message = $"<p style='font-size: 17px'>Gentile utente, guarda il nostro ultimo esempio di lavoro tramite il link sottostante</p><br /><label>{siteName}</label>";
+                        break;
+
+                    case "tr-TR":
+                        subject = "Yeni çalışma örneğini ziyaret edin";
+                        message = $"<p style='font-size: 17px'>Sayın kullanıcı, aşağıdaki bağlantı üzerinden en son çalışma örneğimize bakın</p><br /><label>{siteName}</label>";
                         break;
                 }
 
@@ -210,22 +210,27 @@ namespace Brella.Controllers
             //    {
             //        case "fa-IR":
             //            subject = "بازدید از نمونه کار جدید";
-            //            message = "کاربر گرامی، از جدید ترین نمونه کار ما از لینک زیر دیدن کنید:";
+            //            message = $"<p style='font-size: 17px'>کاربر گرامی، از جدید ترین نمونه کار ما از لینک زیر دیدن کنید</p><br /><label>{siteName}</label>";
             //            break;
 
             //        case "en-US":
             //            subject = "Visit the new work sample";
-            //            message = "Dear user, see the latest example of our work from the link below:";
+            //            message = $"<p style='font-size: 17px'>Dear user, see the latest example of our work from the following link</p><br /><label>{siteName}</label>";
             //            break;
 
             //        case "ar-AE":
             //            subject = "قم بزيارة نموذج العمل الجديد";
-            //            message = "عزيزي المستخدم، شاهد أحدث مثال على عملنا من الرابط أدناه:";
+            //            message = $"<p style='font-size: 17px'> عزيزي المستخدم ، شاهد أحدث مثال على عملنا من الرابط التالي</p><br /><label>{siteName}</label>";
             //            break;
 
             //        case "it-IT":
             //            subject = "Visita il nuovo campione di lavoro";
-            //            message = "Gentile utente, guarda l'ultimo esempio del nostro lavoro dal link sottostante:";
+            //            message = $"<p style='font-size: 17px'>Gentile utente, guarda l'ultimo esempio del nostro lavoro dal seguente link</p><br /><label>{siteName}</label>";
+            //            break;
+
+            //        case "tr-TR":
+            //            subject = "Yeni çalışma örneğini ziyaret edin";
+            //            message = $"<p style='font-size: 17px'>Sayın kullanıcı, aşağıdaki bağlantıdan çalışmalarımızın en son örneğine bakın</p><br /><label>{siteName}</label>";
             //            break;
             //    }
 
@@ -235,7 +240,7 @@ namespace Brella.Controllers
             //    #endregion
             //}
 
-            TempData[success] = "نمونه کار مورد نظر با موفقیت ثبت شد.";
+            TempData[success] = "نمونه کار مورد نظر با موفقیت ثبت شد";
 
             return RedirectToAction(nameof(InsertProject), "Admin");
         }
@@ -250,16 +255,11 @@ namespace Brella.Controllers
 
             if (img != null)
             {
-                if (System.IO.Path.GetExtension(img.FileName) != ".gif" ||
-                    System.IO.Path.GetExtension(img.FileName) != ".mp4" ||
-                    System.IO.Path.GetExtension(img.FileName) != ".mp3")
-                {
-                    byte[] b = new byte[img.Length];
-                    img.OpenReadStream().Read(b, 0, b.Length);
+                byte[] b = new byte[img.Length];
+                img.OpenReadStream().Read(b, 0, b.Length);
 
-                    project.thumbNail = resize.Resizer(b, 300, 300, ImageFormat.Jpeg);
-                    project.detailImg = resize.Resizer(b, 670, 470, ImageFormat.Jpeg);
-                }
+                project.thumbNail = resize.Resizer(b, 300, 300, ImageFormat.Jpeg);
+                project.detailImg = b;
             }
 
             try
@@ -268,13 +268,13 @@ namespace Brella.Controllers
 
                 projectRepo.SaveChange();
 
-                TempData[success] = "نمونه کار با موفقیت ویرایش شد.";
+                TempData[success] = "نمونه کار با موفقیت ویرایش شد";
 
                 return RedirectToAction("ProjectOptions", "Admin", new { pagenumber = 1 });
             }
             catch
             {
-                TempData[error] = "ویرایش نمونه کار با شکست مواجه شد.";
+                TempData[error] = "ویرایش نمونه کار با شکست مواجه شد";
 
                 return RedirectToAction("ProjectOptions", "Admin", new { pagenumber = 1 });
             }
@@ -288,13 +288,13 @@ namespace Brella.Controllers
                 projectRepo.Remove(id);
                 projectRepo.SaveChange();
 
-                TempData[success] = "نمونه کار مورد نظر با موفقیت حذف شد.";
+                TempData[success] = "نمونه کار مورد نظر با موفقیت حذف شد";
 
                 return RedirectToAction("ProjectOptions", "Admin", new { pagenumber });
             }
             catch
             {
-                TempData[success] = "حذف نمونه کار با شکست مواجه شد.";
+                TempData[success] = "حذف نمونه کار با شکست مواجه شد";
 
                 return RedirectToAction("ProjectOptions", "Admin", new { pagenumber });
             }
@@ -333,16 +333,12 @@ namespace Brella.Controllers
                                   post.languageId = x.value;
                                   post.userId = user.Id;
 
-                                  if (System.IO.Path.GetExtension(model.img.FileName) != ".gif" ||
-                                      System.IO.Path.GetExtension(model.img.FileName) != ".mp4" ||
-                                      System.IO.Path.GetExtension(model.img.FileName) != ".mp3")
-                                  {
-                                      byte[] b = new byte[model.img.Length];
-                                      model.img.OpenReadStream().Read(b, 0, b.Length);
+                                  byte[] b = new byte[model.img.Length];
+                                  model.img.OpenReadStream().Read(b, 0, b.Length);
 
-                                      post.thumbNail = resize.Resizer(b, 370, 220, ImageFormat.Jpeg);
-                                      post.detailImg = resize.Resizer(b, 770, 470, ImageFormat.Jpeg);
-                                  }
+                                  post.thumbNail = resize.Resizer(b, 370, 220, ImageFormat.Jpeg);
+                                  post.detailImg = resize.Resizer(b, 770, 470, ImageFormat.Jpeg);
+
                                   postRepo.Add(post);
                                   postRepo.SaveChange();
 
@@ -370,28 +366,33 @@ namespace Brella.Controllers
 
                 string subject = "";
                 string message = "";
-                string url = Url.Action("ShowProjectBridge", "Post", new { id = postId }, "https");
+                string url = Url.Action("BlogDetailBridge", "Blog", new { id = postId }, "https");
 
                 switch (language)
                 {
                     case "fa-IR":
-                        subject = "بازدید از نمونه کار جدید";
-                        message = $"کاربر گرامی، از جدید ترین نمونه کار ما از لینک زیر دیدن کنید:<br/>{siteName}";
+                        subject = "بازدید از مطلب جدید";
+                        message = $"<p style='font-size: 17px'> Dear user, visit our latest article on the website via the following link</p><br /><label>{siteName}</label>";
                         break;
 
                     case "en-US":
-                        subject = "Visit the new work sample";
-                        message = $"Dear user, see the latest example of our work from the link below:<br/>{siteName}";
+                        subject = "Visit the new article";
+                        message = $"<p style='font-size: 17px'>Dear user, see our latest post via the following link</p><br /><label>{siteName}</label>";
                         break;
 
                     case "ar-AE":
-                        subject = "قم بزيارة نموذج العمل الجديد";
-                        message = $"عزيزي المستخدم، شاهد أحدث مثال على عملنا من الرابط أدناه:<br/>{siteName}";
+                        subject = "قم بزيارة المقال الجديد";
+                        message = $"<p style='font-size: 17px'> عزيزي المستخدم ، تفضل بزيارة أحدث مقالتنا على الموقع عبر الرابط التالي </p><br /><label>{siteName}</label>";
                         break;
 
                     case "it-IT":
-                        subject = "Visita il nuovo campione di lavoro";
-                        message = $"Gentile utente, guarda l'ultimo esempio del nostro lavoro dal link sottostante:<br/>{siteName}";
+                        subject = "Visita il nuovo articolo";
+                        message = $"<p style='font-size: 17px'> Gentile utente, visita il nostro ultimo articolo sul sito Web tramite il seguente link</p><br /><label>{siteName}</label>";
+                        break;
+
+                    case "tr-TR":
+                        subject = "Yeni makaleyi ziyaret edin";
+                        message = $"<p style='font-size: 17px'> Sayın kullanıcı, aşağıdaki bağlantı aracılığıyla web sitesindeki en son makalemizi ziyaret edin</p><br /><label>{siteName}</label>";
                         break;
                 }
 
@@ -412,23 +413,28 @@ namespace Brella.Controllers
             //    switch (language)
             //    {
             //        case "fa-IR":
-            //            subject = "بازدید از نمونه کار جدید";
-            //            message = "کاربر گرامی، از جدید ترین نمونه کار ما از لینک زیر دیدن کنید:";
+            //            subject = "بازدید از پست جدید";
+            //            message = $"<p style='font-size: 17px'>کاربر گرامی، از جدید ترین پست ما از طریق لینک زیر دیدن کنید:</p><br /><label>{siteName}</label>";
             //            break;
 
             //        case "en-US":
-            //            subject = "Visit the new work sample";
-            //            message = "Dear user, see the latest example of our work from the link below:";
+            //            subject = "Visit the new post";
+            //            message = $"<p style='font-size: 17px'>Dear user, see our latest post via the following link:</p><br /><label>{siteName}</label>";
             //            break;
 
             //        case "ar-AE":
-            //            subject = "قم بزيارة نموذج العمل الجديد";
-            //            message = "عزيزي المستخدم، شاهد أحدث مثال على عملنا من الرابط أدناه:";
+            //            subject = "قم بزيارة المنشور الجديد";
+            //            message = $"<p style='font-size: 17px'> عزيزي المستخدم ، شاهد أحدث منشوراتنا عبر الرابط التال:</p><br /><label>{siteName}</label>";
             //            break;
 
             //        case "it-IT":
-            //            subject = "Visita il nuovo campione di lavoro";
-            //            message = "Gentile utente, guarda l'ultimo esempio del nostro lavoro dal link sottostante:";
+            //            subject = "Visita il nuovo post";
+            //            message = $"<p style='font-size: 17px'>Gentile utente, guarda il nostro ultimo post tramite il seguente link:</p><br /><label>{siteName}</label>";
+            //            break;
+
+            //        case "tr-TR":
+            //            subject = "Yeni gönderiyi ziyaret edin";
+            //            message = $"<p style='font-size: 17px'>Sayın kullanıcı, aşağıdaki bağlantı aracılığıyla en son yayınımıza bakın:</p><br /><label>{siteName}</label>";
             //            break;
             //    }
 
@@ -440,7 +446,7 @@ namespace Brella.Controllers
 
             TempData[success] = "پست مورد نظر با موفقیت ثبت شد.";
 
-            return RedirectToAction(nameof(InsertProject), "Admin");
+            return RedirectToAction(nameof(InsertPost), "Admin");
         }
 
 
@@ -454,16 +460,11 @@ namespace Brella.Controllers
 
             if (img != null)
             {
-                if (System.IO.Path.GetExtension(img.FileName) != ".gif" ||
-                    System.IO.Path.GetExtension(img.FileName) != ".mp4" ||
-                    System.IO.Path.GetExtension(img.FileName) != ".mp3")
-                {
-                    byte[] b = new byte[img.Length];
-                    img.OpenReadStream().Read(b, 0, b.Length);
+                byte[] b = new byte[img.Length];
+                img.OpenReadStream().Read(b, 0, b.Length);
 
-                    post.thumbNail = resize.Resizer(b, 370, 220, ImageFormat.Jpeg);
-                    post.detailImg = resize.Resizer(b, 770, 470, ImageFormat.Jpeg);
-                }
+                post.thumbNail = resize.Resizer(b, 370, 220, ImageFormat.Jpeg);
+                post.detailImg = resize.Resizer(b, 770, 470, ImageFormat.Jpeg);
             }
 
             try
@@ -472,13 +473,13 @@ namespace Brella.Controllers
 
                 postRepo.SaveChange();
 
-                TempData[success] = "پست با موفقیت ویرایش شد.";
+                TempData[success] = "پست با موفقیت ویرایش شد";
 
                 return RedirectToAction("PostOptions", "Admin", new { pagenumber = 1 });
             }
             catch
             {
-                TempData[error] = "ویرایش پست با شکست مواجه شد.";
+                TempData[error] = "ویرایش پست با شکست مواجه شد";
 
                 return RedirectToAction("PostOptions", "Admin", new { pagenumber = 1 });
             }
@@ -492,13 +493,13 @@ namespace Brella.Controllers
                 postRepo.Remove(id);
                 postRepo.SaveChange();
 
-                TempData[success] = "پست مورد نظر با موفقیت حذف شد.";
+                TempData[success] = "پست مورد نظر با موفقیت حذف شد";
 
                 return RedirectToAction("PostOptions", "Admin", new { pagenumber });
             }
             catch
             {
-                TempData[success] = "حذف پست با شکست مواجه شد.";
+                TempData[success] = "حذف پست با شکست مواجه شد";
 
                 return RedirectToAction("PostOptions", "Admin", new { pagenumber });
             }
@@ -532,7 +533,7 @@ namespace Brella.Controllers
                 {
                     if (await userManager.IsInRoleAsync(item, "admin"))
                     {
-                        await email.Send("پیغام جدید", $"پیغام جدیدی برای شما ارسال شد. جهت مشاهده <a href='{address}'>اینجا</a> کلیک کنید.<br />" + siteName, item.Email);
+                        await email.Send("پیغام جدید", $"<p style='font-size: 17px'>پیغام جدیدی به صندوق پیغام های شما ارسال شد. جهت مشاهده <a style='color: #e67e23' href='{address}'><b>(اینجا)</b></a> کلیک کنید</p><br /><label>siteName</label>", item.Email);
 
                         break;
                     }
@@ -545,19 +546,23 @@ namespace Brella.Controllers
                 switch (lang)
                 {
                     case "fa-IR":
-                        TempData[success] = "پیغام شما با موفقیت ارسال شد.";
+                        TempData[success] = "پیغام شما با موفقیت ارسال شد";
                         break;
 
                     case "en-US":
-                        TempData[success] = "Your message was sent successfully.";
+                        TempData[success] = "Your message was sent successfully";
                         break;
 
                     case "ar-AE":
-                        TempData[success] = "لقد تم ارسال رسالتك بنجاح.";
+                        TempData[success] = "لقد تم ارسال رسالتك بنجاح";
                         break;
 
                     case "it-IT":
-                        TempData[success] = "Il tema dell'invio del tuo messaggio ha successo.";
+                        TempData[success] = "Il tema dell'invio del tuo messaggio ha successo";
+                        break;
+
+                    case "tr-TR":
+                        TempData[success] = "Mesajınız başarıyla gönderildi";
                         break;
                 }
 
@@ -572,19 +577,23 @@ namespace Brella.Controllers
                 switch (lang)
                 {
                     case "fa-IR":
-                        TempData[error] = "ارسال پیغام با شکست مواجه شد.";
+                        TempData[error] = "ارسال پیغام با شکست مواجه شد. دوباره تلاش کنید";
                         break;
 
                     case "en-US":
-                        TempData[error] = "Failed to send message.";
+                        TempData[error] = "Failed to send message. Try again";
                         break;
 
                     case "ar-AE":
-                        TempData[error] = "فشل في إرسال الرسالة.";
+                        TempData[error] = "فشل في إرسال الرسالة. حاول مجددا";
                         break;
 
                     case "it-IT":
-                        TempData[error] = "Impossibile inviare il messaggio.";
+                        TempData[error] = "Impossibile inviare il messaggio. Riprova";
+                        break;
+
+                    case "tr-TR":
+                        TempData[error] = "Mesaj gönderilemedi. Tekrar deneyin";
                         break;
                 }
 
@@ -602,13 +611,13 @@ namespace Brella.Controllers
                 inboxRepo.Remove(id);
                 inboxRepo.SaveChange();
 
-                TempData[success] = "پیغام با موفقیت حذف شد.";
+                TempData[success] = "پیغام با موفقیت حذف شد";
 
                 return RedirectToAction("InboxOptions", "Admin", new { pagenumber });
             }
             catch
             {
-                TempData[success] = "پیغام با موفقیت حذف شد.";
+                TempData[error] = "حذف پیغام با شکست مواجه شد. دوباره تلاش کنید";
 
                 return RedirectToAction("InboxOptions", "Admin", new { pagenumber });
             }
@@ -746,7 +755,7 @@ namespace Brella.Controllers
             }
             catch
             {
-                TempData[error] = "ویرایش اطلاعات با شکست موواجه شد";
+                TempData[error] = "ویرایش اطلاعات با شکست مواجه شد. دوباره تلاش کنید";
 
                 return RedirectToAction("AdminSideChatsBridge", "Admin", new { clientId = userId });
             }
@@ -774,7 +783,8 @@ namespace Brella.Controllers
         #region Header
 
         public IActionResult UpdateHeaderProp(List<int> languageIds, IFormFile mainLogo, IFormFile secondaryLogo, List<string> Address, string Email,
-            string PhoneNumber, string InstaLink, string TelegramLink)
+            string PhoneNumber, string InstaLink, string TelegramLink, IFormFile projectImage, List<string> SiteTopTab, List<string> ExtraDes1,
+            List<string> ExtraDes2)
         {
             int langId = 1;
             languageIds.Select(x => new { id = langId++, value = x }).ToList().ForEach(x =>
@@ -784,35 +794,60 @@ namespace Brella.Controllers
                 int address = 1;
                 Address.Select(y => new { id = address++, value = y }).ToList().ForEach(y =>
                 {
-                    if (x.id == y.id)
+                    int siteTopTab = 1;
+                    SiteTopTab.Select(z => new { id = siteTopTab++, value = z }).ToList().ForEach(z =>
                     {
-                        if (x.value == 1)
+                        int extraDes1 = 1;
+                        ExtraDes1.Select(k => new { id = extraDes1++, value = k }).ToList().ForEach(k =>
                         {
-                            if (mainLogo != null)
+                            int extraDes2 = 1;
+                            ExtraDes2.Select(m => new { id = extraDes2++, value = m }).ToList().ForEach(m =>
                             {
-                                byte[] b = new byte[mainLogo.Length];
-                                mainLogo.OpenReadStream().Read(b, 0, b.Length);
+                                if (x.id == y.id && y.id == z.id && z.id == k.id && k.id == m.id)
+                                {
+                                    if (x.value == 1)
+                                    {
+                                        if (mainLogo != null)
+                                        {
+                                            byte[] b = new byte[mainLogo.Length];
+                                            mainLogo.OpenReadStream().Read(b, 0, b.Length);
 
-                                elementProp.mainLogo = resize.Resizer(b, 148, 50, ImageFormat.Png);
-                            }
+                                            elementProp.mainLogo = b;
+                                        }
 
-                            if (secondaryLogo != null)
-                            {
-                                byte[] d = new byte[secondaryLogo.Length];
-                                secondaryLogo.OpenReadStream().Read(d, 0, d.Length);
+                                        if (secondaryLogo != null)
+                                        {
+                                            byte[] d = new byte[secondaryLogo.Length];
+                                            secondaryLogo.OpenReadStream().Read(d, 0, d.Length);
 
-                                elementProp.secondaryLogo = resize.Resizer(d, 35, 35, ImageFormat.Png);
-                            }
-                        }
-                        elementProp.address = y.value;
-                        elementProp.email = Email;
-                        elementProp.phoneNumber = PhoneNumber;
-                        elementProp.instaLink = InstaLink;
-                        elementProp.telegramLink = TelegramLink;
+                                            elementProp.secondaryLogo = resize.Resizer(d, 35, 35, ImageFormat.Png);
+                                        }
+                                    }
 
-                        elementpropRepo.Update(elementProp);
-                        elementpropRepo.SaveChange();
-                    }
+                                    if (projectImage != null)
+                                    {
+                                        byte[] d = new byte[projectImage.Length];
+                                        projectImage.OpenReadStream().Read(d, 0, d.Length);
+
+                                        elementProp.projectImage = resize.Resizer(d, 1920, 630,
+                                            System.IO.Path.GetExtension(projectImage.FileName) == ".jpg" ? ImageFormat.Jpeg : ImageFormat.Png);
+                                    }
+
+                                    elementProp.address = y.value;
+                                    elementProp.email = Email;
+                                    elementProp.phoneNumber = PhoneNumber;
+                                    elementProp.instaLink = InstaLink;
+                                    elementProp.telegramLink = TelegramLink;
+                                    elementProp.siteTopTab = z.value;
+                                    elementProp.extraDes1 = k.value;
+                                    elementProp.extraDes2 = m.value;
+
+                                    elementpropRepo.Update(elementProp);
+                                    elementpropRepo.SaveChange();
+                                }
+                            });
+                        });
+                    });
                 });
             });
 
@@ -1078,7 +1113,7 @@ namespace Brella.Controllers
         #region Element2 CRUD
 
         public IActionResult UpdateElement2Prop(List<int> languageIds, List<string> PreTitles, List<string> Titles,
-            List<string> Descriptions, IFormFile img)
+            List<string> Descriptions, string ImageTitle, IFormFile img)
         {
             int langId = 1;
             languageIds.Select(x => new { id = langId++, value = x }).ToList().ForEach(x =>
@@ -1099,6 +1134,7 @@ namespace Brella.Controllers
                                 elementProp.e2PreTitle = y.value;
                                 elementProp.e2Title = z.value;
                                 elementProp.e2Description = m.value;
+                                elementProp.e2ImageTitle = ImageTitle;
 
                                 if (img != null)
                                 {

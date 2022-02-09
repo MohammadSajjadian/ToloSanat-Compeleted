@@ -120,8 +120,14 @@
   <data name="AllNews" xml:space="preserve">
     <value>Vedi tutte le notizie</value>
   </data>
+  <data name="AllProjects" xml:space="preserve">
+    <value>Visualizza tutti i progetti</value>
+  </data>
   <data name="CreateAccount" xml:space="preserve">
     <value>Creare un account</value>
+  </data>
+  <data name="Experience" xml:space="preserve">
+    <value>Esperienza</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Casa</value>

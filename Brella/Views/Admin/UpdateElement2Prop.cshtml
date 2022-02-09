@@ -38,6 +38,10 @@
                     </div>
                     if (item.language.faTitle == "فارسی")
                     {
+                        <div class="col-md-12 col-sm-12 col-lg-12">
+                            <label class="d-block">عدد روی عکس (میزان تجربه)</label>
+                            <input name="ImageTitle" class="fname" type="number" value="@(item.e2ImageTitle != null ? item.e2ImageTitle : "")" />
+                        </div>
                         <div class="col-md-12 col-sm-12 col-lg-12 custom-file" style="margin-top: 15px">
                             <input name="img" id="picture" class="fname custom-file-input" accept=".png, .jpg" type="file" />
                             <label class="d-block custom-file-label text-center">عکس فیلد</label>

@@ -630,8 +630,8 @@ $(document).ready(function () {
     //====== Post Carousel =====//
     $('.post-caro').slick({
       slidesToShow: 3,
-      slidesToScroll: 1,
-      dots: false,
+        slidesToScroll: 2,
+        dots: true,
       arrows: true,
       centerPadding: '0',
       focusOnSelect: true,

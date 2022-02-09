@@ -138,9 +138,6 @@
   <data name="ResultMessage" xml:space="preserve">
     <value>Payment completed successfully!</value>
   </data>
-  <data name="String" xml:space="preserve">
-    <value>ResultMessage @ ($ "Gentile {Model.applicationUser.name} {Model.applicationUser.family} Pagamento completato con successo!")</value>
-  </data>
   <data name="Time" xml:space="preserve">
     <value>Time</value>
   </data>

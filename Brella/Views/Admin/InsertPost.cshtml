@@ -18,6 +18,7 @@
         <div class="container">
             <form asp-action="insertpost" asp-controller="crud" method="post" enctype="multipart/form-data"
                   class="contact-form text-center w-100">
+                @{int i = 1;}
                 @foreach (var item in ViewData["Languages"] as List<Language>)
                 {
                     <h3 style="margin-top: 30px">مشخصات @item.faTitle پست</h3>
@@ -41,13 +42,14 @@
                     if (item.faTitle == "فارسی")
                     {
                         <div class="col-md-12 col-sm-12 col-lg-12 custom-file" style="margin-top: 15px">
-                            <input asp-for="img" id="picture" class="fname custom-file-input" type="file" />
+                            <input asp-for="img" id="picture" class="fname custom-file-input" type="file" accept=".png, .jpg, .jpeg" />
                             <label class="d-block custom-file-label text-center">عکس پست</label>
                             <span asp-validation-for="img"></span>
                         </div>
                         <img width="250" style="margin-top: 15px; border-radius: 15px" id="postImg" />
                     }
                     <input asp-for="languageIds" value="@item.id" hidden />
+                    i++;
                 }
 
                 <div class="col-md-7 col-sm-7 col-lg-7">

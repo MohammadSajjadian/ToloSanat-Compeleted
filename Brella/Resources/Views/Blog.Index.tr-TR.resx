@@ -117,67 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutUs" xml:space="preserve">
-    <value>Chi siamo</value>
-  </data>
-  <data name="Account" xml:space="preserve">
-    <value>Account</value>
-  </data>
   <data name="Blog" xml:space="preserve">
     <value>Blog</value>
   </data>
-  <data name="ChangePass" xml:space="preserve">
-    <value>Cambiare la password</value>
+  <data name="FirstPage" xml:space="preserve">
+    <value>İlk sayfa</value>
   </data>
-  <data name="ContactUs" xml:space="preserve">
-    <value>Contattaci</value>
+  <data name="Home" xml:space="preserve">
+    <value>Ev</value>
   </data>
-  <data name="EditAccount" xml:space="preserve">
-    <value>Modifica le informazioni sull'account</value>
+  <data name="LastPage" xml:space="preserve">
+    <value>Son Sayfa</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>e-mail</value>
+  <data name="NextPage" xml:space="preserve">
+    <value>Sonraki Sayfa</value>
   </data>
-  <data name="Error" xml:space="preserve">
-    <value>Errore!</value>
+  <data name="NullBlog" xml:space="preserve">
+    <value>Görüntülenecek içerik yok!</value>
   </data>
-  <data name="FastLinks" xml:space="preserve">
-    <value>Link veloci</value>
-  </data>
-  <data name="FooterInfo" xml:space="preserve">
-    <value>Tutti i diritti riservati per il sito web di Tolo Sanat © &lt;br /&gt; Progettazione e sviluppo del sito web: &lt;a href="https://t.me/MohammadSajjadian" target="_blank"&gt; Mohammad Sajjadian &lt;/a&gt;</value>
-  </data>
-  <data name="Info" xml:space="preserve">
-    <value>Messaggio</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Lingua</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value>Accesso</value>
-  </data>
-  <data name="LogOut" xml:space="preserve">
-    <value>Uscita</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="Orders" xml:space="preserve">
-    <value>Acquisti</value>
-  </data>
-  <data name="Payment" xml:space="preserve">
-    <value>Casello stradale</value>
-  </data>
-  <data name="Projects" xml:space="preserve">
-    <value>Progetti</value>
-  </data>
-  <data name="Register" xml:space="preserve">
-    <value>Registrati</value>
-  </data>
-  <data name="Support" xml:space="preserve">
-    <value>Supporto</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>!Avvertimento!</value>
+  <data name="PreviousPage" xml:space="preserve">
+    <value>Önceki sayfa</value>
   </data>
 </root>

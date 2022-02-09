@@ -120,8 +120,14 @@
   <data name="AllNews" xml:space="preserve">
     <value>مشاهده همه اخبار</value>
   </data>
+  <data name="AllProjects" xml:space="preserve">
+    <value>مشاهده همه پروژه ها</value>
+  </data>
   <data name="CreateAccount" xml:space="preserve">
     <value>ساخت حساب</value>
+  </data>
+  <data name="Experience" xml:space="preserve">
+    <value>تجربه</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>خانه</value>

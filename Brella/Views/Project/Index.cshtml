@@ -37,8 +37,8 @@
                                         <a asp-action="projectdetailbridge" asp-route-id="@item.id"><img class="img-fluid w-100" src="@($"data:image/jpeg;base64,{Convert.ToBase64String(item.thumbNail)}")" alt="Post Image 1" /></a>
                                     </div>
                                     <div class="post-info w-100">
-                                        <h3 class="mb-0"><a asp-action="projectdetailbridge" asp-route-id="@item.id" title="">@item.title</a></h3>
-                                        <p class="mb-0">@Html.Raw(item.Description.Length >= 80 ? $"{item.Description.Substring(0, 80)}..." : item.Description)</p>
+                                        <h3 class="mb-0"><a asp-action="projectdetailbridge" asp-route-id="@item.id" title="">@(item.title != null ? item.title : "")</a></h3>
+                                        <p class="mb-0">@(item.Description != null ? Html.Raw(item.Description.Length >= 80 ? $"{item.Description.Substring(0, 80)}..." : item.Description) : "")</p>
                                         <div class="post-info-bottom d-flex flex-wrap w-100">
                                             <span class="d-inline-block"><i class="far fa-user"></i><a href="javascript:void(0);" title="">@($"{item.ApplicationUser.name} {item.ApplicationUser.family}")</a></span>
                                         </div>

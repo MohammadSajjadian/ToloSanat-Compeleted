@@ -1,13 +1,12 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="@CultureInfo.CurrentCulture.Name">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="@ViewData["Description"]" content="" />
+    <meta name="description" content="@ViewData["Description"]" />
     <meta name="keywords" content="" />
     <link rel="icon" href="@await Component.InvokeAsync("SecondaryLogo")" type="image/png">
-    <title>@ViewData["Title"] | @localizer["TitleDes"]</title>
+    <title>@ViewData["Title"] | @await Component.InvokeAsync("SiteTopTab") </title>
 
     <link rel="stylesheet" href="~/assets/css/all.min.css">
     <link rel="stylesheet" href="~/assets/css/flaticon.css">
@@ -22,10 +21,6 @@
     @if (CultureInfo.CurrentCulture.Name == "fa-IR" || CultureInfo.CurrentCulture.Name == "ar-AE")
     {
         <link rel="stylesheet" href="~/assets/css/rtl.css">
-    }
-    else
-    {
-        <link href="~/assets/css/ltr.css" rel="stylesheet" />
     }
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
@@ -411,6 +406,13 @@
                                     @await Component.InvokeAsync("ShortAboutUs")
                                     <div class="social-links2 d-inline-block">
                                         @await Component.InvokeAsync("Socials")
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-lg-3 order-lg-1">
+                                <div class="widget w-100">
+                                    <div class="w-100" style="color: white">
+                                        @await Component.InvokeAsync("PhoneAddress")
                                     </div>
                                 </div>
                             </div>

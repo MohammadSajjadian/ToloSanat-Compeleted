@@ -97,12 +97,12 @@ i == 3 ? "flaticon-carpenter" : i == 4 ? "flaticon-jigsaw" : "flaticon-wheel-saw
 {
     <section>
         <div class="w-100 pt-100 paralx-70 blue-layer opc7 position-relative">
-            <div class="fixed-bg" style="background-image: url(/assets/images/parallax1.jpg);"></div>
+            <div class="fixed-bg" style="background-image: url(@($"data:image/jpeg;base64,{Convert.ToBase64String(Model.projectImage)}"));"></div>
             <div class="container">
                 <div class="sec-title w-100">
                     <div class="sec-title-inner d-inline-block">
                         <span class="d-block thm-clr">@localizer["OurWorks"]</span>
-                        <a asp-action="index" asp-controller="project"><h3 style="color: white" class="mb-0">@localizer["LatestProjects"]</h3></a>
+                        <h3 style="color: white" class="mb-0">@localizer["LatestProjects"]</h3>
                     </div>
                 </div>
             </div>
@@ -124,7 +124,7 @@ i == 3 ? "flaticon-carpenter" : i == 4 ? "flaticon-jigsaw" : "flaticon-wheel-saw
 j == 4 ? "flaticon-lighthouse" : j == 5 ? "flaticon-worker" : j == 6 ? "flaticon-engineer-2" :
 j == 7 ? "flaticon-file" : j == 8 ? "flaticon-electric-tower" : "flaticon-helmet")"></i>
                                     <h3 class="mb-0">
-                                        <a asp-action="projectdetailbridge" asp-controller="project" asp-route-id="@item.id" title="">@item.title</a>
+                                        <a asp-action="projectdetailbridge" asp-controller="project" asp-route-id="@item.id" title="">@(item.title != null ? item.title : "")</a>
                                     </h3>
                                 </div>
                             </div>
@@ -133,6 +133,11 @@ j == 7 ? "flaticon-file" : j == 8 ? "flaticon-electric-tower" : "flaticon-helmet
                     }
                 </div>
             </div><!-- Projects Wrap -->
+            <div class="view-all w-100 text-center">
+                <a class="thm-btn thm-bg" asp-action="index" asp-controller="project" title="">
+                    @localizer["AllProjects"]<i class="flaticon-arrow-pointing-to-left"></i>
+                </a>
+            </div><!-- View All -->
         </div>
     </section>
 }
@@ -145,6 +150,10 @@ j == 7 ? "flaticon-file" : j == 8 ? "flaticon-electric-tower" : "flaticon-helmet
                         <div class="about-image position-relative w-100">
                             @if (Model.e2img != null)
                             {
+                                if (Model.e2ImageTitle != null)
+                                {
+                                    <span>@Model.e2ImageTitle<sup> +</sup><i class="d-block">@localizer["Experience"]</i></span>
+                                }
                                 <img class="img-fluid w-100" src="@($"data:image/jpeg;base64,{Convert.ToBase64String(Model.e2img)}")"
                                      alt="About Image 2">
                             }
@@ -194,6 +203,17 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
         </div>
     </div>
 </section>
+
+<div class="container">
+    <div class="about-wrap w-100">
+        <div class="row justify-content-center">
+            <div class="about-content-wrap w-100">
+                @(Model.extraDes1 != null ? Html.Raw(Model.extraDes1) : "")
+            </div>
+        </div>
+    </div><!-- About Wrap -->
+</div>
+
 <section>
     <div class="w-100 pt-130 pb-100 position-relative">
         <div class="container">
@@ -243,6 +263,17 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
         </div>
     </div>
 </section>
+
+<div class="container">
+    <div class="about-wrap w-100">
+        <div class="row justify-content-center">
+            <div class="about-content-wrap w-100">
+                @(Model.extraDes2 != null ? Html.Raw(Model.extraDes2) : "")
+            </div>
+        </div>
+    </div><!-- About Wrap -->
+</div>
+
 <section>
     <div class="w-100 pt-100 pb-100 position-relative">
         <div class="container">
@@ -342,9 +373,9 @@ k == 6 ? "flaticon-carpenter" : "flaticon-car-parts")"></i>
                                     </div>
                                     <div class="post-info w-100">
                                         <h3 class="mb-0">
-                                            <a asp-action="blogdetailbridge" asp-controller="blog" asp-route-id="@item.id" title="">@item.title</a>
+                                            <a asp-action="blogdetailbridge" asp-controller="blog" asp-route-id="@item.id" title="">@(item.title != null ? item.title : "")</a>
                                         </h3>
-                                        @Html.Raw(item.shortDecpription)
+                                        @(Html.Raw(item.shortDecpription) != null ? Html.Raw(item.shortDecpription) : "")
                                         <div class="post-info-bottom d-flex flex-wrap w-100">
                                             <span class="d-inline-block">
                                                 <i class="far fa-user"></i><a href="javascript:void(0);" title="">@($"{item.ApplicationUser.name} {item.ApplicationUser.family}")</a>

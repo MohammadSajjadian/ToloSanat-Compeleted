@@ -62,7 +62,7 @@ namespace Brella.Controllers
                 {
                     Amount = user.price,
                     CallbackUrl = "https://localhost:44335/Payment/OrderPaymentResult",
-                    Description = "هزینه تصویب شده از طرف مدیریت",
+                    Description = " هزینه تصویب شده از طرف مدیریت",
                     Email = user.Email,
                     MerchantId = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
                     Mobile = user.PhoneNumber
@@ -79,19 +79,23 @@ namespace Brella.Controllers
                     switch (lang)
                     {
                         case "fa-IR":
-                            TempData[error] = "پرداخت با مشکل مواجه شد. لطفا دوباره تلاش کنید.";
+                            TempData[error] = "پرداخت با مشکل مواجه شد. لطفا دوباره تلاش کنید";
                             break;
 
                         case "en-US":
-                            TempData[error] = "Payment was encountered. Please try again.";
+                            TempData[error] = "Payment was encountered. Please try again";
                             break;
 
                         case "ar-AE":
-                            TempData[error] = "تمت مصادفة الدفع. حاول مرة اخرى.";
+                            TempData[error] = "تمت مصادفة الدفع. حاول مرة اخرى";
                             break;
 
                         case "it-IT":
-                            TempData[error] = "È stato riscontrato il pagamento. Per favore riprova.";
+                            TempData[error] = "È stato riscontrato il pagamento. Per favore riprova";
+                            break;
+
+                        case "tr-TR":
+                            TempData[error] = "Ödeme ile karşılaşıldı. Lütfen tekrar deneyin";
                             break;
                     }
 
@@ -107,19 +111,23 @@ namespace Brella.Controllers
                 switch (lang)
                 {
                     case "fa-IR":
-                        TempData[error] = "پرداخت با مشکل مواجه شد. لطفا دوباره تلاش کنید.";
+                        TempData[error] = "پرداخت با مشکل مواجه شد. لطفا دوباره تلاش کنید";
                         break;
 
                     case "en-US":
-                        TempData[error] = "Payment was encountered. Please try again.";
+                        TempData[error] = "Payment was encountered. Please try again";
                         break;
 
                     case "ar-AE":
-                        TempData[error] = "تمت مصادفة الدفع. حاول مرة اخرى.";
+                        TempData[error] = "تمت مصادفة الدفع. حاول مرة اخرى";
                         break;
 
                     case "it-IT":
-                        TempData[error] = "È stato riscontrato il pagamento. Per favore riprova.";
+                        TempData[error] = "È stato riscontrato il pagamento. Per favore riprova";
+                        break;
+
+                    case "tr-TR":
+                        TempData[error] = "Ödeme ile karşılaşıldı. Lütfen tekrar deneyin";
                         break;
                 }
 
@@ -161,7 +169,7 @@ namespace Brella.Controllers
                 {
                     if (await userManager.IsInRoleAsync(item, "admin"))
                     {
-                        await email.Send("ثبت خرید", $"خرید جدیدی انجام شد.<br>جهت مشاهده <a href='{address}'>اینجا</a> کلیک کنید.", item.Email);
+                        await email.Send("ثبت خرید", $"<p style='font-size: 17px'>خرید جدیدی انجام شد</p><br><p style='font-size: 17px'>جهت مشاهده<a style='color: #e67e23' href='{address}'><b>(اینجا)</b></a> کلیک کنید</p>", item.Email);
                     }
                 }
 
@@ -174,19 +182,23 @@ namespace Brella.Controllers
                 switch (lang)
                 {
                     case "fa-IR":
-                        TempData[error] = "پرداخت با مشکل مواجه شد. لطفا دوباره تلاش کنید.";
+                        TempData[error] = "پرداخت با مشکل مواجه شد. لطفا دوباره تلاش کنید";
                         break;
 
                     case "en-US":
-                        TempData[error] = "Payment was encountered. Please try again.";
+                        TempData[error] = "Payment was encountered. Please try again";
                         break;
 
                     case "ar-AE":
-                        TempData[error] = "تمت مصادفة الدفع. حاول مرة اخرى.";
+                        TempData[error] = "تمت مصادفة الدفع. حاول مرة اخرى";
                         break;
 
                     case "it-IT":
-                        TempData[error] = "È stato riscontrato il pagamento. Per favore riprova.";
+                        TempData[error] = "È stato riscontrato il pagamento. Per favore riprova";
+                        break;
+
+                    case "tr-TR":
+                        TempData[error] = "Ödeme ile karşılaşıldı. Lütfen tekrar deneyin";
                         break;
                 }
 

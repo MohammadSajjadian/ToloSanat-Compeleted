@@ -22,19 +22,19 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 20px">
                         <label class="d-block">عنوان پست</label>
-                        <input name="title" value="@Model.title" class="fname" type="text" required />
+                        <input name="title" value="@(Model.title != null ? Model.title : "")" class="fname" type="text" required />
                     </div>
                     <div class="col-md-12 col-sm-12 col-lg-12">
                         <label class="d-block">توضیحات کوتاه پست</label>
-                        <textarea name="shortDescription" class="fname" type="text" required>@Model.shortDecpription</textarea>
+                        <textarea name="shortDescription" class="fname" type="text" required>@(Model.shortDecpription != null ? Model.shortDecpription : "")</textarea>
                     </div>
                     <div class="col-md-12 col-sm-12 col-lg-12">
                         <label class="d-block">توضیحات کامل پست</label>
-                        <textarea name="longDescription" class="fname" type="text" required>@Model.longDecpription</textarea>
+                        <textarea name="longDescription" class="fname" type="text" required>@(Model.longDecpription != null ? Model.longDecpription : "")</textarea>
                     </div>
                 </div>
                 <div class="col-md-12 col-sm-12 col-lg-12 custom-file" style="margin-top: 15px">
-                    <input name="img" id="picture" class="fname custom-file-input" type="file" />
+                    <input name="img" id="picture" class="fname custom-file-input" type="file" accept=".png, .jpg, .jpeg" />
                     <label class="d-block custom-file-label text-center">عکس پست</label>
                 </div>
                 <img width="250" style="margin-top: 15px; border-radius: 15px" id="postimg"

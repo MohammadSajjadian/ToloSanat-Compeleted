@@ -22,14 +22,14 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 20px">
                         <label class="d-block">عنوان نمونه کار</label>
-                        <input name="title" value="@Model.title" class="fname" type="text" required />
+                        <input name="title" value="@(Model.title != null ? Model.title : "")" class="fname" type="text" required />
                     </div>
                     <div class="col-md-12 col-sm-12 col-lg-12">
                         <label class="d-block">توضیحات نمونه کار</label>
-                        <textarea name="description" class="fname" type="text" required>@Model.Description</textarea>
+                        <textarea name="description" class="fname" type="text" required>@(Model.Description != null ? Model.Description : "")</textarea>
                     </div>
                     <div class="col-md-12 col-sm-12 col-lg-12 custom-file" style="margin-top: 15px">
-                        <input name="img" id="picture" class="fname custom-file-input" type="file" />
+                        <input name="img" id="picture" class="fname custom-file-input" type="file" accept=".png, .jpg, .jpeg" />
                         <label class="d-block custom-file-label text-center">عکس نمونه کار</label>
                     </div>
                     <img width="250" style="margin-top: 15px; border-radius: 15px" id="projectimg"

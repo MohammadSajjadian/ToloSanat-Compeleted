@@ -29,6 +29,11 @@ namespace Brella.Areas.Identity
                 services.Configure<IdentityOptions>(x =>
                 {
                     x.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+                    x.Password.RequireDigit = true;
+                    x.Password.RequireLowercase = false;
+                    x.Password.RequireUppercase = false;
+                    x.Password.RequireNonAlphanumeric = false;
+                    x.Password.RequiredUniqueChars = 0;
                 });
             });
         }

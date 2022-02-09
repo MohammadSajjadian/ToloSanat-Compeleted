@@ -20,6 +20,11 @@ namespace Data.Entities
         public string phoneNumber { get; set; }
         public string instaLink { get; set; }
         public string telegramLink { get; set; }
+        public string siteTopTab { get; set; }
+        public string extraDes1 { get; set; }
+        public string extraDes2 { get; set; }
+
+        public byte[] projectImage { get; set; }  // 1920 * 630
 
         #endregion
 
@@ -36,6 +41,7 @@ namespace Data.Entities
         public string e2PreTitle { get; set; }
         public string e2Title { get; set; }
         public string e2Description { get; set; }
+        public string e2ImageTitle { get; set; }
 
         public byte[] e2img { get; set; }
 

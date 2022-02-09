@@ -36,7 +36,7 @@
                     if (item.faTitle == "فارسی")
                     {
                         <div class="col-md-12 col-sm-12 col-lg-12 custom-file" style="margin-top: 15px">
-                            <input asp-for="img" id="picture" class="fname custom-file-input" type="file" />
+                            <input asp-for="img" id="picture" class="fname custom-file-input" type="file" accept=".png, .jpg, .jpeg" />
                             <label class="d-block custom-file-label text-center">عکس نمونه کار</label>
                             <span asp-validation-for="img"></span>
                         </div>
