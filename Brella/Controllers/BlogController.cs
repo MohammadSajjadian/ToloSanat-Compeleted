@@ -70,15 +70,7 @@ namespace Brella.Controllers
         }
 
 
-        public IActionResult BlogDetailBridge(int id)
-        {
-            Post post = postRepo.Find(id);
-
-            return RedirectToAction(nameof(BlogDetail), new { title = post.title, id });
-        }
-
-
-        [Route("blogdetail/{title}/{id}")]
+        [HttpGet("blogdetail/{title}/{id}")]
         public IActionResult BlogDetail(string title, int id)
         {
             Post post = postRepo.Find(id);

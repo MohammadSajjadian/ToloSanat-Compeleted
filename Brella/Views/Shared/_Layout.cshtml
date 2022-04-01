@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="@ViewData["Description"]" />
     <meta name="keywords" content="" />
-    <link rel="icon" href="@await Component.InvokeAsync("SecondaryLogo")" type="image/png">
+    <link href="@await Component.InvokeAsync("SecondaryLogo")" type="image/png" rel="icon">
     <title>@ViewData["Title"] | @await Component.InvokeAsync("SiteTopTab") </title>
 
     <link rel="stylesheet" href="~/assets/css/all.min.css">
@@ -47,7 +47,9 @@
                             {
                                 <li style="margin-right: 15px"><a asp-action="UpdateHeaderProp" asp-controller="admin">ویرایش</a><i class="fas fa-edit"></i></li>
                             }
-                            @await Component.InvokeAsync("PhoneAddress")
+                            <li>
+                                @await Component.InvokeAsync("Phone")
+                            </li>
                         </ul>
                         @if (User.Identity.IsAuthenticated == false)
                         {
@@ -117,7 +119,7 @@
                                                 <a href="javascript:void(0);" title="">@localizer["Account"]</a>
                                                 <ul class="mb-0 list-unstyled" style="display: block;">
                                                     <li><a asp-action="editprofile" asp-controller="account" title="">@localizer["EditAccount"]</a></li>
-                                                    <li><a asp-action="changepassword" asp-controller="account" asp-route-pagenumber="1" title="">@localizer["ChangePass"]</a></li>
+                                                    <li><a asp-action="changepassword" asp-controller="account" title="">@localizer["ChangePass"]</a></li>
                                                 </ul>
                                             </li>
                                             <li><a asp-action="order" asp-controller="payment" title="">@localizer["Payment"]</a></li>
@@ -136,7 +138,7 @@
                                                 <a href="javascript:void(0);" title="">حساب کاربری</a>
                                                 <ul class="mb-0 list-unstyled" style="display: block;">
                                                     <li><a asp-action="editprofile" asp-controller="account" title="">ویرایش اطلاعات حساب کاربری</a></li>
-                                                    <li><a asp-action="changepassword" asp-controller="account" asp-route-pagenumber="1" title="">تغییر رمز عبور</a></li>
+                                                    <li><a asp-action="changepassword" asp-controller="account" title="">تغییر رمز عبور</a></li>
                                                 </ul>
                                             </li>
                                             <li class="menu-item-has-children">
@@ -211,7 +213,7 @@
                                                 <a href="javascript:void(0);" title="">@localizer["Account"]</a>
                                                 <ul class="mb-0 list-unstyled" style="display: block;">
                                                     <li><a asp-action="editprofile" asp-controller="account" title="">@localizer["EditAccount"]</a></li>
-                                                    <li><a asp-action="changepassword" asp-controller="account" asp-route-pagenumber="1" title="">@localizer["ChangePass"]</a></li>
+                                                    <li><a asp-action="changepassword" asp-controller="account" title="">@localizer["ChangePass"]</a></li>
                                                 </ul>
                                             </li>
                                             <li><a asp-action="order" asp-controller="payment" title="">@localizer["Payment"]</a></li>
@@ -230,7 +232,7 @@
                                                 <a href="javascript:void(0);" title="">حساب کاربری</a>
                                                 <ul class="mb-0 list-unstyled" style="display: block;">
                                                     <li><a asp-action="editprofile" asp-controller="account" title="">ویرایش اطلاعات حساب کاربری</a></li>
-                                                    <li><a asp-action="changepassword" asp-controller="account" asp-route-pagenumber="1" title="">تغییر رمز عبور</a></li>
+                                                    <li><a asp-action="changepassword" asp-controller="account" title="">تغییر رمز عبور</a></li>
                                                 </ul>
                                             </li>
                                             <li class="menu-item-has-children">
@@ -273,14 +275,23 @@
                 <div class="rspn-scil">
                     @await Component.InvokeAsync("Socials")
                 </div>
+                <ul class="topbar-links mb-0 list-unstyled d-inline-flex">
+                    @if (CultureInfo.CurrentCulture.Name == "fa-IR" || CultureInfo.CurrentCulture.Name == "ar-AE")
+                    {
+                        <li style="position: absolute; left: 60%">@await Component.InvokeAsync("Phone")</li>
+                    }
+                    else
+                    {
+                        <li style="position: absolute; right: 60%">@await Component.InvokeAsync("Phone")</li>
+                    }
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li style="margin-right: 15px"><a asp-action="UpdateHeaderProp" asp-controller="admin">ویرایش</a><i class="fas fa-edit"></i></li>
+                    }
+                </ul>
                 @if (User.Identity.IsAuthenticated == false)
                 {
                     <ul class="topbar-links mb-0 list-unstyled d-inline-flex text-left">
-                        @if (User.IsInRole("admin"))
-                        {
-                            <li style="margin-right: 15px"><a asp-action="UpdateHeaderProp" asp-controller="admin">ویرایش</a><i class="fas fa-edit"></i></li>
-                        }
-                        @await Component.InvokeAsync("PhoneAddress")
                         <li><a asp-action="register" asp-controller="account" title="">@localizer["Register"]</a></li>
                         <li><a asp-action="login" asp-controller="account" title="">@localizer["Login"]</a></li>
                     </ul>
@@ -288,11 +299,6 @@
                 else
                 {
                     <ul class="topbar-links mb-0 list-unstyled d-inline-flex text-left">
-                        @if (User.IsInRole("admin"))
-                        {
-                            <li style="margin-right: 15px"><a asp-action="UpdateHeaderProp" asp-controller="admin">ویرایش</a><i class="fas fa-edit"></i></li>
-                        }
-                        @await Component.InvokeAsync("PhoneAddress")
                         <li><a asp-action="logout" asp-controller="account" title="">@localizer["LogOut"]</a></li>
                     </ul>
                 }
@@ -327,7 +333,7 @@
                                     <a href="javascript:void(0);" title="">@localizer["Account"]</a>
                                     <ul class="mb-0 list-unstyled" style="display: block;">
                                         <li><a asp-action="editprofile" asp-controller="account" title="">@localizer["EditAccount"]</a></li>
-                                        <li><a asp-action="changepassword" asp-controller="account" asp-route-pagenumber="1" title="">@localizer["ChangePass"]</a></li>
+                                        <li><a asp-action="changepassword" asp-controller="account" title="">@localizer["ChangePass"]</a></li>
                                     </ul>
                                 </li>
                                 <li><a asp-action="order" asp-controller="payment" title="">@localizer["Payment"]</a></li>
@@ -346,7 +352,7 @@
                                     <a href="javascript:void(0);" title="">حساب کاربری</a>
                                     <ul class="mb-0 list-unstyled" style="display: block;">
                                         <li><a asp-action="editprofile" asp-controller="account" title="">ویرایش اطلاعات حساب کاربری</a></li>
-                                        <li><a asp-action="changepassword" asp-controller="account" asp-route-pagenumber="1" title="">تغییر رمز عبور</a></li>
+                                        <li><a asp-action="changepassword" asp-controller="account" title="">تغییر رمز عبور</a></li>
                                     </ul>
                                 </li>
                                 <li class="menu-item-has-children">
@@ -412,7 +418,12 @@
                             <div class="col-md-6 col-sm-6 col-lg-3 order-lg-1">
                                 <div class="widget w-100">
                                     <div class="w-100" style="color: white">
-                                        @await Component.InvokeAsync("PhoneAddress")
+                                        @await Component.InvokeAsync("Phone")
+
+                                        <br />
+                                        <br />
+
+                                        @await Component.InvokeAsync("Address")
                                     </div>
                                 </div>
                             </div>

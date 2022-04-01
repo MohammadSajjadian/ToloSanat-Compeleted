@@ -138,4 +138,7 @@
   <data name="Title" xml:space="preserve">
     <value>پروژه ها</value>
   </data>
+  <data name="Visit" xml:space="preserve">
+    <value>بازدید</value>
+  </data>
 </root>

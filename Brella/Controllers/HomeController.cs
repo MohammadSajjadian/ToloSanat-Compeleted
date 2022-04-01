@@ -51,7 +51,7 @@ namespace Brella.Controllers
 
             #region Slide Bar
 
-            ViewData["SlideBars"] = slideBarRepo.Get(x => x.language.title == lang, x => x.OrderByDescending(x => x.id), null);
+            ViewData["SlideBars"] = slideBarRepo.Get(x => x.language.title == lang, x => x.OrderBy(x => x.id), null);
             ViewBag.SlideBarsCount= slideBarRepo.Get(x => x.language.title == lang, null, null).Count;
 
             #endregion
@@ -59,7 +59,7 @@ namespace Brella.Controllers
 
             #region Project
 
-            ViewData["Projects"] = projectRepo.Get(x => x.language.title == lang, x => x.OrderByDescending(x => x.id), null);
+            ViewData["Projects"] = projectRepo.Get(x => x.language.title == lang, x => x.OrderBy(x => x.id), null);
             ViewBag.ProjectsCount = projectRepo.Get(x => x.language.title == lang, null, null).Count;
 
             #endregion
@@ -67,7 +67,7 @@ namespace Brella.Controllers
 
             #region Post
 
-            ViewData["Posts"] = postRepo.Get(x => x.language.title == lang, x => x.OrderByDescending(x => x.id), "ApplicationUser");
+            ViewData["Posts"] = postRepo.Get(x => x.language.title == lang, x => x.OrderBy(x => x.id), "ApplicationUser");
             ViewBag.PostsCount = postRepo.Get(x => x.language.title == lang, null, null).Count;
 
             #endregion

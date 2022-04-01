@@ -1,0 +1,14 @@
+﻿
+@model ElementProp
+
+@if (Model.phoneNumber != null)
+{
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR" || CultureInfo.CurrentCulture.Name == "ar-AE")
+    {
+        <a href="tel:@Model.phoneNumber" title="">@Model.phoneNumber</a><i class="thm-clr flaticon-phone-call fa-lg"></i>
+    }
+    else
+    {
+        <i class="thm-clr flaticon-phone-call fa-lg"></i><a href="tel:@Model.phoneNumber" title="">@Model.phoneNumber</a>
+    }
+}

@@ -48,10 +48,10 @@
                                         @foreach (var item in ViewData["Projects"] as List<Project>)
                                         {
                                             <div class="blog-mini-post w-100">
-                                                <a asp-action="projectdetailbridge" asp-route-id="@item.id" title=""><img class="img-fluid" src="@($"data:image/jpeg;base64,{Convert.ToBase64String(item.thumbNail)}")" alt="Blog Mini Post Icons 1"></a>
+                                                <a asp-action="projectdetail" asp-route-id="@item.id" asp-route-title="@item.title.Replace(" ", "-")" title=""><img class="img-fluid" src="@($"data:image/jpeg;base64,{Convert.ToBase64String(item.thumbNail)}")" alt="Blog Mini Post Icons 1"></a>
                                                 <div class="blog-mini-post-info">
                                                     <h4 class="mb-0">
-                                                        <a asp-action="projectdetailbridge" asp-route-id="@item.id" title="">@item.title</a>
+                                                        <a asp-action="projectdetail" asp-route-id="@item.id" asp-route-title="@item.title.Replace(" ", "-")" title="">@item.title</a>
                                                     </h4>
                                                     <span class="d-block mini-post-comments"><i class="far fa-user"></i><a href="javascript:void(0);" title="">@($"{item.ApplicationUser.name} {item.ApplicationUser.family}")</a></span>
                                                 </div>

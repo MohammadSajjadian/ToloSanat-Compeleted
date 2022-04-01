@@ -360,7 +360,7 @@ namespace Brella.Controllers
 
                         HttpContext.Session.SetString("password", model.password);
 
-                        await mail.Send("ورود ادمین", $"جهت ورود به حساب کاربری خود <a href={address}>اینجا</a> کلیک کنید<br/>{siteName}", user.Email);
+                        await mail.Send("ورود ادمین", $"<p style='font-size: 17px'> جهت ورود به حساب کاربری حود <a style='color: #e67e23' href={address}><b>(اینجا)</b></a> کلیک کنید</p><br /><label>{siteName}</label>", user.Email);
 
                         TempData[info] = "کد تایید برای شما ارسال شد";
 

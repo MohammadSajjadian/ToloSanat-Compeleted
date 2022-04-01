@@ -70,15 +70,7 @@ namespace Brella.Controllers
         }
 
 
-        public IActionResult ProjectDetailBridge(int id)
-        {
-            Project project = projectRepo.Find(id);
-
-            return RedirectToAction(nameof(ProjectDetail), new { title = project.title, id });
-        }
-
-
-        [Route("projectdetail/{title}/{id}")]
+        [HttpGet("projectdetail/{title}/{id}")]
         public IActionResult ProjectDetail(string title, int id)
         {
             Project project = projectRepo.Find(id);

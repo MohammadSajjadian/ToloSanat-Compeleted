@@ -32,11 +32,15 @@
                         <div class="col-md-6 col-sm-6 col-lg-4">
                             <div class="post-box w-100 text-center">
                                 <div class="post-img overflow-hidden w-100">
-                                    <a asp-action="projectdetailbridge" asp-route-id="@item.id" title=""><img class="img-fluid w-100" src="@($"data:image/jpeg;base64,{Convert.ToBase64String(item.thumbNail)}")" alt="Post Image 1"></a>
+                                    <a asp-action="projectdetail" asp-route-id="@item.id" asp-route-title="@item.title.Replace(" ", "-")" title=""><img class="img-fluid w-100" src="@($"data:image/jpeg;base64,{Convert.ToBase64String(item.thumbNail)}")" alt="Post Image 1"></a>
                                 </div>
                                 <div class="post-info w-100">
                                     <h3 class="mb-0"><a asp-action="projectdetailbridge" asp-route-id="@item.id" title="">@(item.title != null ? item.title : "")</a></h3>
-                                    <p class="mb-0">@(item.Description != null ? Html.Raw(item.Description.Length >= 80 ? $"{item.Description.Substring(0, 80)}..." : item.Description) : "")</p>
+                                    <div style="margin-top: 15px; margin-bottom: 15px" class="view-all w-100 text-center">
+                                        <a class="thm-btn thm-bg" asp-action="projectdetail" asp-route-id="@item.id" asp-route-title="@item.title.Replace(" ", "-")" title="">
+                                            @localizer["Visit"]<i class="flaticon-arrow-pointing-to-left"></i>
+                                        </a>
+                                    </div><!-- View All -->
                                     <div class="post-info-bottom d-flex flex-wrap w-100">
                                         <span class="d-inline-block"><i class="far fa-user"></i><a href="javascript:void(0);" title="">@($"{item.ApplicationUser.name} {item.ApplicationUser.family}")</a></span>
                                     </div>

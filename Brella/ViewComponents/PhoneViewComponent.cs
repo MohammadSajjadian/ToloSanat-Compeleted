@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Brella.ViewComponents
 {
-    public class PhoneAddressViewComponent : ViewComponent
+    public class PhoneViewComponent : ViewComponent
     {
         private readonly IRepository<ElementProp> elementPropRepo;
 
-        public PhoneAddressViewComponent(IRepository<ElementProp> _elementPropRepo)
+        public PhoneViewComponent(IRepository<ElementProp> _elementPropRepo)
         {
             elementPropRepo = _elementPropRepo;
         }

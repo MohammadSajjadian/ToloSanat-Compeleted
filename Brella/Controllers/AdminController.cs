@@ -164,15 +164,15 @@ namespace Brella.Controllers
         {
             #region Pagination
 
-            var projects = projectRepo.Get(null, x => x.OrderByDescending(x => x.id), "language").AsEnumerable();
+            var projects = projectRepo.Get(null, x => x.OrderBy(x => x.id), "language").AsEnumerable();
 
-            var pagination = PagingList.Create(projects, 4, pagenumber);
+            var pagination = PagingList.Create(projects, 5, pagenumber);
 
             var result = new PagedResult<Project>
             {
                 Data = pagination.ToList(),
                 PageNumber = pagenumber,
-                PageSize = 4,
+                PageSize = 5,
                 TotalItems = projects.Count()
             };
 
@@ -204,15 +204,15 @@ namespace Brella.Controllers
         {
             #region Pagination
 
-            var posts = postRepo.Get(null, x => x.OrderByDescending(x => x.id), "language").AsEnumerable();
+            var posts = postRepo.Get(null, x => x.OrderBy(x => x.id), "language").AsEnumerable();
 
-            var pagination = PagingList.Create(posts, 20, pagenumber);
+            var pagination = PagingList.Create(posts, 5, pagenumber);
 
             var result = new PagedResult<Post>
             {
                 Data = pagination.ToList(),
                 PageNumber = pagenumber,
-                PageSize = 20,
+                PageSize = 5,
                 TotalItems = posts.Count()
             };
 
@@ -272,7 +272,7 @@ namespace Brella.Controllers
         public IActionResult SlideBarOptions()
         {
             ViewData["Languages"] = languageRepo.Get(null, null, null);
-            ViewData["SlideBar"] = slideBarRepo.Get(null, x => x.OrderByDescending(x => x.id), "language");
+            ViewData["SlideBar"] = slideBarRepo.Get(null, x => x.OrderBy(x => x.id), "language");
             ViewBag.SlideBarCount = slideBarRepo.Get(null, null, null).Count;
 
             return View();

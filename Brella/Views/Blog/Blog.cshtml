@@ -32,7 +32,7 @@
                         <div class="col-md-6 col-sm-6 col-lg-4">
                             <div class="post-box w-100 text-center">
                                 <div class="post-img overflow-hidden w-100">
-                                    <a asp-action="blogdetailbridge" asp-route-id="@item.id" title=""><img class="img-fluid w-100" src="@($"data:image/jpeg;base64,{Convert.ToBase64String(item.thumbNail)}")" alt="Post Image 1"></a>
+                                    <a asp-action="blogdetail" asp-route-id="@item.id" asp-route="@item.title.Replace(" ", "-")" title=""><img class="img-fluid w-100" src="@($"data:image/jpeg;base64,{Convert.ToBase64String(item.thumbNail)}")" alt="Post Image 1"></a>
                                 </div>
                                 <div class="post-info w-100">
                                     <h3 class="mb-0"><a asp-action="blogdetailbridge" asp-route-id="@item.id" title="">@(item.title != null ? item.title : "")</a></h3>

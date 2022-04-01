@@ -135,4 +135,7 @@
   <data name="Projects" xml:space="preserve">
     <value>Progetti</value>
   </data>
+  <data name="Visit" xml:space="preserve">
+    <value>Visita</value>
+  </data>
 </root>
